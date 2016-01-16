@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace SvgStudio.Shared.ServiceContracts.Entities
 {
-    public class PaletteDto
+    public class CompatibilityTagDto
     {
         public int Id { get; set; }
         public string RowVersion { get; set; }
-        public string Name { get; set; }
-        public short SortOrder { get; set; }
+        public string Tag { get; set; }
     }
 }

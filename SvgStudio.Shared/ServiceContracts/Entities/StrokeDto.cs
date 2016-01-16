@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 
 namespace SvgStudio.Shared.ServiceContracts.Entities
 {
-    public class PaletteDto
+    public class StrokeDto
     {
         public int Id { get; set; }
         public string RowVersion { get; set; }
-        public string Name { get; set; }
-        public short SortOrder { get; set; }
+        public string Color { get; set; }
+        public int Width { get; set; }
+        public string DashArray { get; set; }
+        public int? PaletteId { get; set; }
     }
 }

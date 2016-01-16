@@ -36,7 +36,9 @@ namespace SvgStudio.Web.Models
                 Y = this.Y,
                 Width = this.Width,
                 Height = this.Height,
-                TemplateId = this.TemplateId
+                TemplateId = this.TemplateId,
+                SortOrder = this.SortOrder,
+                CompatibilityTagIds = this.CompatibilityTags.Select(x => x.Id).ToArray()
             };
         }
     }

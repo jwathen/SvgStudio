@@ -24,7 +24,8 @@ namespace SvgStudio.Web.Models
             {
                 Id = this.Id,
                 RowVersion = HexHelper.ByteArrayToHexString(this.RowVersion),
-                Name = this.Name
+                Name = this.Name,
+                SortOrder = this.SortOrder
             };
         }
     }

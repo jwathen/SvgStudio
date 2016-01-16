@@ -1,11 +1,13 @@
-﻿using System;
+﻿using SvgStudio.Shared.Helpers;
+using SvgStudio.Shared.ServiceContracts.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
 namespace SvgStudio.Web.Models
 {
-    public class ContentLicense
+    public class ContentLicense : ISyncableEntity<ContentLicenseDto>
     {
         public int Id { get; set; }
         public byte[] RowVersion { get; set; }
@@ -15,5 +17,18 @@ namespace SvgStudio.Web.Models
         public string AttributionName { get; set; }
 
         public License License { get; set; }
+
+        public ContentLicenseDto ToDto()
+        {
+            return new ContentLicenseDto
+            {
+                Id = this.Id,
+                RowVersion = HexHelper.ByteArrayToHexString(this.RowVersion),
+                LicenseId = this.LicenseId,
+                ContentUrl = this.ContentUrl,
+                AttributionUrl = this.AttributionUrl,
+                AttributionName = this.AttributionName
+            };
+        }
     }
 }

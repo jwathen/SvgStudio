@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using SvgStudio.Shared.ServiceContracts.Entities;
 
 namespace SvgStudio.Web.Models
 {
@@ -17,5 +18,19 @@ namespace SvgStudio.Web.Models
         public int DesignId { get; set; }
 
         public Design Design { get; set; }
+
+        public override FillDto ToDto()
+        {
+            FillDto dto = base.ToDto();
+            dto.PatternFill_Name = this.Name;
+            dto.PatternFill_X = this.X;
+            dto.PatternFill_Y = this.Y;
+            dto.PatternFill_Width = this.Width;
+            dto.PatternFill_Height = this.Height;
+            dto.PatternFill_PatternUnits = this.PatternUnits;
+            dto.PatternFill_PatternContentUnits = this.PatternContentUnits;
+            dto.PatternFill_DesignId = this.DesignId;
+            return dto;
+        }
     }
 }

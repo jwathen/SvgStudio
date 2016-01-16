@@ -12,6 +12,7 @@ namespace SvgStudio.Web.Models
         public int Id { get; set; }
         public byte[] RowVersion { get; set; }
         public bool IsActive { get; set; }
+        public bool IsMaster { get; set; }
         public string Name { get; set; }
 
         public ICollection<DesignRegion> DesignRegions { get; set; }
@@ -22,6 +23,7 @@ namespace SvgStudio.Web.Models
             {
                 Id = this.Id,
                 RowVersion = HexHelper.ByteArrayToHexString(this.RowVersion),
+                IsMaster = this.IsMaster,
                 Name = this.Name
             };
         }

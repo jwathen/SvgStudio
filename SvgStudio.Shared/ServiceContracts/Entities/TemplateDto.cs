@@ -10,6 +10,7 @@ namespace SvgStudio.Shared.ServiceContracts.Entities
     {
         public int Id { get; set; }
         public string RowVersion { get; set; }
+        public bool IsMaster { get; set; }
         public string Name { get; set; }
     }
 }
