@@ -11,9 +11,9 @@ using Newtonsoft.Json;
 using System.Net.Http;
 using System.Net.Http.Headers;
 
-namespace SvgStudio.Mobile.Core
+namespace SvgStudio.Mobile.Core.Services
 {
-    public class MobileServiceGateway
+    public class MobileServiceGateway : IMobileServiceGateway
     {
         private readonly Uri _baseUrl;
 

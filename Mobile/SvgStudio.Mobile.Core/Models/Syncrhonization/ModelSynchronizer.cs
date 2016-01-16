@@ -10,36 +10,29 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using Newtonsoft.Json;
+using SvgStudio.Mobile.Core.Services;
 
 namespace SvgStudio.Mobile.Core.Models.Synchronization
 {
     public class ModelSynchronizer
     {
         private readonly SQLiteAsyncConnection _db = null;
+        private readonly IMobileServiceGateway _mobileService = null;
 
-        public ModelSynchronizer(IDatabaseConnectionProvider connectionProvider)
+        public ModelSynchronizer(IDatabaseConnectionProvider connectionProvider, IMobileServiceGateway mobileService)
         {
             _db = connectionProvider.GetAsyncConnection();
+            _mobileService = mobileService;
         }
 
         public async Task<MobileSyncResponse> SynchronizeModelWithServer()
         {
             MobileSyncRequest request = new MobileSyncRequest();
-            request.TemplateRowVersions = await GetLocalRowVerionsAsync<Template, TemplateDto>();
-            request.DesignRegionRowVersions = await GetLocalRowVerionsAsync<DesignRegion, DesignRegionDto>();
-            request.PaletteRowVersions = await GetLocalRowVerionsAsync<Palette, PaletteDto>();
+            request.LicenseRowVersions = await GetLocalRowVerionsAsync<License, LicenseDto>();
 
-            var proxy = new MobileServiceGateway("http://192.168.1.14:14501/");
-            var response = await proxy.Sync(request);
+            var response = await _mobileService.Sync(request);
 
-			if(request != null)
-			{
-				Debug.WriteLine(JsonConvert.SerializeObject(response));
-
-				await ProcessChangesFromServer<Template, TemplateDto>(response.TemplateChanges);
-				await ProcessChangesFromServer<DesignRegion, DesignRegionDto>(response.DesignRegionChanges);
-                await ProcessChangesFromServer<Palette, PaletteDto>(response.PaletteChanges);
-            }
+            await ProcessChangesFromServer<License, LicenseDto>(response.LicenseChanges);
 
             return response;
         }

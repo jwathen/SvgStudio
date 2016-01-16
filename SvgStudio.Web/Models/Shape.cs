@@ -15,9 +15,8 @@ namespace SvgStudio.Web.Models
         public int Height { get; set; }
         public int NumberOfFillsSupported { get; set; } = 1;
         public int NumberOfStrokesSupported { get; set; } = 1;
-        public string Markup { get; set; }
-        public string SourceUrl { get; set; }
+        public short SortOrder { get; set; }
 
-        public ICollection<DesignRegion> CompatibleDesignRegions { get; set; }
+        public ICollection<CompatibilityTag> CompatibilityTags { get; set; }
     }
 }

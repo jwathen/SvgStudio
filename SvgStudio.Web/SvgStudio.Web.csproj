@@ -130,6 +130,10 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\BasicShape.cs" />
+    <Compile Include="Models\CompatibilityTag.cs" />
+    <Compile Include="Models\ContentLicense.cs" />
+    <Compile Include="Models\License.cs" />
+    <Compile Include="Models\MarkupFragment.cs" />
     <Compile Include="Models\SvgStudioDataContext.cs" />
     <Compile Include="Models\Design.cs" />
     <Compile Include="Models\DesignRegion.cs" />
@@ -141,6 +145,7 @@
     <Compile Include="Models\SolidColorFill.cs" />
     <Compile Include="Models\Stroke.cs" />
     <Compile Include="Models\Template.cs" />
+    <Compile Include="Models\TemplateShape.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

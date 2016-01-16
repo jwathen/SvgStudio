@@ -25,21 +25,13 @@ namespace SvgStudio.Web.Controllers
 
         [HttpPost]
         [Route("Sync")]
-        public async Task<ActionResult> Sync(MobileSyncRequest request)
+        public async Task<JsonResult> Sync(MobileSyncRequest request)
         {
             MobileSyncResponse response = new MobileSyncResponse();
 
             // Templates
-            var serverTemplates = await db.Templates.Where(x => x.IsActive).ToDictionaryAsync(x => x.Id, x => (ISyncableEntity<TemplateDto>)x);
-            response.TemplateChanges = DetectServerChanges(serverTemplates, ConvertDictionaryKeysToInts(request.TemplateRowVersions));
-
-            // Design regions
-            var serverDesignRegions = await db.DesignRegions.Where(x => x.IsActive).ToDictionaryAsync(x => x.Id, x => (ISyncableEntity<DesignRegionDto>)x);
-            response.DesignRegionChanges = DetectServerChanges(serverDesignRegions, ConvertDictionaryKeysToInts(request.DesignRegionRowVersions));
-
-            // Palettes
-            var palettes = await db.Palettes.Where(x => x.IsActive).ToDictionaryAsync(x => x.Id, x => (ISyncableEntity<PaletteDto>)x);
-            response.PaletteChanges = DetectServerChanges(palettes, ConvertDictionaryKeysToInts(request.PaletteRowVersions));
+            var serverLicenses = (await db.Licenses.ToListAsync()).ToDictionary(x => x.Id, x => (ISyncableEntity<LicenseDto>)x);
+            response.LicenseChanges = DetectServerChanges(serverLicenses, ConvertDictionaryKeysToInts(request.LicenseRowVersions));
 
             return Json(response);
         }

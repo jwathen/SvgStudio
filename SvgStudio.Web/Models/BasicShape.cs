@@ -7,5 +7,8 @@ namespace SvgStudio.Web.Models
 {
     public class BasicShape : Shape
     {
+        public int MarkupFragmentId { get; set; }
+
+        public MarkupFragment MarkupFragment { get; set; }
     }
 }

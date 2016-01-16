@@ -8,6 +8,11 @@ namespace SvgStudio.Web.Models
 {
     public class SvgStudioDataContext : DbContext
     {
+        static SvgStudioDataContext()
+        {
+            Database.SetInitializer<SvgStudioDataContext>(null);
+        }
+
         public SvgStudioDataContext(string connectionString) : base(connectionString)
         {
 
@@ -17,19 +22,25 @@ namespace SvgStudio.Web.Models
         {
             base.OnModelCreating(modelBuilder);
 
+            // CompatibilityTags
+            modelBuilder.Entity<CompatibilityTag>().Property(x => x.RowVersion).IsRowVersion();
+
+            // ContentLicenses
+            modelBuilder.Entity<ContentLicense>().Property(x => x.RowVersion).IsRowVersion();
+
             // Designs
             modelBuilder.Entity<Design>().Property(x => x.RowVersion).IsRowVersion();
 
             // DesignRegions
             modelBuilder.Entity<DesignRegion>().Property(x => x.RowVersion).IsRowVersion();
             modelBuilder.Entity<DesignRegion>().Property(x => x.Name).IsRequired();
-            modelBuilder.Entity<DesignRegion>().HasMany(x => x.CompatibleShapes)
-                .WithMany(x => x.CompatibleDesignRegions)
+            modelBuilder.Entity<DesignRegion>().HasMany(x => x.CompatibilityTags)
+                .WithMany(x => x.DesignRegions)
                 .Map(x =>
                 {
-                    x.MapLeftKey("ShapeId");
+                    x.MapLeftKey("CompatibilityTagId");
                     x.MapRightKey("DesignRegionId");
-                    x.ToTable("ShapeDesignRegionCompatibility");
+                    x.ToTable("DesignRegion_CompatibilityTag");
                 });
 
             // Fills
@@ -53,18 +64,38 @@ namespace SvgStudio.Web.Models
                         x.Property(pattern => pattern.DesignId).HasColumnName("PatternFill_DesignId");
                     });
 
+            // Licenses
+            modelBuilder.Entity<License>().Property(x => x.RowVersion).IsRowVersion();
+
+            // MarkupFragments
+            modelBuilder.Entity<MarkupFragment>().Property(x => x.RowVersion).IsRowVersion();
+
             // Palettes
             modelBuilder.Entity<Palette>().Property(x => x.RowVersion).IsRowVersion();
 
             // Shapes
             modelBuilder.Entity<Shape>().Property(x => x.RowVersion).IsRowVersion();
             modelBuilder.Entity<Shape>().Property(x => x.Name).IsRequired();
-            modelBuilder.Entity<Shape>().Property(x => x.Markup).IsRequired();
+            modelBuilder.Entity<Shape>().HasMany(x => x.CompatibilityTags)
+                .WithMany(x => x.Shapes)
+                .Map(x =>
+                {
+                    x.MapLeftKey("CompatibilityTagId");
+                    x.MapRightKey("ShapeId");
+                    x.ToTable("Shape_CompatibilityTag");
+                });
             modelBuilder.Entity<Shape>()
                 .Map<BasicShape>(x =>
                     {
                         x.Requires("ShapeType").HasValue("Basic");
-                    });
+                        x.Property(shape => shape.MarkupFragmentId).HasColumnName("BasicShape_MarkupFragmentId");
+                    })
+                .Map<TemplateShape>(x =>
+                 {
+                     x.Requires("ShapeType").HasValue("Template");
+                     x.Property(shape => shape.TemplateId).HasColumnName("TemplateShape_TemplateId");
+                     x.Property(shape => shape.ClipPathMarkupFragmentId).HasColumnName("TemplateShape_ClipPathMarkupFragmentId");                     
+                 });
 
             // Strokes
             modelBuilder.Entity<Stroke>().Property(x => x.RowVersion).IsRowVersion();
@@ -75,10 +106,14 @@ namespace SvgStudio.Web.Models
             modelBuilder.Entity<Template>().Property(x => x.RowVersion).IsRowVersion();
         }
 
-        public DbSet<Shape> Shapes { get; set; }
+        public DbSet<CompatibilityTag> CompatibilityTags { get; set; }
+        public DbSet<ContentLicense> ContentLicenses { get; set; }
         public DbSet<Design> Designs { get; set; }
         public DbSet<DesignRegion> DesignRegions { get; set; }
         public DbSet<Fill> Fills { get; set; }
+        public DbSet<License> Licenses { get; set; }
+        public DbSet<MarkupFragment> MarkupFragments { get; set; }
+        public DbSet<Shape> Shapes { get; set; }
         public DbSet<Palette> Palettes { get; set; }
         public DbSet<Stroke> Strokes { get; set; }
         public DbSet<Template> Templates { get; set; }

@@ -19,9 +19,7 @@ namespace SvgStudio
 
             var connectionProvider = DependencyService.Get<IDatabaseConnectionProvider>();
             var connection = connectionProvider.GetConnection();
-            connection.CreateTable<Template>();
-            connection.CreateTable<DesignRegion>();
-            connection.CreateTable<Palette>();
+            connection.CreateTable<License>();
         }
 
         protected override void OnStart()

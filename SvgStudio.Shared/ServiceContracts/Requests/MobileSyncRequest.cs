@@ -10,15 +10,9 @@ namespace SvgStudio.Shared.ServiceContracts.Requests
     {
         public MobileSyncRequest()
         {
-            TemplateRowVersions = new Dictionary<string, string>();
+            LicenseRowVersions = new Dictionary<string, string>();
         }
 
-        public Dictionary<string, string> DesignRowVersions { get; set; }
-        public Dictionary<string, string> DesignRegionRowVersions { get; set; }
-        public Dictionary<string, string> FillRowVersions { get; set; }
-        public Dictionary<string, string> PaletteRowVersions { get; set; }
-        public Dictionary<string, string> ShapeRowVersions { get; set; }
-        public Dictionary<string, string> StrokeRowVersions { get; set; }
-        public Dictionary<string, string> TemplateRowVersions { get; set; }
+        public Dictionary<string, string> LicenseRowVersions { get; set; }
     }
 }

@@ -1,21 +1,36 @@
-﻿create table Shapes
+﻿create table Licenses
 (
 	Id int not null primary key identity(1,1),
-	ShapeType nvarchar(50) not null,
 	RowVersion rowversion not null,
 	InsertDateUtc datetime not null default(getutcdate()),
-	IsActive bit not null,
-	Name nvarchar(max) not null,
-	Width int not null,
-	Height int not null,
-	NumberOfFillsSupported int not null,
-	NumberOfStrokesSupported int not null,
-	Markup xml not null,
-	SourceUrl nvarchar(max) null
+	AttributionRequired bit not null,
+	LicenseName nvarchar(1024) null,
+	LicenseUrl nvarchar(1024) null
 )
 go
 
-create index IX_Shapes_ShapeType on Shapes(ShapeType);
+create table ContentLicenses
+(
+	Id int not null primary key identity(1,1),
+	RowVersion rowversion not null,
+	InsertDateUtc datetime not null default(getutcdate()),
+	LicenseId int not null  references Licenses(Id),
+	ContentUrl nvarchar(1024) null,
+	AttributionName nvarchar(1024) null,
+	AttributionUrl nvarchar(1024) null
+)
+go
+
+create index IX_ConentLicenses_LicenseId on ContentLicenses(LicenseId);
+
+create table MarkupFragments
+(
+	Id int not null primary key identity(1,1),
+	RowVersion rowversion not null,
+	InsertDateUtc datetime not null default(getutcdate()),
+	Content nvarchar(max) not null
+)
+go
 
 create table Templates
 (
@@ -23,7 +38,53 @@ create table Templates
 	RowVersion rowversion not null,
 	InsertDateUtc datetime not null default(getutcdate()),
 	IsActive bit not null,
+	IsMaster bit not null default(1),
 	Name nvarchar(max) not null
+)
+go
+
+create table CompatibilityTags
+(
+	Id int not null primary key identity(1,1),
+	RowVersion rowversion not null,
+	InsertDateUtc datetime not null default(getutcdate()),
+	Tag nvarchar(128) not null
+)
+go
+
+create index IX_CompatibilityTags_Tag on CompatibilityTags(Tag);
+
+create table Shapes
+(
+	Id int not null primary key identity(1,1),
+	ShapeType nvarchar(50) not null,
+	RowVersion rowversion not null,
+	InsertDateUtc datetime not null default(getutcdate()),
+	IsActive bit not null,
+	ContentLicenseId int null references ContentLicenses(Id),
+	Name nvarchar(max) not null,
+	Width int not null,
+	Height int not null,
+	NumberOfFillsSupported int not null,
+	NumberOfStrokesSupported int not null,
+	SortOrder smallint not null default(32767),
+	BasicShape_MarkupFragmentId int null references MarkupFragments(Id),
+	TemplateShape_TemplateId int null references Templates(Id),
+	TemplateShape_ClipPathMarkupFragmentId  int null references MarkupFragments(Id)
+)
+go
+
+create index IX_Shapes_ShapeType on Shapes(ShapeType);
+create index IX_Shapes_BasicShape_MarkupFragmentId on Shapes(BasicShape_MarkupFragmentId);
+create index IX_Shapes_ContentLicenseId on Shapes(ContentLicenseId);
+create index IX_Shapes_TemplateShape_TemplateId on Shapes(TemplateShape_TemplateId);
+create index IX_Shapes_TemplateShape_ClipPathMarkupFragmentId on Shapes(TemplateShape_ClipPathMarkupFragmentId);
+
+create table Shape_CompatibilityTag
+(
+	CompatibilityTagId int not null references CompatibilityTags(Id),
+	ShapeId int not null references Shapes(Id),
+	constraint Shape_CompatibilityTag_PK primary key (CompatibilityTagId, ShapeId)
 )
 go
 
@@ -38,17 +99,18 @@ create table DesignRegions
 	Y int not null,
 	Width int not null,
 	Height int not null,
+	SortOrder smallint not null default(32767),
 	TemplateId int not null references Templates(Id)
 )
 go
 
 create index IX_DesignRegions_TemplateId on DesignRegions(TemplateId);
 
-create table ShapeDesignRegionCompatibility
+create table DesignRegion_CompatibilityTag
 (
+	CompatibilityTagId int not null references CompatibilityTags(Id),
 	DesignRegionId int not null references DesignRegions(Id),
-	ShapeId int not null references Shapes(Id),
-	constraint ShapeDesignRegionCompatibility_PK primary key (DesignRegionId, ShapeId)
+	constraint DesignRegion_CompatibilityTag_PK primary key (CompatibilityTagId, DesignRegionId)
 )
 go
 
@@ -58,7 +120,8 @@ create table Palettes
 	RowVersion rowversion not null,
 	InsertDateUtc datetime not null default(getutcdate()),
 	IsActive bit not null,
-	Name nvarchar(max) null
+	Name nvarchar(max) null,
+	SortOrder smallint not null default(32767),
 )
 go
 

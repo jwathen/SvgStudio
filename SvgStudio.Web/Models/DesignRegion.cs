@@ -17,12 +17,13 @@ namespace SvgStudio.Web.Models
         public int Y { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
+        public short SortOrder { get; set; }
 
         public int TemplateId { get; set; }
 
         public Template Template { get; set; }
 
-        public ICollection<Shape> CompatibleShapes { get; set; }
+        public ICollection<CompatibilityTag> CompatibilityTags { get; set; }
 
         public DesignRegionDto ToDto()
         {

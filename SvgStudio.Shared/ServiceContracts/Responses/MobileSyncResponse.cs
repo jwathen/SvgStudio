@@ -9,8 +9,6 @@ namespace SvgStudio.Shared.ServiceContracts.Responses
 {
     public class MobileSyncResponse
     {
-        public EntityChangeData<TemplateDto> TemplateChanges { get; set; }
-        public EntityChangeData<DesignRegionDto> DesignRegionChanges { get; set; }
-        public EntityChangeData<PaletteDto> PaletteChanges { get; set; }
+        public EntityChangeData<LicenseDto> LicenseChanges { get; set; }
     }
 }

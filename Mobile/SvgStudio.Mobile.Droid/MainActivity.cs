@@ -17,6 +17,7 @@ namespace SvgStudio.Droid
             base.OnCreate(bundle);
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
+            global::SVG.Forms.Plugin.Droid.SvgImageRenderer.Init();
             LoadApplication(new App());
         }
     }
