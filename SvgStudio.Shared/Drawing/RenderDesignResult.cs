@@ -8,7 +8,12 @@ namespace SvgStudio.Shared.Drawing
 {
     public class RenderDesignResult
     {
-        public HashSet<DefObject> Defs { get; set; } = new HashSet<DefObject>();
+        public RenderDesignResult()
+        {
+            Defs = new HashSet<DefObject>();
+        }
+
+        public HashSet<DefObject> Defs { get; set; }
         public XElement Xml { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }

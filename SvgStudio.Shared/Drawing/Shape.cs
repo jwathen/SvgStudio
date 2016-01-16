@@ -11,9 +11,9 @@ namespace SvgStudio.Shared.Drawing
         public int Width { get; set; }
         public int Height { get; set; }
 
-        public int NumberOfFillsSupported { get; set; } = 1;
+        public int NumberOfFillsSupported { get; set; }
 
-        public int NumberOfStrokesSupported { get; set; } = 1;
+        public int NumberOfStrokesSupported { get; set; }
 
         public abstract RenderDesignResult Render(Palette palette);
     }

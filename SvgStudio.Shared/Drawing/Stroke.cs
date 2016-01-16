@@ -17,11 +17,11 @@ namespace SvgStudio.Shared.Drawing
             }
         }
 
-        public Color Color { get; set; } = Color.Transparent;
+        public Color Color { get; set; }
 
-        public int Width { get; set; } = 0;
+        public int Width { get; set; }
 
-        public int[] DashArray { get; set; } = null;
+        public int[] DashArray { get; set; }
 
         public override IEnumerable<XElement> ToDefXml()
         {

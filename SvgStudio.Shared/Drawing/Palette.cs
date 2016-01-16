@@ -7,8 +7,14 @@ namespace SvgStudio.Shared.Drawing
 {
     public class Palette
     {
-        public List<Stroke> Strokes { get; private set; } = new List<Stroke>();
-        public List<Fill> Fills { get; private set; } = new List<Fill>();
+        public Palette()
+        {
+            Strokes = new List<Stroke>();
+            Fills = new List<Fill>();
+        }
+
+        public List<Stroke> Strokes { get; private set; }
+        public List<Fill> Fills { get; private set; }
 
         public Stroke GetStroke(int index)
         {

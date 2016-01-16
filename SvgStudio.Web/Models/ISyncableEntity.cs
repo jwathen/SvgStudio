@@ -8,7 +8,7 @@ namespace SvgStudio.Web.Models
 {
     public interface ISyncableEntity<TDto>
     {
-        SyncableEntityId SyncableEntityId { get; }
+        ServerEntityVersion SyncableEntityId { get; }
 
         TDto ToDto();
     }

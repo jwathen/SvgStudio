@@ -9,7 +9,7 @@ namespace SvgStudio.Shared.Drawing
 {
     public class SolidColorFill : Fill
     {
-        public Color Color { get; private set; } = Color.Transparent;
+        public Color Color { get; private set; }
 
         public SolidColorFill(Color color)
         {

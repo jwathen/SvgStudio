@@ -15,15 +15,21 @@ namespace SvgStudio.Web.Controllers
     [RoutePrefix("Mobile")]
     public class MobileController : SvgStudioControllerBase
     {
+        [HttpGet]
+        [Route("GetVersion")]
+        public ActionResult GetVersion()
+        {
+            return Json("1.0.0");
+        }
+
         [HttpPost]
         [Route("Sync")]
-        public async Task<ActionResult> Sync(ClientSyncRequest request)
+        public async Task<ActionResult> Sync(MobileSyncRequest request)
         {
-            ClientSyncResponse response = new ClientSyncResponse();
+            MobileSyncResponse response = new MobileSyncResponse();
 
             var serverTemplates = await db.Templates.Where(x => x.IsActive).ToDictionaryAsync(x => x.Id, x => (ISyncableEntity<TemplateDto>)x);
-            response.TemplateChanges = DetectServerChanges(serverTemplates, request.TemplateRowVersions);
-
+            response.TemplateChanges = DetectServerChanges(serverTemplates, ConvertDictionaryKeysToInts(request.TemplateRowVersions));
 
             return Json(response);
         }
@@ -56,6 +62,11 @@ namespace SvgStudio.Web.Controllers
             }
 
             return result;
+        }
+
+        private Dictionary<int, string> ConvertDictionaryKeysToInts(Dictionary<string, string> dict)
+        {
+            return dict.ToDictionary(x => int.Parse(x.Key), x => x.Value);
         }
     }
 }

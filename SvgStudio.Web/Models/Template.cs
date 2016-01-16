@@ -16,13 +16,13 @@ namespace SvgStudio.Web.Models
 
         public ICollection<DesignRegion> DesignRegions { get; set; }
 
-        public SyncableEntityId SyncableEntityId
+        public ServerEntityVersion SyncableEntityId
         {
             get
             {
-                return new SyncableEntityId
+                return new ServerEntityVersion
                 {
-                    Id = this.Id,
+                    ServerId = this.Id,
                     RowVersion = HexHelper.ByteArrayToHexString(this.RowVersion)
                 };
             }

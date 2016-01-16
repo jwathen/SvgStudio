@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace SvgStudio.Shared.ServiceContracts.Entities
 {
-    public class SyncableEntityId
+    public class ServerEntityVersion
     {
-        public int Id { get; set; }
+        public int ServerId { get; set; }
         public string RowVersion { get; set; }
     }
 }

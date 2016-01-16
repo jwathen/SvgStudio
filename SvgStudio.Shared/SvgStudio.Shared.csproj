@@ -54,10 +54,10 @@
     <Compile Include="Helpers\HexHelper.cs" />
     <Compile Include="Helpers\StringHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServiceContracts\Entities\SyncableEntityId.cs" />
+    <Compile Include="ServiceContracts\Entities\ServerEntityVersion.cs" />
     <Compile Include="ServiceContracts\Entities\TemplateDto.cs" />
-    <Compile Include="ServiceContracts\Requests\ClientSyncRequest.cs" />
-    <Compile Include="ServiceContracts\Responses\ClientSyncResponse.cs" />
+    <Compile Include="ServiceContracts\Requests\MobileSyncRequest.cs" />
+    <Compile Include="ServiceContracts\Responses\MobileSyncResponse.cs" />
     <Compile Include="ServiceContracts\Responses\EntityChangeData.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
