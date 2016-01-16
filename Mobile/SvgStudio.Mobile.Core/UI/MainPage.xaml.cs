@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using SvgStudio.Mobile.Core.Models.Synchronization;
 using SvgStudio.Mobile.Core.Models.Storage;
+using SvgStudio.Shared.ServiceContracts.Responses;
 
 namespace SvgStudio.Mobile.Core.UI
 {
@@ -21,18 +22,37 @@ namespace SvgStudio.Mobile.Core.UI
             };
         }
 
-        int i = 0;
-
         private async Task Button_Clicked(object sender, EventArgs args)
         {
             var button = (Button)sender;
             button.Text = "Sync...";
 
-			var sync = new ModelSynchronizer(DependencyService.Get<IDatabaseConnectionProvider>());
+            var sync = new ModelSynchronizer(DependencyService.Get<IDatabaseConnectionProvider>());
             var response = await sync.SynchronizeModelWithServer();
 
-            string summary = string.Format("added: {0}, updated: {1}, deleted: {2}", response.TemplateChanges.Added.Count, response.TemplateChanges.Updated.Count, response.TemplateChanges.Deleted.Count);
-            button.Text = summary;
+            if (response != null)
+            {
+                StringBuilder summary = new StringBuilder();
+                AppendToSummary(summary, response.TemplateChanges);
+                AppendToSummary(summary, response.DesignRegionChanges);
+                AppendToSummary(summary, response.PaletteChanges);
+                SummaryLabel.Text = summary.ToString();
+                button.Text = "Done";
+            }
+            else
+            {
+                button.Text = "Error";
+            }
+        }
+
+        private void AppendToSummary<T>(StringBuilder summary, EntityChangeData<T> changes)
+        {
+            string entitySummary= string.Format("{0} - added: {1}, updated: {2}, deleted: {3}",
+                typeof(T).Name,
+                changes.Added.Count,
+                changes.Updated.Count,
+                changes.Deleted.Count);
+            summary.AppendLine(entitySummary);
         }
     }
 }

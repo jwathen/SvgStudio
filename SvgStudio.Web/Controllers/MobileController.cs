@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using System.Data.Entity;
 using SvgStudio.Web.Models;
 using SvgStudio.Shared.ServiceContracts.Entities;
+using SvgStudio.Shared.Helpers;
 
 namespace SvgStudio.Web.Controllers
 {
@@ -28,8 +29,17 @@ namespace SvgStudio.Web.Controllers
         {
             MobileSyncResponse response = new MobileSyncResponse();
 
+            // Templates
             var serverTemplates = await db.Templates.Where(x => x.IsActive).ToDictionaryAsync(x => x.Id, x => (ISyncableEntity<TemplateDto>)x);
             response.TemplateChanges = DetectServerChanges(serverTemplates, ConvertDictionaryKeysToInts(request.TemplateRowVersions));
+
+            // Design regions
+            var serverDesignRegions = await db.DesignRegions.Where(x => x.IsActive).ToDictionaryAsync(x => x.Id, x => (ISyncableEntity<DesignRegionDto>)x);
+            response.DesignRegionChanges = DetectServerChanges(serverDesignRegions, ConvertDictionaryKeysToInts(request.DesignRegionRowVersions));
+
+            // Palettes
+            var palettes = await db.Palettes.Where(x => x.IsActive).ToDictionaryAsync(x => x.Id, x => (ISyncableEntity<PaletteDto>)x);
+            response.PaletteChanges = DetectServerChanges(palettes, ConvertDictionaryKeysToInts(request.PaletteRowVersions));
 
             return Json(response);
         }
@@ -47,7 +57,7 @@ namespace SvgStudio.Web.Controllers
             int[] same = serverData.Keys.Intersect(clientRowVersions.Keys).ToArray();
             foreach (int id in same)
             {
-                string serverRowVersion = serverData[id].SyncableEntityId.RowVersion;
+                string serverRowVersion = HexHelper.ByteArrayToHexString(serverData[id].RowVersion);
                 string clientRowVersion = clientRowVersions[id];
                 if (serverRowVersion != clientRowVersion)
                 {
@@ -66,6 +76,7 @@ namespace SvgStudio.Web.Controllers
 
         private Dictionary<int, string> ConvertDictionaryKeysToInts(Dictionary<string, string> dict)
         {
+            dict = dict ?? new Dictionary<string, string>();
             return dict.ToDictionary(x => int.Parse(x.Key), x => x.Value);
         }
     }

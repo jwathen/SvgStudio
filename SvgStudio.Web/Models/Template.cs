@@ -16,18 +16,6 @@ namespace SvgStudio.Web.Models
 
         public ICollection<DesignRegion> DesignRegions { get; set; }
 
-        public ServerEntityVersion SyncableEntityId
-        {
-            get
-            {
-                return new ServerEntityVersion
-                {
-                    ServerId = this.Id,
-                    RowVersion = HexHelper.ByteArrayToHexString(this.RowVersion)
-                };
-            }
-        }
-
         public TemplateDto ToDto()
         {
             return new TemplateDto

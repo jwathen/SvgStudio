@@ -16,16 +16,6 @@ namespace SvgStudio.Mobile.Core.Models
         public string RowVersion { get; set; }
         public string Name { get; set; }
 
-        public ServerEntityVersion GetServerEntityVersion()
-        {
-            int serverId = int.Parse(EntityId.Parse(Id).SourceId);
-            return new ServerEntityVersion
-            {
-                ServerId = serverId,
-                RowVersion = RowVersion
-            };
-        }
-
         public void FillFromDto(TemplateDto dto)
         {
             Id = EntityId.FromServerId(dto.Id).ToString();

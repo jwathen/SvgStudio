@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace SvgStudio.Shared.ServiceContracts.Entities
 {
-    public class ServerEntityVersion
+    public class PaletteDto
     {
-        public int ServerId { get; set; }
+        public int Id { get; set; }
         public string RowVersion { get; set; }
+        public string Name { get; set; }
     }
 }

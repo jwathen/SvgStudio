@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using Newtonsoft.Json;
 
 namespace SvgStudio.Mobile.Core.Models.Synchronization
 {
@@ -24,19 +25,38 @@ namespace SvgStudio.Mobile.Core.Models.Synchronization
         public async Task<MobileSyncResponse> SynchronizeModelWithServer()
         {
             MobileSyncRequest request = new MobileSyncRequest();
-            var templates = await _db.QueryAsync<Template>("select Id, RowVersion from Template where Id like '1%'");
-            foreach(var template in templates)
-            {
-                int serverId = int.Parse(EntityId.Parse(template.Id).SourceId);
-                request.TemplateRowVersions[serverId.ToString()] = template.RowVersion;
-            }
+            request.TemplateRowVersions = await GetLocalRowVerionsAsync<Template, TemplateDto>();
+            request.DesignRegionRowVersions = await GetLocalRowVerionsAsync<DesignRegion, DesignRegionDto>();
+            request.PaletteRowVersions = await GetLocalRowVerionsAsync<Palette, PaletteDto>();
 
             var proxy = new MobileServiceGateway("http://192.168.1.14:14501/");
             var response = await proxy.Sync(request);
 
-            await ProcessChangesFromServer<Template, TemplateDto>(response.TemplateChanges);
+			if(request != null)
+			{
+				Debug.WriteLine(JsonConvert.SerializeObject(response));
+
+				await ProcessChangesFromServer<Template, TemplateDto>(response.TemplateChanges);
+				await ProcessChangesFromServer<DesignRegion, DesignRegionDto>(response.DesignRegionChanges);
+                await ProcessChangesFromServer<Palette, PaletteDto>(response.PaletteChanges);
+            }
 
             return response;
+        }
+
+        private async Task<Dictionary<string, string>> GetLocalRowVerionsAsync<TEntity, TDto>() where TEntity : class, ISyncableEntity<TDto>
+        {
+            Dictionary<string, string> result = new Dictionary<string, string>();
+
+            string sql = string.Format("select Id, RowVersion from {0} where Id like '1%'", typeof(TEntity).Name);
+            var localRowVersions = await _db.QueryAsync<TEntity>(sql);
+            foreach (var localEntity in localRowVersions)
+            {
+                int serverId = int.Parse(EntityId.Parse(localEntity.Id).SourceId);
+                result[serverId.ToString()] = localEntity.RowVersion;
+            }
+
+            return result;
         }
 
         private async Task ProcessChangesFromServer<TEntity, TDto>(EntityChangeData<TDto> changes) where TEntity : ISyncableEntity<TDto>, new()

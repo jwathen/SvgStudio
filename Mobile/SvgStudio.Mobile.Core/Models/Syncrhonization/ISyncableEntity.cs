@@ -10,6 +10,10 @@ namespace SvgStudio.Mobile.Core.Models.Synchronization
 {
     public interface ISyncableEntity<TDto>
     {
+        string Id { get; }
+
+        string RowVersion { get; }
+
         void FillFromDto(TDto dto);
     }
 }
