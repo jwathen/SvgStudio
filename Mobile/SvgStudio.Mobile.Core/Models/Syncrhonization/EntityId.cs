@@ -12,12 +12,12 @@ namespace SvgStudio.Mobile.Core.Models.Synchronization
 
         public string SourceId { get; set; }
 
-        public static EntityId FromServerId(int serverId)
+        public static EntityId FromServerId(int? serverId)
         {
             return new EntityId
             {
                 Source = EntitySource.Server,
-                SourceId = serverId.ToString()
+                SourceId = serverId?.ToString()
             };
         }
 
@@ -44,6 +44,10 @@ namespace SvgStudio.Mobile.Core.Models.Synchronization
 
         public override string ToString()
         {
+            if (string.IsNullOrWhiteSpace(SourceId))
+            {
+                return null;
+            }
             return string.Format("{0}-{1}", (int)Source, SourceId);
         }
 

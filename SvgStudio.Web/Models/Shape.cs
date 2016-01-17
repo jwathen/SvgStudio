@@ -32,7 +32,8 @@ namespace SvgStudio.Web.Models
                 Height =this.Height,
                 NumberOfFillsSupported = this.NumberOfFillsSupported,
                 NumberOfStrokesSupported = this.NumberOfStrokesSupported,
-                SortOrder = this.SortOrder
+                SortOrder = this.SortOrder,
+                CompatibilityTagIds = this.CompatibilityTags.Select(x => x.Id).ToArray()
             };
         }
     }

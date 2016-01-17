@@ -36,7 +36,19 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="App.cs" />
+    <Compile Include="Models\CompatibilityTag.cs" />
+    <Compile Include="Models\ContentLicense.cs" />
+    <Compile Include="Models\Design.cs" />
+    <Compile Include="Models\DesignRegion.cs" />
+    <Compile Include="Models\Shape_CompatibilityTag.cs" />
+    <Compile Include="Models\DesignRegion_CompatibilityTag.cs" />
+    <Compile Include="Models\Fill.cs" />
+    <Compile Include="Models\MarkupFragment.cs" />
+    <Compile Include="Models\Palette.cs" />
+    <Compile Include="Models\Shape.cs" />
     <Compile Include="Models\Storage\DatabaseInitilizer.cs" />
+    <Compile Include="Models\Stroke.cs" />
+    <Compile Include="Models\Template.cs" />
     <Compile Include="Services\MobileServiceGateway.cs" />
     <Compile Include="Models\License.cs" />
     <Compile Include="Models\Syncrhonization\EntityId.cs" />

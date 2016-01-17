@@ -58,14 +58,17 @@
     <Compile Include="ServiceContracts\Entities\ContentLicenseDto.cs" />
     <Compile Include="ServiceContracts\Entities\DesignDto.cs" />
     <Compile Include="ServiceContracts\Entities\DesignRegionDto.cs" />
+    <Compile Include="ServiceContracts\Entities\DesignRegion_CompatibilityTagDto.cs" />
     <Compile Include="ServiceContracts\Entities\FillDto.cs" />
     <Compile Include="ServiceContracts\Entities\LicenseDto.cs" />
     <Compile Include="ServiceContracts\Entities\MarkupFragmentDto.cs" />
     <Compile Include="ServiceContracts\Entities\PaletteDto.cs" />
     <Compile Include="ServiceContracts\Entities\ShapeDto.cs" />
+    <Compile Include="ServiceContracts\Entities\Shape_CompatibilityTagDto.cs" />
     <Compile Include="ServiceContracts\Entities\StrokeDto.cs" />
     <Compile Include="ServiceContracts\Entities\TemplateDto.cs" />
     <Compile Include="ServiceContracts\Requests\MobileSyncRequest.cs" />
+    <Compile Include="ServiceContracts\Responses\JoiningTableChangeData.cs" />
     <Compile Include="ServiceContracts\Responses\MobileSyncResponse.cs" />
     <Compile Include="ServiceContracts\Responses\EntityChangeData.cs" />
   </ItemGroup>
