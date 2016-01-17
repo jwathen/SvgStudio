@@ -66,7 +66,7 @@ namespace SvgStudio.Test.TestHelpers
             if (_automaticallySyncWithServer && !_alreadySyncedWithServer)
             {
                 var mobileService = new TestMobileServiceGateway();
-                var subject = new ModelSynchronizer(this, mobileService);
+                var subject = new DatabaseSynchronizer(this, mobileService);
                 _alreadySyncedWithServer = true;
                 Task.Run(subject.SynchronizeModelWithServer);
             }

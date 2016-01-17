@@ -22,6 +22,8 @@ namespace SvgStudio.Shared.ServiceContracts.Requests
             ShapeRowVersions = new Dictionary<string, string>();
             StrokeRowVersions = new Dictionary<string, string>();
             TemplateRowVersions = new Dictionary<string, string>();
+            DesignRegion_CompatibilityTags = new List<DesignRegion_CompatibilityTagDto>();
+            Shape_CompatibilityTags = new List<Shape_CompatibilityTagDto>();
         }
 
         public Dictionary<string, string> CompatibilityTagRowVersions { get; set; }
@@ -35,7 +37,7 @@ namespace SvgStudio.Shared.ServiceContracts.Requests
         public Dictionary<string, string> ShapeRowVersions { get; set; }
         public Dictionary<string, string> StrokeRowVersions { get; set; }
         public Dictionary<string, string> TemplateRowVersions { get; set; }
-        public DesignRegion_CompatibilityTagDto[] DesignRegion_CompatibilityTags { get; set; }
-        public Shape_CompatibilityTagDto[] Shape_CompatibilityTags { get; set; }
+        public List<DesignRegion_CompatibilityTagDto> DesignRegion_CompatibilityTags { get; set; }
+        public List<Shape_CompatibilityTagDto> Shape_CompatibilityTags { get; set; }
     }
 }

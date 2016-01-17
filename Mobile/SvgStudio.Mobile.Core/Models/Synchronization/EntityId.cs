@@ -17,7 +17,7 @@ namespace SvgStudio.Mobile.Core.Models.Synchronization
             return new EntityId
             {
                 Source = EntitySource.Server,
-                SourceId = serverId?.ToString()
+				SourceId = serverId != null ? serverId.ToString() : null
             };
         }
 

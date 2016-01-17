@@ -11,6 +11,7 @@ using SvgStudio.Shared.ServiceContracts.Responses;
 using System.Reflection;
 using System.ComponentModel;
 using SVG.Forms.Plugin.Abstractions;
+using SvgStudio.Mobile.Core.Services;
 
 namespace SvgStudio.Mobile.Core.UI
 {
@@ -57,37 +58,23 @@ namespace SvgStudio.Mobile.Core.UI
          
         private async Task Button_Clicked(object sender, EventArgs args)
         {
-            //var button = (Button)sender;
-            //button.Text = "Sync...";
+            var button = (Button)sender;
+            button.Text = "Sync...";
 
-            //var sync = new ModelSynchronizer(DependencyService.Get<IDatabaseConnectionProvider>());
-            //var response = await sync.SynchronizeModelWithServer();
+            var sync = new DatabaseSynchronizer(DependencyService.Get<IDatabaseConnectionProvider>(), new MobileServiceGateway("http://192.168.1.14:14501/"));
+            var response = await sync.SynchronizeModelWithServer();
 
-            //if (response != null)
-            //{
-            //    StringBuilder summary = new StringBuilder();
-            //    AppendToSummary(summary, response.TemplateChanges);
-            //    AppendToSummary(summary, response.DesignRegionChanges);
-            //    AppendToSummary(summary, response.PaletteChanges);
-            //    SummaryLabel.Text = summary.ToString();
-            //    button.Text = "Done";
-            //}
-            //else
-            //{
-            //    button.Text = "Error";
-            //}
+            if (response != null)
+            {
+                SummaryLabel.Text = string.Join(Environment.NewLine, response.Select(x => x.ToString()));
+                button.Text = "Done";
+            }
+            else
+            {
+                button.Text = "Error";
+            }
 
             //< abstractions:SvgImage x:Name = "img" SvgPath = "{Binding SvgImagePath}" HeightRequest = "500" WidthRequest = "350" BackgroundColor = "White" HorizontalOptions = "Center" VerticalOptions = "Center" />
-        }
-
-        private void AppendToSummary<T>(StringBuilder summary, EntityChangeData<T> changes)
-        {
-            string entitySummary= string.Format("{0} - added: {1}, updated: {2}, deleted: {3}",
-                typeof(T).Name,
-                changes.Added.Count,
-                changes.Updated.Count,
-                changes.Deleted.Count);
-            summary.AppendLine(entitySummary);
         }
     }
 }

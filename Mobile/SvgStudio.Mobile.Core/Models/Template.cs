@@ -1,4 +1,5 @@
-﻿using SvgStudio.Mobile.Core.Models.Synchronization;
+﻿using SQLite.Net.Attributes;
+using SvgStudio.Mobile.Core.Models.Synchronization;
 using SvgStudio.Shared.ServiceContracts.Entities;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ namespace SvgStudio.Mobile.Core.Models
 {
     public class Template : ISyncableEntity<TemplateDto>
     {
+        [PrimaryKey]
         public string Id { get; set; }
         public string RowVersion { get; set; }
         public bool IsMaster { get; set; }
