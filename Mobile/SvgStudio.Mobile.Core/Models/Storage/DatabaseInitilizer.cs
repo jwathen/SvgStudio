@@ -1,4 +1,5 @@
 ﻿using SQLite.Net;
+using SvgStudio.Shared.StorageModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;

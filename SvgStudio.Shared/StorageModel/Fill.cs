@@ -1,16 +1,21 @@
-﻿using System;
+﻿using SQLite.Net.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SvgStudio.Shared.ServiceContracts.Entities
+namespace SvgStudio.Shared.StorageModel
 {
-    public class FillDto
+    public class Fill : ISyncableRecord
     {
-        public int Id { get; set; }
-        public string RowVersion { get; set; }
-        public int? PaletteId { get; set; }
+        [PrimaryKey]
+        public string Id { get; set; }
+        public byte[] RowVersion { get; set; }
+        public bool IsActive { get; set; }
+        public FillType FillType { get; set; }
+        [Indexed]
+        public string PaletteId { get; set; }
 
         public string SolidColorFill_Color { get; set; }
 
@@ -21,6 +26,7 @@ namespace SvgStudio.Shared.ServiceContracts.Entities
         public double PatternFill_Height { get; set; }
         public string PatternFill_PatternUnits { get; set; }
         public string PatternFill_PatternContentUnits { get; set; }
-        public int PatternFill_DesignId { get; set; }
+        [Indexed]
+        public string PatternFill_DesignId { get; set; }
     }
 }

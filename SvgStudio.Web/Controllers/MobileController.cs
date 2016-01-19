@@ -6,11 +6,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using System.Data.Entity;
-using SvgStudio.Web.Models;
-using SvgStudio.Shared.ServiceContracts.Entities;
 using SvgStudio.Shared.Helpers;
-using Dapper;
+using System.Data.Entity;
+using SvgStudio.Shared.StorageModel;
 
 namespace SvgStudio.Web.Controllers
 {
@@ -31,110 +29,88 @@ namespace SvgStudio.Web.Controllers
             MobileSyncResponse response = new MobileSyncResponse();
 
             // Compatibility tags
-            var serverCompatibilityTags = await db.CompatibilityTags.ToDictionaryAsync(x => x.Id, x => (ISyncableEntity<CompatibilityTagDto>)x);
-            response.CompatibilityTagChanges = DetectServerChanges(serverCompatibilityTags, ConvertDictionaryKeysToInts(request.CompatibilityTagRowVersions));
+            var serverCompatibilityTags = await db.CompatibilityTags.ToDictionaryAsync(x => x.Id);
+            response.CompatibilityTagChanges = DetectServerChanges(serverCompatibilityTags, request.CompatibilityTagRowVersions);
 
             // Content licenses
-            var serverContentLicenses = await db.ContentLicenses.ToDictionaryAsync(x => x.Id, x => (ISyncableEntity<ContentLicenseDto>)x);
-            response.ContentLicenseChanges = DetectServerChanges(serverContentLicenses, ConvertDictionaryKeysToInts(request.ContentLicenseRowVersions));
+            var serverContentLicenses = await db.ContentLicenses.ToDictionaryAsync(x => x.Id);
+            response.ContentLicenseChanges = DetectServerChanges(serverContentLicenses, request.ContentLicenseRowVersions);
 
             // Designs
-            var serverDesigns = await db.Designs.ToDictionaryAsync(x => x.Id, x => (ISyncableEntity<DesignDto>)x);
-            response.DesignChanges = DetectServerChanges(serverDesigns, ConvertDictionaryKeysToInts(request.DesignRowVersions));
+            var serverDesigns = await db.Designs.ToDictionaryAsync(x => x.Id);
+            response.DesignChanges = DetectServerChanges(serverDesigns, request.DesignRowVersions);
 
             // Design regions
-            var serverDesignRegions = await db.DesignRegions.Where(x => x.IsActive).ToDictionaryAsync(x => x.Id, x => (ISyncableEntity<DesignRegionDto>)x);
-            response.DesignRegionChanges = DetectServerChanges(serverDesignRegions, ConvertDictionaryKeysToInts(request.DesignRegionRowVersions));
+            var serverDesignRegions = await db.DesignRegions.Where(x => x.IsActive).ToDictionaryAsync(x => x.Id);
+            response.DesignRegionChanges = DetectServerChanges(serverDesignRegions, request.DesignRegionRowVersions);
+
+            // DesignRegion_CompatibilityTags
+            var serverDesignRegion_CompatibilityTags = await db.DesignRegion_CompatibilityTags.ToDictionaryAsync(x => x.Id);
+            response.DesignRegion_CompatibilityTagChanges = DetectServerChanges(serverDesignRegion_CompatibilityTags, request.DesignRegion_CompatibilityTagRowVersions);
 
             // Fills
-            var serverFills = await db.Fills.Where(x => x.IsActive).ToDictionaryAsync(x => x.Id, x => (ISyncableEntity<FillDto>)x);
-            response.FillChanges = DetectServerChanges(serverFills, ConvertDictionaryKeysToInts(request.FillRowVersions));
+            var serverFills = await db.Fills.Where(x => x.IsActive).ToDictionaryAsync(x => x.Id);
+            response.FillChanges = DetectServerChanges(serverFills, request.FillRowVersions);
 
             // Licenses
-            var serverLicenses = await db.Licenses.ToDictionaryAsync(x => x.Id, x => (ISyncableEntity<LicenseDto>)x);
-            response.LicenseChanges = DetectServerChanges(serverLicenses, ConvertDictionaryKeysToInts(request.LicenseRowVersions));
+            var serverLicenses = await db.Licenses.ToDictionaryAsync(x => x.Id);
+            response.LicenseChanges = DetectServerChanges(serverLicenses, request.LicenseRowVersions);
 
             // Markup fragments
-            var serverMarkupFragments = await db.MarkupFragments.ToDictionaryAsync(x => x.Id, x => (ISyncableEntity<MarkupFragmentDto>)x);
-            response.MarkupFragmentChanges = DetectServerChanges(serverMarkupFragments, ConvertDictionaryKeysToInts(request.MarkupFragmentRowVersions));
+            var serverMarkupFragments = await db.MarkupFragments.ToDictionaryAsync(x => x.Id);
+            response.MarkupFragmentChanges = DetectServerChanges(serverMarkupFragments, request.MarkupFragmentRowVersions);
 
             // Palettes
-            var serverPalettes = await db.Palettes.Where(x => x.IsActive).ToDictionaryAsync(x => x.Id, x => (ISyncableEntity<PaletteDto>)x);
-            response.PaletteChanges = DetectServerChanges(serverPalettes, ConvertDictionaryKeysToInts(request.PaletteRowVersions));
+            var serverPalettes = await db.Palettes.Where(x => x.IsActive).ToDictionaryAsync(x => x.Id);
+            response.PaletteChanges = DetectServerChanges(serverPalettes, request.PaletteRowVersions);
 
             // Shapes
-            var serverShapes = await db.Shapes.Where(x => x.IsActive).ToDictionaryAsync(x => x.Id, x => (ISyncableEntity<ShapeDto>)x);
-            response.ShapeChanges = DetectServerChanges(serverShapes, ConvertDictionaryKeysToInts(request.ShapeRowVersions));
+            var serverShapes = await db.Shapes.Where(x => x.IsActive).ToDictionaryAsync(x => x.Id);
+            response.ShapeChanges = DetectServerChanges(serverShapes, request.ShapeRowVersions);
+
+            // Shape_CompatibilityTags
+            var serverShape_CompatibilityTags = await db.Shape_CompatibilityTags.ToDictionaryAsync(x => x.Id);
+            response.Shape_CompatibilityTagChanges = DetectServerChanges(serverShape_CompatibilityTags, request.Shape_CompatibilityTagRowVersions);
 
             // Strokes
-            var serverStrokes = await db.Strokes.ToDictionaryAsync(x => x.Id, x => (ISyncableEntity<StrokeDto>)x);
-            response.StrokeChanges = DetectServerChanges(serverStrokes, ConvertDictionaryKeysToInts(request.StrokeRowVersions));
+            var serverStrokes = await db.Strokes.Where(x => x.IsActive).ToDictionaryAsync(x => x.Id);
+            response.StrokeChanges = DetectServerChanges(serverStrokes, request.StrokeRowVersions);
 
             // Templates
-            var serverTemplates = await db.Templates.Where(x => x.IsActive).ToDictionaryAsync(x => x.Id, x => (ISyncableEntity<TemplateDto>)x);
-            response.TemplateChanges = DetectServerChanges(serverTemplates, ConvertDictionaryKeysToInts(request.TemplateRowVersions));
-
-            // DesignRegion_CompatibilityTag rows
-            await db.Database.Connection.OpenAsync();
-            var serverDesignRegion_CompatibilityTags = (await db.Database.Connection.QueryAsync<DesignRegion_CompatibilityTagDto>("select CompatibilityTagId, DesignRegionId from DesignRegion_CompatibilityTag")).ToArray();
-            var serverDesignRegion_CompatibilityTagIds = serverDesignRegion_CompatibilityTags.Select(x => x.GetUniqueId()).ToArray();
-            var mobileDesignRegion_CompatibilityTags = request.DesignRegion_CompatibilityTags.Select(x => x.GetUniqueId()).ToArray();
-            response.DesignRegion_CompatibilityTagChanges.Added = serverDesignRegion_CompatibilityTags
-                .Where(x => !mobileDesignRegion_CompatibilityTags.Contains(x.GetUniqueId()))
-                .ToList();
-            response.DesignRegion_CompatibilityTagChanges.Deleted = request.DesignRegion_CompatibilityTags
-                .Where(x => !serverDesignRegion_CompatibilityTagIds.Contains(x.GetUniqueId()))
-                .ToList();
-
-            // Shape_CompatibilityTag rows
-            var serverShape_CompatibilityTags = (await db.Database.Connection.QueryAsync<Shape_CompatibilityTagDto>("select CompatibilityTagId, ShapeId from Shape_CompatibilityTag")).ToArray();
-            var serverShape_CompatibilityTagIds = serverShape_CompatibilityTags.Select(x => x.GetUniqueId()).ToArray();
-            var mobileShape_CompatibilityTags = request.Shape_CompatibilityTags.Select(x => x.GetUniqueId()).ToArray();
-            response.Shape_CompatibilityTagChanges.Added = serverShape_CompatibilityTags
-                .Where(x => !mobileShape_CompatibilityTags.Contains(x.GetUniqueId()))
-                .ToList();
-            response.Shape_CompatibilityTagChanges.Deleted = request.Shape_CompatibilityTags
-                .Where(x => !serverShape_CompatibilityTagIds.Contains(x.GetUniqueId()))
-                .ToList();
-            db.Database.Connection.Close();
+            var serverTemplates = await db.Templates.Where(x => x.IsActive).ToDictionaryAsync(x => x.Id);
+            response.TemplateChanges = DetectServerChanges(serverTemplates, request.TemplateRowVersions);
 
             return Json(response);
         }
 
-        private EntityChangeData<T> DetectServerChanges<T>(Dictionary<int, Models.ISyncableEntity<T>> serverData, Dictionary<int, string> clientRowVersions)
+        private EntityChangeData<T> DetectServerChanges<T>(Dictionary<string, T> serverRecords, Dictionary<string, byte[]> mobileRowVersions) where T : ISyncableRecord
         {
             var result = new EntityChangeData<T>();
 
-            int[] added = serverData.Keys.Except(clientRowVersions.Keys).ToArray();
-            foreach (int id in added)
+            string[] added = serverRecords.Keys.Except(mobileRowVersions.Keys).ToArray();
+            foreach (string id in added)
             {
-                result.Added.Add(serverData[id].ToDto());
+                result.Added.Add(serverRecords[id]);
             }
 
-            int[] same = serverData.Keys.Intersect(clientRowVersions.Keys).ToArray();
-            foreach (int id in same)
+            string[] alreadyExists = serverRecords.Keys.Intersect(mobileRowVersions.Keys).ToArray();
+            foreach (string id in alreadyExists)
             {
-                string serverRowVersion = HexHelper.ByteArrayToHexString(serverData[id].RowVersion);
-                string clientRowVersion = clientRowVersions[id];
-                if (serverRowVersion != clientRowVersion)
+                byte[] serverRowVersion = serverRecords[id].RowVersion;
+                byte[] mobileRowVersion = mobileRowVersions[id];
+                if (!serverRowVersion.SequenceEqual(mobileRowVersion))
                 {
-                    result.Updated.Add(serverData[id].ToDto());
+                    result.Updated.Add(serverRecords[id]);
                 }
             }
 
-            int[] removed = clientRowVersions.Keys.Except(serverData.Keys).ToArray();
-            foreach (int id in removed)
+            string[] removed = mobileRowVersions.Keys.Except(serverRecords.Keys).ToArray();
+            foreach (string id in removed)
             {
                 result.Deleted.Add(id);
             }
 
             return result;
-        }
-
-        private Dictionary<int, string> ConvertDictionaryKeysToInts(Dictionary<string, string> dict)
-        {
-            dict = dict ?? new Dictionary<string, string>();
-            return dict.ToDictionary(x => int.Parse(x.Key), x => x.Value);
         }
     }
 }

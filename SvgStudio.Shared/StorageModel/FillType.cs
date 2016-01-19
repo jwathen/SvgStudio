@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SvgStudio.Mobile.Core.Models.Synchronization
+namespace SvgStudio.Shared.StorageModel
 {
-    public enum EntitySource
+    public enum FillType
     {
-        Server = 1,
-        Local = 2
+        SolidColor = 1,
+        Pattern = 2
     }
 }

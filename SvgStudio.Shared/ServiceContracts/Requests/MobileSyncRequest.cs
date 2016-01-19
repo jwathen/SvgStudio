@@ -1,5 +1,4 @@
-﻿using SvgStudio.Shared.ServiceContracts.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,33 +10,33 @@ namespace SvgStudio.Shared.ServiceContracts.Requests
     {
         public MobileSyncRequest()
         {
-            CompatibilityTagRowVersions = new Dictionary<string, string>();
-            ContentLicenseRowVersions = new Dictionary<string, string>();
-            DesignRowVersions = new Dictionary<string, string>();
-            DesignRegionRowVersions = new Dictionary<string, string>();
-            FillRowVersions = new Dictionary<string, string>();
-            LicenseRowVersions = new Dictionary<string, string>();
-            MarkupFragmentRowVersions = new Dictionary<string, string>();
-            PaletteRowVersions = new Dictionary<string, string>();
-            ShapeRowVersions = new Dictionary<string, string>();
-            StrokeRowVersions = new Dictionary<string, string>();
-            TemplateRowVersions = new Dictionary<string, string>();
-            DesignRegion_CompatibilityTags = new List<DesignRegion_CompatibilityTagDto>();
-            Shape_CompatibilityTags = new List<Shape_CompatibilityTagDto>();
+            CompatibilityTagRowVersions = new Dictionary<string, byte[]>();
+            ContentLicenseRowVersions = new Dictionary<string, byte[]>();
+            DesignRowVersions = new Dictionary<string, byte[]>();
+            DesignRegionRowVersions = new Dictionary<string, byte[]>();
+            FillRowVersions = new Dictionary<string, byte[]>();
+            LicenseRowVersions = new Dictionary<string, byte[]>();
+            MarkupFragmentRowVersions = new Dictionary<string, byte[]>();
+            PaletteRowVersions = new Dictionary<string, byte[]>();
+            ShapeRowVersions = new Dictionary<string, byte[]>();
+            StrokeRowVersions = new Dictionary<string, byte[]>();
+            TemplateRowVersions = new Dictionary<string, byte[]>();
+            DesignRegion_CompatibilityTagRowVersions = new Dictionary<string, byte[]>();
+            Shape_CompatibilityTagRowVersions = new Dictionary<string, byte[]>();
         }
 
-        public Dictionary<string, string> CompatibilityTagRowVersions { get; set; }
-        public Dictionary<string, string> ContentLicenseRowVersions { get; set; }
-        public Dictionary<string, string> DesignRowVersions { get; set; }
-        public Dictionary<string, string> DesignRegionRowVersions { get; set; }
-        public Dictionary<string, string> FillRowVersions { get; set; }
-        public Dictionary<string, string> LicenseRowVersions { get; set; }
-        public Dictionary<string, string> MarkupFragmentRowVersions { get; set; }
-        public Dictionary<string, string> PaletteRowVersions { get; set; }
-        public Dictionary<string, string> ShapeRowVersions { get; set; }
-        public Dictionary<string, string> StrokeRowVersions { get; set; }
-        public Dictionary<string, string> TemplateRowVersions { get; set; }
-        public List<DesignRegion_CompatibilityTagDto> DesignRegion_CompatibilityTags { get; set; }
-        public List<Shape_CompatibilityTagDto> Shape_CompatibilityTags { get; set; }
+        public Dictionary<string, byte[]> CompatibilityTagRowVersions { get; set; }
+        public Dictionary<string, byte[]> ContentLicenseRowVersions { get; set; }
+        public Dictionary<string, byte[]> DesignRowVersions { get; set; }
+        public Dictionary<string, byte[]> DesignRegionRowVersions { get; set; }
+        public Dictionary<string, byte[]> FillRowVersions { get; set; }
+        public Dictionary<string, byte[]> LicenseRowVersions { get; set; }
+        public Dictionary<string, byte[]> MarkupFragmentRowVersions { get; set; }
+        public Dictionary<string, byte[]> PaletteRowVersions { get; set; }
+        public Dictionary<string, byte[]> ShapeRowVersions { get; set; }
+        public Dictionary<string, byte[]> StrokeRowVersions { get; set; }
+        public Dictionary<string, byte[]> TemplateRowVersions { get; set; }
+        public Dictionary<string, byte[]> DesignRegion_CompatibilityTagRowVersions { get; set; }
+        public Dictionary<string, byte[]> Shape_CompatibilityTagRowVersions { get; set; }
     }
 }

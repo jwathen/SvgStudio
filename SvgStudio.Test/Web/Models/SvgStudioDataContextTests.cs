@@ -22,13 +22,15 @@ namespace SvgStudio.Test.Web.Models
         {
             _db.CompatibilityTags.ToArray();
             _db.ContentLicenses.ToArray();
-            _db.DesignRegions.ToArray();
             _db.Designs.ToArray();
+            _db.DesignRegions.ToArray();
+            _db.DesignRegion_CompatibilityTags.ToArray();
             _db.Fills.ToArray();
             _db.Licenses.ToArray();
             _db.MarkupFragments.ToArray();
             _db.Palettes.ToArray();
             _db.Shapes.ToArray();
+            _db.Shape_CompatibilityTags.ToArray();
             _db.Strokes.ToArray();
             _db.Templates.ToArray();
         }

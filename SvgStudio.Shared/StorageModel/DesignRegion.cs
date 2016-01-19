@@ -1,21 +1,25 @@
-﻿using System;
+﻿using SQLite.Net.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SvgStudio.Shared.ServiceContracts.Entities
+namespace SvgStudio.Shared.StorageModel
 {
-    public class DesignRegionDto
+    public class DesignRegion : ISyncableRecord
     {
-        public int Id { get; set; }
-        public string RowVersion { get; set; }
+        [PrimaryKey]
+        public string Id { get; set; }
+        public byte[] RowVersion { get; set; }
+        public bool IsActive { get; set; }
         public string Name { get; set; }
         public int X { get; set; }
         public int Y { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
-        public int TemplateId { get; set; }
+        [Indexed]
+        public string TemplateId { get; set; }
         public short SortOrder { get; set; }
     }
 }

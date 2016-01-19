@@ -1,4 +1,4 @@
-﻿using SvgStudio.Shared.ServiceContracts.Entities;
+﻿using SvgStudio.Shared.StorageModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,22 +11,21 @@ namespace SvgStudio.Shared.ServiceContracts.Responses
     {
         public MobileSyncResponse()
         {
-            DesignRegion_CompatibilityTagChanges = new JoiningTableChangeData<DesignRegion_CompatibilityTagDto>();
-            Shape_CompatibilityTagChanges = new JoiningTableChangeData<Shape_CompatibilityTagDto>();
+ 
         }
 
-        public EntityChangeData<CompatibilityTagDto> CompatibilityTagChanges { get; set; }
-        public EntityChangeData<ContentLicenseDto> ContentLicenseChanges { get; set; }
-        public EntityChangeData<DesignDto> DesignChanges { get; set; }
-        public EntityChangeData<DesignRegionDto> DesignRegionChanges { get; set; }
-        public EntityChangeData<FillDto> FillChanges { get; set; }
-        public EntityChangeData<LicenseDto> LicenseChanges { get; set; }
-        public EntityChangeData<MarkupFragmentDto> MarkupFragmentChanges { get; set; }
-        public EntityChangeData<PaletteDto> PaletteChanges { get; set; }
-        public EntityChangeData<ShapeDto> ShapeChanges { get; set; }
-        public EntityChangeData<StrokeDto> StrokeChanges { get; set; }
-        public EntityChangeData<TemplateDto> TemplateChanges { get; set; }
-        public JoiningTableChangeData<DesignRegion_CompatibilityTagDto> DesignRegion_CompatibilityTagChanges { get; set; }
-        public JoiningTableChangeData<Shape_CompatibilityTagDto> Shape_CompatibilityTagChanges { get; set; }
+        public EntityChangeData<CompatibilityTag> CompatibilityTagChanges { get; set; }
+        public EntityChangeData<ContentLicense> ContentLicenseChanges { get; set; }
+        public EntityChangeData<Design> DesignChanges { get; set; }
+        public EntityChangeData<DesignRegion> DesignRegionChanges { get; set; }
+        public EntityChangeData<DesignRegion_CompatibilityTag> DesignRegion_CompatibilityTagChanges { get; set; }
+        public EntityChangeData<Fill> FillChanges { get; set; }
+        public EntityChangeData<License> LicenseChanges { get; set; }
+        public EntityChangeData<MarkupFragment> MarkupFragmentChanges { get; set; }
+        public EntityChangeData<Palette> PaletteChanges { get; set; }
+        public EntityChangeData<Shape> ShapeChanges { get; set; }
+        public EntityChangeData<Shape_CompatibilityTag> Shape_CompatibilityTagChanges { get; set; }
+        public EntityChangeData<Stroke> StrokeChanges { get; set; }
+        public EntityChangeData<Template> TemplateChanges { get; set; }
     }
 }

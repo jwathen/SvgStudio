@@ -43,10 +43,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Dapper, Version=1.12.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dapper-Async.1.03\lib\net45\Dapper.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Elmah, Version=1.2.13605.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\elmah.corelibrary.1.2\lib\Elmah.dll</HintPath>
       <Private>True</Private>
@@ -133,23 +129,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\BasicShape.cs" />
-    <Compile Include="Models\CompatibilityTag.cs" />
-    <Compile Include="Models\ContentLicense.cs" />
-    <Compile Include="Models\License.cs" />
-    <Compile Include="Models\MarkupFragment.cs" />
     <Compile Include="Models\SvgStudioDataContext.cs" />
-    <Compile Include="Models\Design.cs" />
-    <Compile Include="Models\DesignRegion.cs" />
-    <Compile Include="Models\Fill.cs" />
-    <Compile Include="Models\ISyncableEntity.cs" />
-    <Compile Include="Models\Palette.cs" />
-    <Compile Include="Models\PatternFill.cs" />
-    <Compile Include="Models\Shape.cs" />
-    <Compile Include="Models\SolidColorFill.cs" />
-    <Compile Include="Models\Stroke.cs" />
-    <Compile Include="Models\Template.cs" />
-    <Compile Include="Models\TemplateShape.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
