@@ -17,6 +17,5 @@ namespace SvgStudio.Shared.ServiceContracts.Entities
         public int Height { get; set; }
         public int TemplateId { get; set; }
         public short SortOrder { get; set; }
-        public int[] CompatibilityTagIds { get; set; }
     }
 }

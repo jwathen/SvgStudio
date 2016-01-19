@@ -16,7 +16,7 @@ namespace SvgStudio.Web.Models
         public short SortOrder { get; set; }
 
         public ICollection<Stroke> Strokes { get; set; }
-        public ICollection<Fill> Fill { get; set; }
+        public ICollection<Fill> Fills { get; set; }
 
         public PaletteDto ToDto()
         {

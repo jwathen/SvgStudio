@@ -27,51 +27,76 @@ namespace SvgStudio.Shared.Drawing
             _designs[designRegionKey] = design;
         }
 
-        public string Render()
+        public XElement Render()
         {
-            HashSet<DefObject> defs = new HashSet<DefObject>();
+            DefinitionCollection defs = new DefinitionCollection();
             List<XElement> groups = new List<XElement>();
 
-            foreach (var designRegion in _template.DesignRegions)
+            foreach (var designRegion in _template.DesignRegions.OrderBy(x => x.SortOrder))
             {
                 Design design = null;
-                if (_designs.TryGetValue(designRegion.Key, out design))
+                if (_designs.TryGetValue(designRegion.Name, out design))
                 {
-                    var renderedShape = design.Render();
+                    var renderedDesign = design.Render();
 
                     var group = new XElement("g");
-                    group.Add(new XAttribute("id", designRegion.Key));
-                    group.Add(new XAttribute("transform", string.Format("translate({0},{1})", designRegion.X, designRegion.Y)));
+                    group.Add(new XAttribute("id", designRegion.Name));
+                    string transform = string.Format("{0} {1}", CalculateTranslateTransform(designRegion), CalculateScaleTransform(designRegion, renderedDesign));
+                    group.Add(new XAttribute("transform", transform));
 
-                    var svg = new XElement("svg");
-                    svg.Add(new XAttribute("width", designRegion.Width));
-                    svg.Add(new XAttribute("height", designRegion.Height));
-                    svg.Add(new XAttribute("viewBox", string.Format("0 0 {0} {1}", renderedShape.Width, renderedShape.Height)));
-                    svg.Add(new XAttribute("preserveAspectRatio", "none"));
+                    if (!string.IsNullOrWhiteSpace(renderedDesign.ClipPath))
+                    {
+                        string clipPathId = string.Format("{0}_ClipPath", designRegion.Name);
+                        var clipPathDef = new XElement("clipPath");
+                        clipPathDef.Add(new XAttribute("id", clipPathId));
+                        clipPathDef.Add(XElement.Parse(renderedDesign.ClipPath));
+                        group.Add(new XAttribute("clip-path", string.Format("url(#{0})", clipPathId)));
+                        defs.Add(clipPathDef);
+                    }
 
-                    svg.Add(renderedShape.Xml);
-                    group.Add(svg);
+                    group.Add(renderedDesign.Xml);
                     groups.Add(group);
 
-                    foreach (var def in renderedShape.Defs)
-                    {
-                        defs.Add(def);
-                    }
+                    defs.Add(renderedDesign.Defs);
                 }
             }
 
+            
             var defsElement = new XElement("defs");
-            defsElement.Add(defs.Select(x => x.ToDefXml()));
+            defsElement.Add(defs.ToList());
 
             XDocument doc = new XDocument();
             doc.Add(new XElement("svg"));
             doc.Root.Add(new XAttribute("version", "1.1"));
-            doc.Root.Add(defsElement);
+            if (defs.Count > 0)
+            {
+                doc.Root.Add(defsElement);
+            }
             doc.Root.Add(groups);
 
-            string result = doc.ToString();
-            result = result.Replace("<svg ", "<svg xmlns=\"http://www.w3.org/2000/svg\" ");
-            return result;
+            return doc.Root;
+        }
+
+        private string CalculateTranslateTransform(DesignRegion designRegion)
+        {
+            return string.Format("translate({0},{1})", designRegion.X, designRegion.Y);
+        }
+
+        private string CalculateScaleTransform(DesignRegion designRegion, RenderDesignResult design)
+        {
+            double scaleX = 0;
+            if (design.Width > 0)
+            {
+                scaleX = ((double)designRegion.Width / design.Width);
+            }
+
+            double scaleY = 0;
+            if (design.Height > 0)
+            {
+                scaleY = ((double)designRegion.Height / design.Height);
+            }
+
+            return string.Format("scale({0},{1})", scaleX, scaleY);
         }
     }
 }

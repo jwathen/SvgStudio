@@ -1,0 +1,4 @@
+﻿<g transform="scale(10,10)">
+	<rect height="15" width="15" fill="black" />
+	<circle cx="7.5" cy="7.5" r="3" fill="white" />
+</g>

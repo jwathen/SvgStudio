@@ -16,27 +16,65 @@ namespace SvgStudio.Test.Mobile.Core.Models.Synchronization
     public class ModelSynchronizerTests : IDisposable
     {
         private readonly IDatabaseConnectionProvider _databaseConnectionProvider = new TestDatabaseConnectionProvider(automaticallySyncWithServer: false);
-        private SvgStudio.Web.Models.SvgStudioDataContext serverDatabase = new SvgStudio.Web.Models.SvgStudioDataContext("SvgStudio");
+        private SvgStudio.Web.Models.SvgStudioDataContext _serverDatabase = new SvgStudio.Web.Models.SvgStudioDataContext("SvgStudio");
+        private ServerData _serverFixtures = ServerData.CreateFixtures();
 
         public async Task SynchronizeCompatibilityTags()
         {
-            serverDatabase.CompatibilityTags.Add(new SvgStudio.Web.Models.CompatibilityTag { Tag = "tag" });
-            serverDatabase.SaveChanges();
+            _serverDatabase.CompatibilityTags.Add(_serverFixtures.CompatibilityTags["stamp"]);
+            _serverDatabase.SaveChanges();
             var syncResult = await SynchronizesMobileDatabasesWithServer();
             AssertSync(syncResult, "CompatibilityTag", added: 1);
 
-            serverDatabase.CompatibilityTags.First().Tag = "tag1";
-            serverDatabase.SaveChanges();
+            _serverDatabase.CompatibilityTags.First().Tag = "tag1";
+            _serverDatabase.SaveChanges();
             syncResult = await SynchronizesMobileDatabasesWithServer();
             AssertSync(syncResult, "CompatibilityTag", updated: 1);
 
-            serverDatabase.CompatibilityTags.Remove(serverDatabase.CompatibilityTags.First());
-            serverDatabase.SaveChanges();
+            _serverDatabase.CompatibilityTags.Remove(_serverDatabase.CompatibilityTags.First());
+            _serverDatabase.SaveChanges();
             syncResult = await SynchronizesMobileDatabasesWithServer();
             AssertSync(syncResult, "CompatibilityTag", deleted: 1);
         }
-    
-        // TODO finish tests for database synchronization.
+
+        public async Task SynchronizeContentLicenses()
+        {
+            _serverDatabase.ContentLicenses.Add(_serverFixtures.ContentLicenses["lion_license"]);
+            _serverDatabase.SaveChanges();
+            var syncResult = await SynchronizesMobileDatabasesWithServer();
+            AssertSync(syncResult, "ContentLicense", added: 1);
+
+            _serverDatabase.ContentLicenses.First().AttributionName = "Name";
+            _serverDatabase.SaveChanges();
+            syncResult = await SynchronizesMobileDatabasesWithServer();
+            AssertSync(syncResult, "ContentLicense", updated: 1);
+
+            _serverDatabase.ContentLicenses.Remove(_serverDatabase.ContentLicenses.First());
+            _serverDatabase.SaveChanges();
+            syncResult = await SynchronizesMobileDatabasesWithServer();
+            AssertSync(syncResult, "ContentLicense", deleted: 1);
+        }
+
+        public async Task SynchronizeDesigns()
+        {
+            _serverDatabase.Designs.Add(_serverFixtures.Designs["gray_and_blue_lion"]);
+            _serverDatabase.SaveChanges();
+            var syncResult = await SynchronizesMobileDatabasesWithServer();
+            AssertSync(syncResult, "Design", added: 1);
+
+            _serverDatabase.Designs.First().Palette = _serverFixtures.Palettes["gray_and_yellow"];
+            _serverDatabase.SaveChanges();
+            syncResult = await SynchronizesMobileDatabasesWithServer();
+            AssertSync(syncResult, "Design", updated: 1);
+
+            _serverDatabase.Designs.Remove(_serverDatabase.Designs.First());
+            _serverDatabase.SaveChanges();
+            syncResult = await SynchronizesMobileDatabasesWithServer();
+            AssertSync(syncResult, "Design", deleted: 1);
+        }
+
+        // TODO finish tests for database synchronization
+        // DesignRegion, DesignRegion_CompatibilityTag, Fill, License, MarkupFragment, Palette, Shape, Shape_CompatibilityTag, Stroke, Template
 
         private async Task<IEnumerable<TableSynchronizationSummary>> SynchronizesMobileDatabasesWithServer()
         {
@@ -56,9 +94,9 @@ namespace SvgStudio.Test.Mobile.Core.Models.Synchronization
         public void Dispose()
         {
             var checkpoint = new Respawn.Checkpoint();
-            serverDatabase.Database.Connection.Open();
-            checkpoint.Reset(serverDatabase.Database.Connection);
-            serverDatabase.Database.Connection.Close();
+            _serverDatabase.Database.Connection.Open();
+            checkpoint.Reset(_serverDatabase.Database.Connection);
+            _serverDatabase.Database.Connection.Close();
         }
     }
 }

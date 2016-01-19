@@ -9,9 +9,6 @@ namespace SvgStudio.Shared.Drawing
 {
     public class BasicShape : Shape
     {
-        protected static Regex FILL_PLACEHOLDER_REGEX = new Regex(@"fill_placeholder_(\d+)", RegexOptions.IgnoreCase);
-        protected static Regex STROKE_PLACEHOLDER_REGEX = new Regex(@"stroke_placeholder_(\d+)", RegexOptions.IgnoreCase);
-
         public BasicShape(
             int width,
             int height,
@@ -23,10 +20,10 @@ namespace SvgStudio.Shared.Drawing
             Height = height;
             NumberOfFillsSupported = numberOfFillsSupported;
             NumberOfStrokesSupported = numberOfStrokesSupported;
-            Xml = XElement.Parse(xml);
+            Markup = XElement.Parse(xml);
         }
 
-        public XElement Xml { get; set; }
+        public XElement Markup { get; set; }
 
         public override RenderDesignResult Render(Palette palette)
         {
@@ -34,54 +31,26 @@ namespace SvgStudio.Shared.Drawing
             result.Width = this.Width;
             result.Height = this.Height;
 
-            Dictionary<int, string> fillCssClassNames = new Dictionary<int, string>();
-            for (int i = 0; i < NumberOfFillsSupported; i++)
-            {
-                Fill fill = palette.GetFill(i);
-                fillCssClassNames[i] = fill.CssClass;
-                result.Defs.Add(fill);
-            }
-
-            Dictionary<int, string> strokeCssClassNames = new Dictionary<int, string>();
-            for (int i = 0; i < NumberOfStrokesSupported; i++)
-            {
-                Stroke stroke = palette.GetStroke(i);
-                strokeCssClassNames[i] = stroke.CssClass;
-                result.Defs.Add(stroke);
-            }
-
-            XElement shape = new XElement(this.Xml);
+            XElement shape = new XElement(this.Markup);
 
             foreach (var element in shape.DescendantsAndSelf())
             {
-                XAttribute classAttribute = element.Attribute("class");
-                if (classAttribute != null)
+                var strokeIndexAttr = element.Attribute("data-stroke-index");
+                if (strokeIndexAttr != null)
                 {
-                    string classValue = classAttribute.Value;
+                    int index = int.Parse(strokeIndexAttr.Value);
+                    palette.GetStroke(index).ApplyTo(element);
+                    strokeIndexAttr.Remove();
+                }
 
-                    var fillPlaceholderMatches = FILL_PLACEHOLDER_REGEX.Matches(classValue);
-                    foreach (var match in fillPlaceholderMatches.Cast<Match>())
-                    {
-                        int index = int.Parse(match.Groups[1].Value);
-                        string replacementClassName = null;
-                        if (fillCssClassNames.TryGetValue(index, out replacementClassName))
-                        {
-                            classValue = classValue.Replace(match.Value, replacementClassName);
-                        }
-                    }
-
-                    var strokePlaceholderMatches = STROKE_PLACEHOLDER_REGEX.Matches(classValue);
-                    foreach (var match in strokePlaceholderMatches.Cast<Match>())
-                    {
-                        int index = int.Parse(match.Groups[1].Value);
-                        string replacementClassName = null;
-                        if (strokeCssClassNames.TryGetValue(index, out replacementClassName))
-                        {
-                            classValue = classValue.Replace(match.Value, replacementClassName);
-                        }
-                    }
-
-                    classAttribute.Value = classValue;
+                var fillIndexAttr = element.Attribute("data-fill-index");
+                if (fillIndexAttr != null)
+                {
+                    int index = int.Parse(fillIndexAttr.Value);
+                    var fill = palette.GetFill(index);
+                    fill.ApplyTo(element);
+                    result.Defs.Add(fill.GetDefs());
+                    fillIndexAttr.Remove();
                 }
             }
 

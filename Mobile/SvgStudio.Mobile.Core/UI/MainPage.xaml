@@ -10,6 +10,9 @@
     <ScrollView x:Name="Scroller">
       <StackLayout x:Name="Images">
         <Label>Images:</Label>
+        <WebView x:Name="web">
+
+        </WebView>
       </StackLayout>
     </ScrollView>
   </StackLayout>

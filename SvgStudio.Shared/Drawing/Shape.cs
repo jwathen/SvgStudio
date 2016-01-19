@@ -8,6 +8,7 @@ namespace SvgStudio.Shared.Drawing
 {
     public abstract class Shape
     {
+        public string Name { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
 

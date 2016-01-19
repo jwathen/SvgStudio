@@ -9,20 +9,6 @@
 )
 go
 
-create table ContentLicenses
-(
-	Id int not null primary key identity(1,1),
-	RowVersion rowversion not null,
-	InsertDateUtc datetime not null default(getutcdate()),
-	LicenseId int not null  references Licenses(Id),
-	ContentUrl nvarchar(1024) null,
-	AttributionName nvarchar(1024) null,
-	AttributionUrl nvarchar(1024) null
-)
-go
-
-create index IX_ConentLicenses_LicenseId on ContentLicenses(LicenseId);
-
 create table MarkupFragments
 (
 	Id int not null primary key identity(1,1),
@@ -61,7 +47,6 @@ create table Shapes
 	RowVersion rowversion not null,
 	InsertDateUtc datetime not null default(getutcdate()),
 	IsActive bit not null,
-	ContentLicenseId int null references ContentLicenses(Id),
 	Name nvarchar(max) not null,
 	Width int not null,
 	Height int not null,
@@ -76,7 +61,6 @@ go
 
 create index IX_Shapes_ShapeType on Shapes(ShapeType);
 create index IX_Shapes_BasicShape_MarkupFragmentId on Shapes(BasicShape_MarkupFragmentId);
-create index IX_Shapes_ContentLicenseId on Shapes(ContentLicenseId);
 create index IX_Shapes_TemplateShape_TemplateId on Shapes(TemplateShape_TemplateId);
 create index IX_Shapes_TemplateShape_ClipPathMarkupFragmentId on Shapes(TemplateShape_ClipPathMarkupFragmentId);
 
@@ -87,6 +71,22 @@ create table Shape_CompatibilityTag
 	constraint Shape_CompatibilityTag_PK primary key (CompatibilityTagId, ShapeId)
 )
 go
+
+create table ContentLicenses
+(
+	Id int not null primary key identity(1,1),
+	RowVersion rowversion not null,
+	InsertDateUtc datetime not null default(getutcdate()),
+	LicenseId int not null  references Licenses(Id),
+	ShapeId int null  references Shapes(Id),
+	ContentUrl nvarchar(1024) null,
+	AttributionName nvarchar(1024) null,
+	AttributionUrl nvarchar(1024) null
+)
+go
+
+create index IX_ConentLicenses_LicenseId on ContentLicenses(LicenseId);
+create index IX_ConentLicenses_ShapeId on ContentLicenses(ShapeId);
 
 create table DesignRegions
 (

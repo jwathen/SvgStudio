@@ -18,7 +18,8 @@ namespace SvgStudio.Web.Models
         public int NumberOfFillsSupported { get; set; } = 1;
         public int NumberOfStrokesSupported { get; set; } = 1;
         public short SortOrder { get; set; }
-
+        
+        public ICollection<ContentLicense> ContentLicenses { get; set; }
         public ICollection<CompatibilityTag> CompatibilityTags { get; set; }
 
         public virtual ShapeDto ToDto()
@@ -32,8 +33,7 @@ namespace SvgStudio.Web.Models
                 Height =this.Height,
                 NumberOfFillsSupported = this.NumberOfFillsSupported,
                 NumberOfStrokesSupported = this.NumberOfStrokesSupported,
-                SortOrder = this.SortOrder,
-                CompatibilityTagIds = this.CompatibilityTags.Select(x => x.Id).ToArray()
+                SortOrder = this.SortOrder
             };
         }
     }

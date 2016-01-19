@@ -15,6 +15,7 @@ namespace SvgStudio.Mobile.Core.Models
         public string Id { get; set; }
         public string RowVersion { get; set; }
         public string LicenseId { get; set; }
+        public string ShapeId { get; set; }
         public string ContentUrl { get; set; }
         public string AttributionUrl { get; set; }
         public string AttributionName { get; set; }
@@ -24,6 +25,7 @@ namespace SvgStudio.Mobile.Core.Models
             this.Id = EntityId.FromServerId(dto.Id).ToString();
             this.RowVersion = dto.RowVersion;
             this.LicenseId = EntityId.FromServerId(dto.LicenseId).ToString();
+            this.ShapeId = EntityId.FromServerId(dto.ShapeId).ToString();
             this.ContentUrl = dto.ContentUrl;
             this.AttributionUrl = dto.AttributionUrl;
             this.AttributionName = dto.AttributionName;

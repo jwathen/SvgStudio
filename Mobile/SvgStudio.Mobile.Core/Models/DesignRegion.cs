@@ -23,9 +23,6 @@ namespace SvgStudio.Mobile.Core.Models
         public string TemplateId { get; set; }
         public short SortOrder { get; set; }
 
-        [Ignore]
-        public int[] CompatibilityTagIds { get; set; }
-
         public void FillFromDto(DesignRegionDto dto)
         {
             this.Id = EntityId.FromServerId(dto.Id).ToString();
@@ -37,7 +34,6 @@ namespace SvgStudio.Mobile.Core.Models
             this.Height = dto.Height;
             this.TemplateId = EntityId.FromServerId(dto.TemplateId).ToString();
             this.SortOrder = dto.SortOrder;
-            this.CompatibilityTagIds = dto.CompatibilityTagIds;
         }
     }
 }

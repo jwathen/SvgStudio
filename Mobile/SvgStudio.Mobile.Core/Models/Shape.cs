@@ -29,9 +29,6 @@ namespace SvgStudio.Mobile.Core.Models
         [Indexed]
         public string TemplateShape_ClipPathMarkupFragmentId { get; set; }
 
-        [Ignore]
-        public int[] CompatibilityTagIds { get; set; }
-
         public void FillFromDto(ShapeDto dto)
         {
             this.Id = EntityId.FromServerId(dto.Id).ToString();
@@ -45,7 +42,6 @@ namespace SvgStudio.Mobile.Core.Models
             this.BasicShape_MarkupFragmentId = EntityId.FromServerId(dto.BasicShape_MarkupFragmentId).ToString();
             this.TemplateShape_TemplateId = EntityId.FromServerId(dto.TemplateShape_TemplateId).ToString();
             this.TemplateShape_ClipPathMarkupFragmentId = EntityId.FromServerId(dto.TemplateShape_ClipPathMarkupFragmentId).ToString();
-            this.CompatibilityTagIds = dto.CompatibilityTagIds;
         }
     }
 }

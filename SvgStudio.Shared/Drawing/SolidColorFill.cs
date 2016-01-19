@@ -16,21 +16,6 @@ namespace SvgStudio.Shared.Drawing
             Color = color;
         }
 
-        public override string CssClass
-        {
-            get
-            {
-                return string.Format("SolidColorFill_{0}", StringHelper.StripNonAlphaNumericChars(Color.ToString()));
-            }
-        }
-
-        public override IEnumerable<XElement> ToDefXml()
-        {
-            XElement style = new XElement("style");
-            style.Value = string.Format(".{0} {{ fill: {1}; }}", CssClass, Color);
-            yield return style;
-        }
-
         public static SolidColorFill Transparent
         {
             get
@@ -39,26 +24,30 @@ namespace SvgStudio.Shared.Drawing
             }
         }
 
-        public override string ToString()
+        public override void ApplyTo(XElement target)
         {
-            return CssClass;
-        }
-
-        public override int GetHashCode()
-        {
-            return ToString().GetHashCode();
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (obj == null || !(obj is SolidColorFill))
+            var fillAttr = target.Attribute("fill");
+            if (Color == null)
             {
-                return false;
+                if (fillAttr != null)
+                {
+                    fillAttr.Remove();
+                }
             }
             else
             {
-                return obj.GetHashCode() == this.GetHashCode();
+                if (fillAttr == null)
+                {
+                    fillAttr = new XAttribute("fill", string.Empty);
+                    target.Add(fillAttr);
+                }
+                fillAttr.Value = Color.ToString();
             }
+        }
+
+        public override DefinitionCollection GetDefs()
+        {
+            return new DefinitionCollection();
         }
     }
 }

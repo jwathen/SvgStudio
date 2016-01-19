@@ -12,6 +12,7 @@ using System.Reflection;
 using System.ComponentModel;
 using SVG.Forms.Plugin.Abstractions;
 using SvgStudio.Mobile.Core.Services;
+using System.IO;
 
 namespace SvgStudio.Mobile.Core.UI
 {
@@ -61,20 +62,60 @@ namespace SvgStudio.Mobile.Core.UI
             var button = (Button)sender;
             button.Text = "Sync...";
 
-            var sync = new DatabaseSynchronizer(DependencyService.Get<IDatabaseConnectionProvider>(), new MobileServiceGateway("http://192.168.1.14:14501/"));
-            var response = await sync.SynchronizeModelWithServer();
+            //var sync = new DatabaseSynchronizer(DependencyService.Get<IDatabaseConnectionProvider>(), new MobileServiceGateway("http://192.168.1.14:14501/"));
+            //var response = await sync.SynchronizeModelWithServer();
 
-            if (response != null)
+            //if (response != null)
+            //{
+            //    //SummaryLabel.Text = string.Join(Environment.NewLine, response.Select(x => x.ToString()));
+            //    button.Text = "Done";
+            //}
+            //else
+            //{
+            //    button.Text = "Error";
+            //}
+
+            //SvgImage image = new SvgImage();
+            //image.HeightRequest = 600;
+            //image.WidthRequest = 600;
+            //image.SvgAssembly = typeof(MainPage).GetTypeInfo().Assembly;
+            //image.SvgPath = "SvgStudio.Mobile.Core.drawing.svg";
+            //image.BackgroundColor = Color.White;
+            //image.HorizontalOptions = LayoutOptions.Center;
+            //Images.Children.Add(image);
+
+            var html = new HtmlWebViewSource();
+
+			html.Html = "<h1>Hi! " + i.ToString() + "</h1>";
+			i++;
+
+
+			web.HeightRequest = 1600;
+			web.WidthRequest = 500;
+
+            if (i <= 3)
             {
-                SummaryLabel.Text = string.Join(Environment.NewLine, response.Select(x => x.ToString()));
-                button.Text = "Done";
+                web.Source = html;
             }
             else
             {
-                button.Text = "Error";
+				html.Html = "<html><body>" + (await GetDrawingAsync()) + "</body></html>";
+				web.Source = html;
             }
 
             //< abstractions:SvgImage x:Name = "img" SvgPath = "{Binding SvgImagePath}" HeightRequest = "500" WidthRequest = "350" BackgroundColor = "White" HorizontalOptions = "Center" VerticalOptions = "Center" />
+        }
+
+		int i = 0;
+
+        private async Task<string> GetDrawingAsync()
+        {
+            var assembly = typeof(MainPage).GetTypeInfo().Assembly;
+            using (var resourceStream = assembly.GetManifestResourceStream("SvgStudio.Mobile.Core.drawing.svg"))
+            using(var reader = new StreamReader(resourceStream))
+            {
+                return await reader.ReadToEndAsync();
+            }
         }
     }
 }

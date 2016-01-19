@@ -6,16 +6,23 @@ using System.Xml.Linq;
 
 namespace SvgStudio.Shared.Drawing
 {
-    public class RenderDesignResult
+    public class RenderDesignResult : IDefProvider
     {
+        public DefinitionCollection Defs { get; set; }
+
         public RenderDesignResult()
         {
-            Defs = new HashSet<DefObject>();
+            Defs = new DefinitionCollection();
         }
 
-        public HashSet<DefObject> Defs { get; set; }
         public XElement Xml { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
+        public string ClipPath { get; set; }
+
+        public DefinitionCollection GetDefs()
+        {
+            return Defs;
+        }
     }
 }

@@ -7,6 +7,11 @@ namespace SvgStudio.Shared.Drawing
 {
     public class Design
     {
+        public Design()
+        {
+            Palette = new Palette();
+        }
+
         public Shape Shape { get; set; }
         public Palette Palette { get; set; }
 

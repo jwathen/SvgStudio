@@ -39,7 +39,8 @@
   <ItemGroup>
     <Compile Include="Drawing\BasicShape.cs" />
     <Compile Include="Drawing\Color.cs" />
-    <Compile Include="Drawing\DefObject.cs" />
+    <Compile Include="Drawing\DefinitionCollection.cs" />
+    <Compile Include="Drawing\IDefProvider.cs" />
     <Compile Include="Drawing\Design.cs" />
     <Compile Include="Drawing\DesignRegion.cs" />
     <Compile Include="Drawing\Fill.cs" />
@@ -51,6 +52,7 @@
     <Compile Include="Drawing\Stroke.cs" />
     <Compile Include="Drawing\Template.cs" />
     <Compile Include="Drawing\TemplateRenderer.cs" />
+    <Compile Include="Drawing\TemplateShape.cs" />
     <Compile Include="Helpers\HexHelper.cs" />
     <Compile Include="Helpers\StringHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

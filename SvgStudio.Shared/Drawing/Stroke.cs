@@ -7,42 +7,59 @@ using System.Xml.Linq;
 
 namespace SvgStudio.Shared.Drawing
 {
-    public class Stroke : DefObject
+    public class Stroke
     {
-        public override string CssClass
-        {
-            get
-            {
-                return string.Format("Stroke_{0}_{1}", StringHelper.StripNonAlphaNumericChars(Color.ToString()), Width);
-            }
-        }
-
         public Color Color { get; set; }
 
         public int Width { get; set; }
 
         public int[] DashArray { get; set; }
 
-        public override IEnumerable<XElement> ToDefXml()
+        public void ApplyTo(XElement target)
         {
-            var styles = new Dictionary<string, string>();
-            if (Color != null)
+            var strokeAttr = target.Attribute("stroke");
+            if (Color == null)
             {
-                styles["stroke"] = Color.ToString();
+                if (strokeAttr != null)
+                {
+                    strokeAttr.Remove();
+                }
             }
-            if (Width >= 0)
+            else
             {
-                styles["stroke-width"] = Width.ToString();
-            }
-            if (DashArray != null && DashArray.Any())
-            {
-                styles["stroke-dasharray"] = string.Join(",", DashArray);
+                if (strokeAttr == null)
+                {
+                    strokeAttr = new XAttribute("stroke", string.Empty);
+                    target.Add(strokeAttr);
+                }
+                strokeAttr.Value = Color.ToString();
             }
 
-            XElement style = new XElement("style");
-            string stylesString = string.Join(Environment.NewLine, styles.Select(x => string.Format("{0}: {1};", x.Key, x.Value)));
-            style.Value = string.Format(".{0} {{ {1} }}", CssClass, stylesString);
-            yield return style;
+            var widthAttr = target.Attribute("stroke-width");
+            if (widthAttr == null)
+            {
+                widthAttr = new XAttribute("stroke-width", string.Empty);
+                target.Add(widthAttr);
+            }
+            widthAttr.Value = Width.ToString();
+
+            var dashArrayAttr = target.Attribute("stroke-dasharray");
+            if (DashArray == null)
+            {
+                if (dashArrayAttr != null)
+                {
+                    dashArrayAttr.Remove();
+                }
+            }
+            else
+            {
+                if (dashArrayAttr == null)
+                {
+                    dashArrayAttr = new XAttribute("stroke-dasharry", string.Empty);
+                    target.Add(dashArrayAttr);
+                }
+                dashArrayAttr.Value = string.Join(",", DashArray);
+            }
         }
     }
 }

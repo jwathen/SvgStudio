@@ -11,6 +11,7 @@ namespace SvgStudio.Shared.ServiceContracts.Entities
         public int Id { get; set; }
         public string RowVersion { get; set; }
         public int LicenseId { get; set; }
+        public int? ShapeId { get; set; }
         public string ContentUrl { get; set; }
         public string AttributionUrl { get; set; }
         public string AttributionName { get; set; }

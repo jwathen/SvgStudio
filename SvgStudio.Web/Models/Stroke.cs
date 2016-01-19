@@ -11,6 +11,7 @@ namespace SvgStudio.Web.Models
     {
         public int Id { get; set; }
         public byte[] RowVersion { get; set; }
+        public bool IsActive { get; set; }
         public string Color { get; set; }
         public int Width { get; set; }
         public string DashArray { get; set; }

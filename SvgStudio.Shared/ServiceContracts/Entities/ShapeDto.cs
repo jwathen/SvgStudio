@@ -21,7 +21,5 @@ namespace SvgStudio.Shared.ServiceContracts.Entities
 
         public int TemplateShape_TemplateId { get; set; }
         public int? TemplateShape_ClipPathMarkupFragmentId { get; set; }
-
-        public int[] CompatibilityTagIds { get; set; }
     }
 }

@@ -6,9 +6,8 @@ using System.Xml.Linq;
 
 namespace SvgStudio.Shared.Drawing
 {
-    public abstract class Fill : IDefProvider
+    public interface IDefProvider
     {
-        public abstract void ApplyTo(XElement target);
-        public abstract DefinitionCollection GetDefs();
+        DefinitionCollection GetDefs();
     }
 }
