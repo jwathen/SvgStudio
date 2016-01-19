@@ -114,6 +114,7 @@
       <LastGenOutput>AppSettings.cs</LastGenOutput>
     </Content>
     <Content Include="App_Data\Create.sql" />
+    <Content Include="App_Data\Populate.sql" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -125,6 +126,7 @@
     </Compile>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\MobileController.cs" />
+    <Compile Include="Controllers\ShapeController.cs" />
     <Compile Include="Controllers\SvgStudioControllerBase.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

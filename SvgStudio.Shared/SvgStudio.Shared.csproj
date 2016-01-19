@@ -57,7 +57,7 @@
     <Compile Include="ServiceContracts\Responses\JoiningTableChangeData.cs" />
     <Compile Include="ServiceContracts\Responses\MobileSyncResponse.cs" />
     <Compile Include="ServiceContracts\Responses\EntityChangeData.cs" />
-    <Compile Include="StorageModel\CombGenerator.cs" />
+    <Compile Include="StorageModel\UniqueId.cs" />
     <Compile Include="StorageModel\CompatibilityTag.cs" />
     <Compile Include="StorageModel\ContentLicense.cs" />
     <Compile Include="StorageModel\Design.cs" />

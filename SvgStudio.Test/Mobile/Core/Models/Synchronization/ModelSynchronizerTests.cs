@@ -51,17 +51,17 @@ namespace SvgStudio.Test.Mobile.Core.Models.Synchronization
             // Update the first row in each table with random data.
             // The many-to-many tables can only be inserted or deleted
             // so they are not included in this test.
-            _serverDatabase.CompatibilityTags.First().Tag = CombGenerator.Generate();
-            _serverDatabase.ContentLicenses.First().AttributionName = CombGenerator.Generate();
-            _serverDatabase.Designs.First().ShapeId = CombGenerator.Generate();
-            _serverDatabase.DesignRegions.First().Name = CombGenerator.Generate();
-            _serverDatabase.Fills.First().SolidColorFill_Color = CombGenerator.Generate();
-            _serverDatabase.Licenses.First().LicenseUrl = CombGenerator.Generate();
-            _serverDatabase.MarkupFragments.First().Content = CombGenerator.Generate();
-            _serverDatabase.Palettes.First().Name = CombGenerator.Generate();
-            _serverDatabase.Shapes.First().Name = CombGenerator.Generate();
-            _serverDatabase.Strokes.First().Color = CombGenerator.Generate();
-            _serverDatabase.Templates.First().Name = CombGenerator.Generate();
+            _serverDatabase.CompatibilityTags.First().Tag = UniqueId.Generate();
+            _serverDatabase.ContentLicenses.First().AttributionName = UniqueId.Generate();
+            _serverDatabase.Designs.First().ShapeId = UniqueId.Generate();
+            _serverDatabase.DesignRegions.First().Name = UniqueId.Generate();
+            _serverDatabase.Fills.First().SolidColorFill_Color = UniqueId.Generate();
+            _serverDatabase.Licenses.First().LicenseUrl = UniqueId.Generate();
+            _serverDatabase.MarkupFragments.First().Content = UniqueId.Generate();
+            _serverDatabase.Palettes.First().Name = UniqueId.Generate();
+            _serverDatabase.Shapes.First().Name = UniqueId.Generate();
+            _serverDatabase.Strokes.First().Color = UniqueId.Generate();
+            _serverDatabase.Templates.First().Name = UniqueId.Generate();
             _serverDatabase.SaveChanges();
 
             syncResult = await SynchronizesMobileDatabasesWithServer();

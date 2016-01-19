@@ -16,7 +16,7 @@ namespace SvgStudio.Shared.StorageModel
             {
                 if (!string.IsNullOrWhiteSpace(CompatibilityTagId) && !string.IsNullOrWhiteSpace(DesignRegionId))
                 {
-                    return string.Format("{0}-{1}", CompatibilityTagId, DesignRegionId);
+                    return string.Format("{0}|{1}", DesignRegionId, CompatibilityTagId);
                 }
                 else
                 {

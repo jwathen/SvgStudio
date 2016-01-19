@@ -17,7 +17,7 @@ namespace SvgStudio.Shared.StorageModel
             {
                 if (!string.IsNullOrWhiteSpace(CompatibilityTagId) && !string.IsNullOrWhiteSpace(ShapeId))
                 {
-                    return string.Format("{0}-{1}", CompatibilityTagId, ShapeId);
+                    return string.Format("{0}|{1}", ShapeId, CompatibilityTagId);
                 }
                 else
                 {
