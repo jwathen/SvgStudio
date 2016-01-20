@@ -18,6 +18,13 @@
             @Html.DropDownList("themeSelector", new SelectList(themes, AppSettings.BootswatchTheme))
         </div>
         <div class="col-lg-12">
+            <h1>cd312f2e Admin</h1>
+            <ul class="nav nav-tabs">
+                <li class="@(ViewBag.Nav == "Licenses" ? "active" : null)">@Html.ActionLink("Licenses", MVC.Licenses.Index())</li>
+                <li class="@(ViewBag.Nav == "Shapes" ? "active" : null)">@Html.ActionLink("Shapes", MVC.Shapes.Index())</li>
+            </ul>
+        </div>
+        <div class="col-lg-12">
             @RenderBody()
         </div>
     </div>

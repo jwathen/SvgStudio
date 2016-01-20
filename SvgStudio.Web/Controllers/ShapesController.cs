@@ -14,6 +14,13 @@ namespace SvgStudio.Web.Controllers
     [RoutePrefix("Shapes")]
     public partial class ShapesController : SvgStudioControllerBase
     {
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            base.OnActionExecuting(filterContext);
+
+            ViewBag.Nav = "Shapes";
+        }
+
         [HttpGet]
         [Route("")]
         public virtual async Task<ActionResult> Index()

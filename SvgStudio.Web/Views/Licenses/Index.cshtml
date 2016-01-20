@@ -11,7 +11,8 @@
     <thead>
         <tr>
             <th>Id</th>            
-            <th>License</th>
+            <th>Name</th>
+            <th>URL</th>
             <th>Attribution Required</th>
         </tr>
     </thead>
@@ -24,6 +25,8 @@
                 </td>
                 <td>
                     @license.LicenseName
+                </td>
+                <td>
                     @if (!string.IsNullOrWhiteSpace(license.LicenseUrl))
                     {
                         <a href="@license.LicenseUrl" class="nowrap" target="_blank">@license.LicenseUrl</a>

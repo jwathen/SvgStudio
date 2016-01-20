@@ -13,6 +13,13 @@ namespace SvgStudio.Web.Controllers
     [RoutePrefix("Licenses")]
     public partial class LicensesController : SvgStudioControllerBase
     {
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            base.OnActionExecuting(filterContext);
+
+            ViewBag.Nav = "Licenses";
+        }
+
         [HttpGet]
         [Route("")]
         public virtual async Task<ActionResult> Index()
