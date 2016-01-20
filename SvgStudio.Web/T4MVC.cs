@@ -27,6 +27,7 @@ using T4MVC;
 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
 public static partial class MVC
 {
+    public static SvgStudio.Web.Controllers.AccountController Account = new SvgStudio.Web.Controllers.T4MVC_AccountController();
     public static SvgStudio.Web.Controllers.LicensesController Licenses = new SvgStudio.Web.Controllers.T4MVC_LicensesController();
     public static SvgStudio.Web.Controllers.MobileController Mobile = new SvgStudio.Web.Controllers.T4MVC_MobileController();
     public static SvgStudio.Web.Controllers.ShapesController Shapes = new SvgStudio.Web.Controllers.T4MVC_ShapesController();

@@ -67,6 +67,11 @@ namespace SvgStudio.Web
             }
         }
 
+        public static string Password
+        {
+            get { return ConfigurationManager.AppSettings["Password"]; }
+        }
+
         public static string UnobtrusiveJavaScriptEnabled
         {
             get { return ConfigurationManager.AppSettings["UnobtrusiveJavaScriptEnabled"]; }

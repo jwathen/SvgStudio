@@ -10,6 +10,8 @@ using SvgStudio.Shared.StorageModel;
 
 namespace SvgStudio.Web.Controllers
 {
+    [Authorize]
+    [RequireHttps]
     [RoutePrefix("Licenses")]
     public partial class LicensesController : SvgStudioControllerBase
     {

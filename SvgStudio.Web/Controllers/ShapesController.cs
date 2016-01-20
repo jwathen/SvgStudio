@@ -11,6 +11,8 @@ using SvgStudio.Web.ViewModels.Shapes;
 
 namespace SvgStudio.Web.Controllers
 {
+    [Authorize]
+    [RequireHttps]
     [RoutePrefix("Shapes")]
     public partial class ShapesController : SvgStudioControllerBase
     {
