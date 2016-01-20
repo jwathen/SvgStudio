@@ -53,7 +53,6 @@ namespace SvgStudio.Test.Mobile.Core.Models.Synchronization
             // so they are not included in this test.
             _serverDatabase.CompatibilityTags.First().Tag = UniqueId.Generate();
             _serverDatabase.ContentLicenses.First().AttributionName = UniqueId.Generate();
-            _serverDatabase.Designs.First().ShapeId = UniqueId.Generate();
             _serverDatabase.DesignRegions.First().Name = UniqueId.Generate();
             _serverDatabase.Fills.First().SolidColorFill_Color = UniqueId.Generate();
             _serverDatabase.Licenses.First().LicenseUrl = UniqueId.Generate();
@@ -68,7 +67,6 @@ namespace SvgStudio.Test.Mobile.Core.Models.Synchronization
 
             AssertSync<CompatibilityTag>(syncResult, updated: 1);
             AssertSync<ContentLicense>(syncResult, updated: 1);
-            AssertSync<Design>(syncResult, updated: 1);
             AssertSync<DesignRegion>(syncResult, updated: 1);
             AssertSync<Fill>(syncResult, updated: 1);
             AssertSync<License>(syncResult, updated: 1);
@@ -84,20 +82,7 @@ namespace SvgStudio.Test.Mobile.Core.Models.Synchronization
             var syncResult = await SynchronizesMobileDatabasesWithServer();
 
             // Remove all records.
-            _serverDatabase.CompatibilityTags.RemoveRange(_serverDatabase.CompatibilityTags);
-            _serverDatabase.ContentLicenses.RemoveRange(_serverDatabase.ContentLicenses);
-            _serverDatabase.Designs.RemoveRange(_serverDatabase.Designs);
-            _serverDatabase.DesignRegions.RemoveRange(_serverDatabase.DesignRegions);
-            _serverDatabase.DesignRegion_CompatibilityTags.RemoveRange(_serverDatabase.DesignRegion_CompatibilityTags);
-            _serverDatabase.Fills.RemoveRange(_serverDatabase.Fills);
-            _serverDatabase.Licenses.RemoveRange(_serverDatabase.Licenses);
-            _serverDatabase.MarkupFragments.RemoveRange(_serverDatabase.MarkupFragments);
-            _serverDatabase.Palettes.RemoveRange(_serverDatabase.Palettes);
-            _serverDatabase.Shapes.RemoveRange(_serverDatabase.Shapes);
-            _serverDatabase.Shape_CompatibilityTags.RemoveRange(_serverDatabase.Shape_CompatibilityTags);
-            _serverDatabase.Strokes.RemoveRange(_serverDatabase.Strokes);
-            _serverDatabase.Templates.RemoveRange(_serverDatabase.Templates);
-            _serverDatabase.SaveChanges();
+            _serverDatabase.Reset();
 
             syncResult = await SynchronizesMobileDatabasesWithServer();
 
@@ -134,10 +119,7 @@ namespace SvgStudio.Test.Mobile.Core.Models.Synchronization
 
         public void Dispose()
         {
-            var checkpoint = new Respawn.Checkpoint();
-            _serverDatabase.Database.Connection.Open();
-            checkpoint.Reset(_serverDatabase.Database.Connection);
-            _serverDatabase.Database.Connection.Close();
+            _serverDatabase.Reset();
         }
     }
 }

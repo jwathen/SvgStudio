@@ -53,9 +53,9 @@ create table Shapes
 	NumberOfFillsSupported int not null,
 	NumberOfStrokesSupported int not null,
 	SortOrder smallint not null default(32767),
-	BasicShape_MarkupFragmentId varchar(32) null,
-	TemplateShape_TemplateId varchar(32) null,
-	TemplateShape_ClipPathMarkupFragmentId  varchar(32) null
+	BasicShape_MarkupFragmentId varchar(32) null references MarkupFragments(Id),
+	TemplateShape_TemplateId varchar(32) null references Templates(Id),
+	TemplateShape_ClipPathMarkupFragmentId  varchar(32) null references MarkupFragments(Id)
 )
 go
 
@@ -67,7 +67,7 @@ create index IX_Shapes_TemplateShape_ClipPathMarkupFragmentId on Shapes(Template
 create table Shape_CompatibilityTag
 (
 	Id varchar(65) not null primary key,
-	CompatibilityTagId varchar(32) not null,
+	CompatibilityTagId varchar(32) not null references CompatibilityTags(Id),
 	ShapeId varchar(32) not null
 )
 go
@@ -77,8 +77,8 @@ create table ContentLicenses
 	Id varchar(32) not null primary key,
 	RowVersion rowversion not null,
 	InsertDateUtc datetime not null default(getutcdate()),
-	LicenseId varchar(32) not null,
-	ShapeId varchar(32) null,
+	LicenseId varchar(32) not null references Licenses(Id),
+	ShapeId varchar(32) null references Shapes(Id),
 	ContentUrl nvarchar(1024) null,
 	AttributionName nvarchar(1024) null,
 	AttributionUrl nvarchar(1024) null
@@ -100,7 +100,7 @@ create table DesignRegions
 	Width int not null,
 	Height int not null,
 	SortOrder smallint not null default(32767),
-	TemplateId varchar(32) not null
+	TemplateId varchar(32) not null references Templates(Id)
 )
 go
 
@@ -109,8 +109,8 @@ create index IX_DesignRegions_TemplateId on DesignRegions(TemplateId);
 create table DesignRegion_CompatibilityTag
 (
 	Id varchar(65) not null primary key,
-	CompatibilityTagId varchar(32) not null,
-	DesignRegionId varchar(32) not null
+	CompatibilityTagId varchar(32) not null references CompatibilityTags(Id),
+	DesignRegionId varchar(32) not null references DesignRegions(Id)
 )
 go
 
@@ -130,8 +130,8 @@ create table Designs
 	Id varchar(32) not null primary key,
 	RowVersion rowversion not null,
 	InsertDateUtc datetime not null default(getutcdate()),
-	ShapeId varchar(32) not null,
-	PaletteId varchar(32) not null
+	ShapeId varchar(32) not null references Shapes(Id),
+	PaletteId varchar(32) not null references Palettes(Id)
 )
 go
 
@@ -147,7 +147,7 @@ create table Strokes
 	Color nvarchar(50) not null,
 	Width int not null,
 	DashArray nvarchar(max) null,
-	PaletteId varchar(32) null
+	PaletteId varchar(32) null references Palettes(Id)
 )
 go
 
@@ -160,7 +160,7 @@ create table Fills
 	InsertDateUtc datetime not null default(getutcdate()),
 	IsActive bit not null default(1),
 	FillType int not null,
-	PaletteId varchar(32) null,
+	PaletteId varchar(32) null references Palettes(Id),
 	SolidColorFill_Color nvarchar(50) null,
 	PatternFill_Name nvarchar(50) null,
 	PatternFill_X int null,
@@ -169,7 +169,7 @@ create table Fills
 	PatternFill_Height float null,
 	PatternFill_PatternUnits nvarchar(50) null,
 	PatternFill_PatternContentUnits nvarchar(50) null,
-	PatternFill_DesignId varchar(32) null
+	PatternFill_DesignId varchar(32) null references Designs(Id)
 )
 go
 

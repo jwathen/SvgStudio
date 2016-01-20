@@ -77,7 +77,7 @@ Shapes:
 Shape_CompatibilityTags:
     left_supporter:
         ShapeId: 9e591310295ad87a69c4682d7c2a1270 # lion
-        CompatibilityTagId: Templates # left_supporter
+        CompatibilityTagId: 86e1e210295afa7b1664b139f7bbb06d # left_supporter
 Strokes:
     gray:
         Id: a40f1310295a8328ffe424c5c19546eb

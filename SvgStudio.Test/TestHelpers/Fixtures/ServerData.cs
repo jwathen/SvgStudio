@@ -2,6 +2,7 @@
 using SvgStudio.Web.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -33,14 +34,10 @@ namespace SvgStudio.Test.TestHelpers.Fixtures
                 var yaml = new YamlDotNet.Serialization.Deserializer();
                 ServerData data = yaml.Deserialize<ServerData>(reader);
 
-                var checkpoint = new Respawn.Checkpoint();
-                if (db.Database.Connection.State == System.Data.ConnectionState.Closed)
-                {
-                    db.Database.Connection.Open();
-                }
-                checkpoint.Reset(db.Database.Connection);
-                db.Database.Connection.Close();
+                db.Reset();
+                db.DisableConstraints();
 
+                // Insert the test data.
                 db.CompatibilityTags.AddRange(data.CompatibilityTags.Values);
                 db.ContentLicenses.AddRange(data.ContentLicenses.Values);
                 db.Designs.AddRange(data.Designs.Values);
@@ -55,6 +52,10 @@ namespace SvgStudio.Test.TestHelpers.Fixtures
                 db.Strokes.AddRange(data.Strokes.Values);
                 db.Templates.AddRange(data.Templates.Values);
                 db.SaveChanges();
+
+                db.EnableConstraints();
+
+                db.Database.Connection.Close();
 
                 return data;
             }

@@ -117,3 +117,7 @@ values('16302233926171-d811a4d3f5e2438ba', 1, 'Lion', 378, 334, 1, 1, '163021050
 -- LICENSES
 insert into Licenses(Id, LicenseName, LicenseUrl, AttributionRequired)
 values('16364871084207-6ccb2d61ccfa4e80a', 'Eezy Premium', 'http://www.vecteezy.com/frequently-asked-questions', 0)
+
+-- CONTENT LICENSES
+insert into ContentLicenses(Id, LicenseId, ShapeId, ContentUrl)
+values('17047177177938-364a36e8c8e14b158', '16364871084207-6ccb2d61ccfa4e80a', '16302233926171-d811a4d3f5e2438ba', 'http://www.vecteezy.com/vector-art/100575-lion-rampant-flat-silhouettes')
