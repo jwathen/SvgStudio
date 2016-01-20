@@ -1,0 +1,33 @@
+﻿@model IEnumerable<SvgStudio.Web.ViewModels.Shapes.ShapeViewModel>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Shapes</h2>
+<p>
+    <a href="@Url.Action(MVC.Shapes.Add())"><i class="fa fa-plus"></i> Add New Shape</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Active</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var shape in Model)
+        {
+            <tr>
+                <td>@shape.Id</td>
+                <td>@shape.Name</td>
+                <td>@Helpers.YesNo(shape.IsActive)</td>
+                <td>
+                    <a href="@Url.Action(MVC.Shapes.Edit(shape.Id))"><i class="fa fa-edit"></i> Edit</a> |
+                    <a href="#"><i class="fa fa-trash"></i> Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

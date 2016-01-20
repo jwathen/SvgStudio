@@ -1,0 +1,17 @@
+﻿@model SvgStudio.Web.ViewModels.Licenses.LicenseViewModel
+
+<div class="form-group">
+    <label for="@Html.NameFor(x => x.LicenseName)">License Name</label>
+    @Html.TextBoxFor(x => x.LicenseName, new { @class = "form-control" })
+</div>
+<div class="form-group">
+    <label for="@Html.NameFor(x => x.LicenseUrl)">License URL</label>
+    @Html.TextBoxFor(x => x.LicenseUrl, new { type = "url", @class = "form-control" })
+</div>
+<div class="checkbox">
+    <label>
+        @Html.CheckBoxFor(x => x.AttributionRequired)
+        Attribution Required
+    </label>
+</div>
+@Html.HiddenFor(x => x.Id)

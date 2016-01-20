@@ -13,18 +13,18 @@ using SvgStudio.Shared.StorageModel;
 namespace SvgStudio.Web.Controllers
 {
     [RoutePrefix("Mobile")]
-    public class MobileController : SvgStudioControllerBase
+    public partial class MobileController : SvgStudioControllerBase
     {
         [HttpGet]
         [Route("GetVersion")]
-        public ActionResult GetVersion()
+        public virtual ActionResult GetVersion()
         {
             return Json("1.0.0");
         }
 
         [HttpPost]
         [Route("Sync")]
-        public async Task<JsonResult> Sync(MobileSyncRequest request)
+        public virtual async Task<JsonResult> Sync(MobileSyncRequest request)
         {
             MobileSyncResponse response = new MobileSyncResponse();
 

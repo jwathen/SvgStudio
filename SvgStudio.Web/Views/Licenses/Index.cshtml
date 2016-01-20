@@ -1,0 +1,40 @@
+﻿@model IEnumerable<SvgStudio.Web.ViewModels.Licenses.LicenseViewModel>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Licenses</h2>
+<p>
+    <a href="@Url.Action(MVC.Licenses.Add())"><i class="fa fa-plus"></i> Add New License</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>            
+            <th>License</th>
+            <th>Attribution Required</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var license in Model)
+        {
+            <tr>
+                <td>@license.Id</td>
+                <td>
+                    @license.LicenseName
+                    @if (!string.IsNullOrWhiteSpace(license.LicenseUrl))
+                    {
+                        <br />
+                        <a href="@license.LicenseUrl" target="_blank">@license.LicenseUrl</a>
+                    }
+                </td>
+                <td>@Helpers.YesNo(license.AttributionRequired)</td>
+                <td>
+                    <a href="@Url.Action(MVC.Licenses.Edit(license.Id))"><i class="fa fa-edit"></i> Edit</a> |
+                    <a href="#"><i class="fa fa-trash"></i> Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

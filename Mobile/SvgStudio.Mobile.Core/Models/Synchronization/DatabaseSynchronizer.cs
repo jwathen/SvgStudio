@@ -1,4 +1,5 @@
-﻿using SQLite.Net.Async;
+﻿using Newtonsoft.Json;
+using SQLite.Net.Async;
 using SvgStudio.Mobile.Core.Models.Storage;
 using SvgStudio.Mobile.Core.Services;
 using SvgStudio.Shared.ServiceContracts.Requests;
@@ -23,8 +24,7 @@ namespace SvgStudio.Mobile.Core.Models.Synchronization
 
         public async Task<IEnumerable<TableSynchronizationSummary>> SynchronizeModelWithServer()
         {
-            var summaries = new List<TableSynchronizationSummary>();
-
+            var summaries = new List<TableSynchronizationSummary>();            
             MobileSyncRequest request = new MobileSyncRequest();
             request.CompatibilityTagRowVersions = await GetLocalRowVerionsAsync<CompatibilityTag>();
             request.ContentLicenseRowVersions = await GetLocalRowVerionsAsync<ContentLicense>();

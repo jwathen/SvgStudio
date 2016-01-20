@@ -9,6 +9,14 @@ namespace SvgStudio.Web.Models
 {
     public class SvgStudioDataContext : DbContext
     {
+        public static SvgStudioDataContext Current
+        {
+            get
+            {
+                return (SvgStudioDataContext)HttpContext.Current.Items["SvgStudioDataContext.Current"];
+            }
+        }
+
         public SvgStudioDataContext(string connectionString)
             : base(connectionString)
         {
@@ -49,5 +57,5 @@ namespace SvgStudio.Web.Models
         public DbSet<Shape_CompatibilityTag> Shape_CompatibilityTags { get; set; }
         public DbSet<Stroke> Strokes { get; set; }
         public DbSet<Template> Templates { get; set; }
-}
+    }
 }

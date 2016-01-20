@@ -33,6 +33,14 @@ namespace SvgStudio.Test.TestHelpers.Fixtures
                 var yaml = new YamlDotNet.Serialization.Deserializer();
                 ServerData data = yaml.Deserialize<ServerData>(reader);
 
+                var checkpoint = new Respawn.Checkpoint();
+                if (db.Database.Connection.State == System.Data.ConnectionState.Closed)
+                {
+                    db.Database.Connection.Open();
+                }
+                checkpoint.Reset(db.Database.Connection);
+                db.Database.Connection.Close();
+
                 db.CompatibilityTags.AddRange(data.CompatibilityTags.Values);
                 db.ContentLicenses.AddRange(data.ContentLicenses.Values);
                 db.Designs.AddRange(data.Designs.Values);

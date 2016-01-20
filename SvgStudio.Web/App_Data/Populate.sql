@@ -113,3 +113,7 @@ values ('16302105072040-550b02153b5c4f53b', '<path data-stroke-index="0" data-fi
 -- SHAPES
 insert into Shapes(Id, ShapeType, Name, Width, Height, NumberOfFillsSupported, NumberOfStrokesSupported, BasicShape_MarkupFragmentId)
 values('16302233926171-d811a4d3f5e2438ba', 1, 'Lion', 378, 334, 1, 1, '16302105072040-550b02153b5c4f53b')
+
+-- LICENSES
+insert into Licenses(Id, LicenseName, LicenseUrl, AttributionRequired)
+values('16364871084207-6ccb2d61ccfa4e80a', 'Eezy Premium', 'http://www.vecteezy.com/frequently-asked-questions', 0)

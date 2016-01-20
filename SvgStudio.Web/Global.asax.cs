@@ -1,5 +1,8 @@
-﻿using System;
+﻿using SvgStudio.Web.App_Start;
+using SvgStudio.Web.Models;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -13,6 +16,20 @@ namespace SvgStudio.Web
         {
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+            FluentValidation.Mvc.FluentValidationModelValidatorProvider.Configure();
+            AutoMapperConfig.Configure();            
+        }
+
+        protected void Application_BeginRequest()
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["SvgStudio"].ConnectionString;
+            Context.Items["SvgStudioDataContext.Current"] = new SvgStudioDataContext(connectionString);
+        }
+
+        protected void Application_EndRequest()
+        {
+            var db = (SvgStudioDataContext)Context.Items["SvgStudioDataContext.Current"];
+            db?.Dispose();
         }
     }
 }
