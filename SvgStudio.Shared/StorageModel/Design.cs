@@ -1,4 +1,5 @@
-﻿using SQLite.Net.Attributes;
+﻿using Newtonsoft.Json;
+using SQLite.Net.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,5 +17,12 @@ namespace SvgStudio.Shared.StorageModel
         public string ShapeId { get; set; }
         [Indexed]
         public string PaletteId { get; set; }
+
+        [Ignore, JsonIgnore]
+        public Shape Shape { get; set; }
+        [Ignore, JsonIgnore]
+        public Palette Palette { get; set; }
+        [Ignore, JsonIgnore]
+        public ICollection<Fill> Fills { get; set; }
     }
 }

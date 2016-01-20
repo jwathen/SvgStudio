@@ -1,4 +1,5 @@
-﻿using SQLite.Net.Attributes;
+﻿using Newtonsoft.Json;
+using SQLite.Net.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,5 +29,10 @@ namespace SvgStudio.Shared.StorageModel
         public string PatternFill_PatternContentUnits { get; set; }
         [Indexed]
         public string PatternFill_DesignId { get; set; }
+
+        [Ignore, JsonIgnore]
+        public Palette Palette { get; set; }
+        [Ignore, JsonIgnore]
+        public Design PatternFill_Design { get; set; }
     }
 }

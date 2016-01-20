@@ -61,10 +61,10 @@ namespace SvgStudio.Web.Controllers
 
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Threading.Tasks.Task<System.Web.Mvc.JsonResult> Sync()
+        public virtual System.Threading.Tasks.Task<SvgStudio.Web.Web.JsonNetResult> Sync()
         {
-            var callInfo = new T4MVC_System_Web_Mvc_JsonResult(Area, Name, ActionNames.Sync);
-            return System.Threading.Tasks.Task.FromResult(callInfo as System.Web.Mvc.JsonResult);
+            var callInfo = new T4MVC_SvgStudio_Web_Web_JsonNetResult(Area, Name, ActionNames.Sync);
+            return System.Threading.Tasks.Task.FromResult(callInfo as SvgStudio.Web.Web.JsonNetResult);
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -133,15 +133,15 @@ namespace SvgStudio.Web.Controllers
         }
 
         [NonAction]
-        partial void SyncOverride(T4MVC_System_Web_Mvc_JsonResult callInfo, SvgStudio.Shared.ServiceContracts.Requests.MobileSyncRequest request);
+        partial void SyncOverride(T4MVC_SvgStudio_Web_Web_JsonNetResult callInfo, SvgStudio.Shared.ServiceContracts.Requests.MobileSyncRequest request);
 
         [NonAction]
-        public override System.Threading.Tasks.Task<System.Web.Mvc.JsonResult> Sync(SvgStudio.Shared.ServiceContracts.Requests.MobileSyncRequest request)
+        public override System.Threading.Tasks.Task<SvgStudio.Web.Web.JsonNetResult> Sync(SvgStudio.Shared.ServiceContracts.Requests.MobileSyncRequest request)
         {
-            var callInfo = new T4MVC_System_Web_Mvc_JsonResult(Area, Name, ActionNames.Sync);
+            var callInfo = new T4MVC_SvgStudio_Web_Web_JsonNetResult(Area, Name, ActionNames.Sync);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "request", request);
             SyncOverride(callInfo, request);
-            return System.Threading.Tasks.Task.FromResult(callInfo as System.Web.Mvc.JsonResult);
+            return System.Threading.Tasks.Task.FromResult(callInfo as SvgStudio.Web.Web.JsonNetResult);
         }
 
     }

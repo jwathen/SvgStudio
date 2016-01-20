@@ -15,7 +15,7 @@
             @Html.ValidationSummary()
             <form role="form" action="@Url.Action(MVC.Licenses.Add())" method="post">
                 @Html.EditorForModel()
-                <button type="submit" class="btn btn-primary">Save</button>
+                <input type="submit" name="@Html.NameFor(x => x.Action)" value="Save" class="btn btn-primary pull-left" />
                 @Html.AntiForgeryToken()
             </form>
         </div>

@@ -43,10 +43,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper, Version=4.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMapper.4.1.1\lib\net45\AutoMapper.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Elmah, Version=1.2.13605.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\elmah.corelibrary.1.2\lib\Elmah.dll</HintPath>
       <Private>True</Private>
@@ -151,7 +147,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AppSettings.tt</DependentUpon>
     </Compile>
-    <Compile Include="App_Start\AutoMapperConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\LicensesController.cs" />
     <Compile Include="Controllers\MobileController.cs" />
@@ -182,6 +177,7 @@
     <Compile Include="ViewModels\Licenses\LicenseViewModel.cs" />
     <Compile Include="ViewModels\Shapes\ShapeViewModel.cs" />
     <Compile Include="ViewModels\Shared\MarkupFragmentViewModel.cs" />
+    <Compile Include="Web\JsonNetResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />

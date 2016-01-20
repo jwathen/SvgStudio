@@ -20,6 +20,7 @@ namespace SvgStudio.Web.ViewModels.Shapes
     {
         private string _compatibilityTagOptions = null;
 
+        public string Action { get; set; }
         public string Id { get; set; }
         public bool IsActive { get; set; }
         public ShapeType ShapeType { get; set; }
@@ -195,10 +196,10 @@ namespace SvgStudio.Web.ViewModels.Shapes
             {
                 var compatibilityTag = await db.CompatibilityTags.FirstOrDefaultAsync(x => x.Tag == tag);
 
-               
                 var shapeCompatibilityTag = new Shape_CompatibilityTag();
                 shapeCompatibilityTag.ShapeId = shape.Id;
                 shapeCompatibilityTag.CompatibilityTagId = compatibilityTag.Id;
+                shapeCompatibilityTag.ComputeId();
                 db.Shape_CompatibilityTags.Add(shapeCompatibilityTag);
             }
             foreach(string tag in tagsToRemove)
@@ -219,28 +220,45 @@ namespace SvgStudio.Web.ViewModels.Shapes
                 await db.SaveChangesAsync();
             }
         }
+
+        public async Task DeleteAsync(bool executeSaveChanges = false)
+        {
+            var db = SvgStudioDataContext.Current;
+            db.ContentLicenses.RemoveRange(db.ContentLicenses.Where(x => x.ShapeId == this.Id));
+            db.Shape_CompatibilityTags.RemoveRange(db.Shape_CompatibilityTags.Where(x => x.ShapeId == this.Id));
+            db.MarkupFragments.RemoveRange(db.MarkupFragments.Where(x => x.Id == this.BasicShape_MarkupFragment.Id));
+            db.Shapes.RemoveRange(db.Shapes.Where(x => x.Id == this.Id));
+            
+            if (executeSaveChanges)
+            {
+                await db.SaveChangesAsync();
+            }
+        }
     }
 
     public class ShapeViewModelValidator : AbstractValidator<ShapeViewModel>
     {
         public ShapeViewModelValidator()
         {
-            // Licensing Information
-            RuleFor(x => x.LicenseId).NotEmpty().WithMessage("Governing license is required.");
-            RuleFor(x => x.ContentUrl).NotEmpty().WithMessage("Artwork URL is required.");
-            RuleFor(x => x.AttributionName).NotEmpty().When(LicenseRequiresAttribution).WithMessage("Attribute name is required because the content licence requires attribution.");
-            RuleFor(x => x.AttributionUrl).NotEmpty().When(LicenseRequiresAttribution).WithMessage("Attribute URL is required because the content licence requires attribution.");
+            When(x => x.Action == "Save", () =>
+            {
+                // Licensing Information
+                RuleFor(x => x.LicenseId).NotEmpty().WithMessage("Governing license is required.");
+                RuleFor(x => x.ContentUrl).NotEmpty().WithMessage("Artwork URL is required.");
+                RuleFor(x => x.AttributionName).NotEmpty().When(LicenseRequiresAttribution).WithMessage("Attribute name is required because the content licence requires attribution.");
+                RuleFor(x => x.AttributionUrl).NotEmpty().When(LicenseRequiresAttribution).WithMessage("Attribute URL is required because the content licence requires attribution.");
 
-            // Rendering Data
-            RuleFor(x => x.Name).NotEmpty().WithMessage("Shape name is required.");
-            RuleFor(x => x.Name).Must(BeUnique).When(IsNew).WithMessage("Shape names must be unique.  There is already a shape named \"{0}\".", x => x.Name);
-            RuleFor(x => x.Width).Must(BeAPositiveInteger).WithMessage("Width must be positive.");
-            RuleFor(x => x.Height).Must(BeAPositiveInteger).WithMessage("Width must be positive.");
-            RuleFor(x => x.NumberOfStrokesSupported).GreaterThanOrEqualTo(0).WithMessage("The number of fills supported must be positive.");
-            RuleFor(x => x.NumberOfFillsSupported).GreaterThanOrEqualTo(0).WithMessage("The number of strokes supported must be positive.");
-            RuleFor(x => x.CompatibilityTags).Must(AllBeValidTags).WithMessage("Invalid compatibility tag(s): {0}", x => string.Join(", ", x.GetInvalidCompatiblityTags()));
+                // Rendering Data
+                RuleFor(x => x.Name).NotEmpty().WithMessage("Shape name is required.");
+                RuleFor(x => x.Name).Must(BeUnique).When(IsNew).WithMessage("Shape names must be unique.  There is already a shape named \"{0}\".", x => x.Name);
+                RuleFor(x => x.Width).Must(BeAPositiveInteger).WithMessage("Width must be positive.");
+                RuleFor(x => x.Height).Must(BeAPositiveInteger).WithMessage("Width must be positive.");
+                RuleFor(x => x.NumberOfStrokesSupported).GreaterThanOrEqualTo(0).WithMessage("The number of fills supported must be positive.");
+                RuleFor(x => x.NumberOfFillsSupported).GreaterThanOrEqualTo(0).WithMessage("The number of strokes supported must be positive.");
+                RuleFor(x => x.CompatibilityTags).Must(AllBeValidTags).WithMessage("Invalid compatibility tag(s): {0}", x => string.Join(", ", x.GetInvalidCompatiblityTags()));
 
-            RuleFor(x => x.BasicShape_MarkupFragment).SetValidator(new MarkupFragmentViewModelValidator()).When(IsBasicShape);
+                RuleFor(x => x.BasicShape_MarkupFragment).SetValidator(new MarkupFragmentViewModelValidator()).When(IsBasicShape);
+            });
         }
 
         public bool BeUnique(string name)

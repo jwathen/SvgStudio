@@ -29,18 +29,41 @@ namespace SvgStudio.Web.Models
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<CompatibilityTag>().Property(x => x.RowVersion).IsRowVersion();
+
             modelBuilder.Entity<ContentLicense>().Property(x => x.RowVersion).IsRowVersion();
+
             modelBuilder.Entity<Design>().Property(x => x.RowVersion).IsRowVersion();
+
             modelBuilder.Entity<DesignRegion>().Property(x => x.RowVersion).IsRowVersion();
+
             modelBuilder.Entity<DesignRegion_CompatibilityTag>().Ignore(x => x.RowVersion);
             modelBuilder.Entity<DesignRegion_CompatibilityTag>().HasKey(x => x.Id);
+
             modelBuilder.Entity<Fill>().Property(x => x.RowVersion).IsRowVersion();
+            modelBuilder.Entity<Fill>().HasOptional(x => x.PatternFill_Design)
+                .WithMany(x => x.Fills)
+                .HasForeignKey(x => x.PatternFill_DesignId);
+
             modelBuilder.Entity<License>().Property(x => x.RowVersion).IsRowVersion();
+
             modelBuilder.Entity<MarkupFragment>().Property(x => x.RowVersion).IsRowVersion();
+
             modelBuilder.Entity<Palette>().Property(x => x.RowVersion).IsRowVersion();
+
             modelBuilder.Entity<Shape>().Property(x => x.RowVersion).IsRowVersion();
+            modelBuilder.Entity<Shape>().HasOptional(x => x.BasicShape_MarkupFragment)
+                .WithMany(x => x.BasicShapes)
+                .HasForeignKey(x => x.BasicShape_MarkupFragmentId);
+            modelBuilder.Entity<Shape>().HasOptional(x => x.TemplateShape_ClipPathMarkupFragment)
+                .WithMany(x => x.TemplateShapeClipPaths)
+                .HasForeignKey(x => x.TemplateShape_ClipPathMarkupFragmentId);
+            modelBuilder.Entity<Shape>().HasOptional(x => x.TemplateShape_Template)
+                .WithMany(x => x.TemplateShapes)
+                .HasForeignKey(x => x.TemplateShape_TemplateId);
+
             modelBuilder.Entity<Shape_CompatibilityTag>().Ignore(x => x.RowVersion);
             modelBuilder.Entity<Shape_CompatibilityTag>().HasKey(x => x.Id);
+
             modelBuilder.Entity<Stroke>().Property(x => x.RowVersion).IsRowVersion();
             modelBuilder.Entity<Template>().Property(x => x.RowVersion).IsRowVersion();
         }

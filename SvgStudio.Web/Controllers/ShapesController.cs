@@ -7,7 +7,6 @@ using System.Web.Mvc;
 using System.Data.Entity;
 using System.Threading.Tasks;
 using SvgStudio.Shared.StorageModel;
-using AutoMapper;
 using SvgStudio.Web.ViewModels.Shapes;
 
 namespace SvgStudio.Web.Controllers
@@ -72,7 +71,14 @@ namespace SvgStudio.Web.Controllers
             }
             else
             {
-                await model.SaveAsync(true);
+                if (model.Action == "Delete")
+                {
+                    await model.DeleteAsync(true);
+                }
+                else if (model.Action == "Save")
+                {
+                    await model.SaveAsync(true);
+                }
             }
             return RedirectToAction(MVC.Shapes.Index());
         }

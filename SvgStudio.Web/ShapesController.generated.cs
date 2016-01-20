@@ -124,8 +124,12 @@ namespace SvgStudio.Web.Controllers
             public class _ViewNamesClass
             {
                 public readonly string Add = "Add";
+                public readonly string Edit = "Edit";
+                public readonly string Index = "Index";
             }
             public readonly string Add = "~/Views/Shapes/Add.cshtml";
+            public readonly string Edit = "~/Views/Shapes/Edit.cshtml";
+            public readonly string Index = "~/Views/Shapes/Index.cshtml";
             static readonly _EditorTemplatesClass s_EditorTemplates = new _EditorTemplatesClass();
             public _EditorTemplatesClass EditorTemplates { get { return s_EditorTemplates; } }
             [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]

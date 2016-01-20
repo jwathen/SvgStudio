@@ -30,8 +30,8 @@ namespace SvgStudio.Mobile.Core.UI
         {
             var button = (Button)sender;
             button.Text = "Sync...";
-            //string endpoint = "http://192.168.1.14:14501/";
-            string endpoint = "http://172.16.17.166:14501/";
+            string endpoint = "http://192.168.1.14:14501/";
+            //string endpoint = "http://172.16.17.166:14501/";
             var sync = new DatabaseSynchronizer(DependencyService.Get<IDatabaseConnectionProvider>(), new MobileServiceGateway(endpoint));
             Task.Run(sync.SynchronizeModelWithServer)
                 .ContinueWith(result =>

@@ -1,4 +1,5 @@
-﻿using SQLite.Net.Attributes;
+﻿using Newtonsoft.Json;
+using SQLite.Net.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +16,8 @@ namespace SvgStudio.Shared.StorageModel
         public bool AttributionRequired { get; set; }
         public string LicenseName { get; set; }
         public string LicenseUrl { get; set; }
+
+        [Ignore, JsonIgnore]
+        public ICollection<ContentLicense> ContentLicenses { get; set; }
     }
 }

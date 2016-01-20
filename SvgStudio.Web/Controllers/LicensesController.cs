@@ -7,7 +7,6 @@ using System.Web.Mvc;
 using System.Data.Entity;
 using System.Threading.Tasks;
 using SvgStudio.Shared.StorageModel;
-using AutoMapper;
 
 namespace SvgStudio.Web.Controllers
 {
@@ -19,15 +18,20 @@ namespace SvgStudio.Web.Controllers
         public virtual async Task<ActionResult> Index()
         {
             var licenses = await db.Licenses.ToListAsync();
-            var model = Mapper.Map<List<LicenseViewModel>>(licenses);
+            var model = new List<LicenseViewModel>();
+            foreach (var license in licenses)
+            {
+                model.Add(await LicenseViewModel.BuildAsync(license));
+            }
             return View(model);
         }
 
         [HttpGet]
         [Route("Add")]
-        public virtual ActionResult Add()
+        public virtual async Task<ActionResult> Add()
         {
-            return View(new LicenseViewModel());
+            var model = await LicenseViewModel.BuildAsync(null);
+            return View(model);
         }
 
         [HttpPost]
@@ -41,10 +45,7 @@ namespace SvgStudio.Web.Controllers
             }
             else
             {
-                var license = Mapper.Map<License>(model);
-                license.Id = UniqueId.Generate();
-                db.Licenses.Add(license);
-                await db.SaveChangesAsync();
+                await model.SaveAsync(true);
             }
             return RedirectToAction(MVC.Licenses.Index());
         }
@@ -54,7 +55,7 @@ namespace SvgStudio.Web.Controllers
         public virtual async Task<ActionResult> Edit(string id)
         {
             var license = await db.Licenses.FindAsync(id);
-            var model = Mapper.Map<LicenseViewModel>(license);
+            var model = await LicenseViewModel.BuildAsync(license);
             return View(model);
         }
 
@@ -69,9 +70,14 @@ namespace SvgStudio.Web.Controllers
             }
             else
             {
-                var license = await db.Licenses.FindAsync(model.Id);
-                Mapper.Map(model, license);
-                await db.SaveChangesAsync();
+                if (model.Action == "Delete")
+                {
+                    await model.DeleteAsync(true);
+                }
+                else if (model.Action == "Save")
+                {
+                    await model.SaveAsync(true);
+                }                
             }
             return RedirectToAction(MVC.Licenses.Index());
         }

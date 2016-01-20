@@ -1,4 +1,5 @@
-﻿using SQLite.Net.Attributes;
+﻿using Newtonsoft.Json;
+using SQLite.Net.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,5 +22,10 @@ namespace SvgStudio.Shared.StorageModel
         [Indexed]
         public string TemplateId { get; set; }
         public short SortOrder { get; set; }
+
+        [Ignore, JsonIgnore]
+        public Template Template { get; set; }
+        [Ignore, JsonIgnore]
+        public ICollection<DesignRegion_CompatibilityTag> DesignRegion_CompatibilityTags { get; set; }
     }
 }

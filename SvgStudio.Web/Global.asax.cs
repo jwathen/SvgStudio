@@ -1,5 +1,4 @@
-﻿using SvgStudio.Web.App_Start;
-using SvgStudio.Web.Models;
+﻿using SvgStudio.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -17,7 +16,6 @@ namespace SvgStudio.Web
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             FluentValidation.Mvc.FluentValidationModelValidatorProvider.Configure();
-            AutoMapperConfig.Configure();            
         }
 
         protected void Application_BeginRequest()

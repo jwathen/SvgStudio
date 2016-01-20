@@ -44,6 +44,8 @@ namespace SvgStudio.Mobile.Core.Models.Synchronization
             request.StrokeRowVersions = await GetLocalRowVerionsAsync<Stroke>();
             request.TemplateRowVersions = await GetLocalRowVerionsAsync<Template>();
 
+            string json = JsonConvert.SerializeObject(request);
+
             var response = await _mobileService.Sync(request);
 
             summaries.Add(await ProcessChangesFromServer(response.CompatibilityTagChanges));

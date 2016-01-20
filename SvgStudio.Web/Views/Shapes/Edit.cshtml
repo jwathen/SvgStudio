@@ -15,7 +15,11 @@
             @Html.ValidationSummary()
             <form role="form" action="@Url.Action(MVC.Shapes.Edit())" method="post">
                 @Html.EditorForModel()
-                <button type="submit" class="btn btn-primary">Save</button>
+                <input type="submit" name="@Html.NameFor(x => x.Action)" value="Save" class="btn btn-primary pull-left" />
+                @if (!Model.IsNew())
+                {
+                    <input type="submit" name="@Html.NameFor(x => x.Action)" value="Delete" class="btn btn-danger pull-right" data-confirm="Are you sure you want to delete this shape?" />
+                }
                 @Html.AntiForgeryToken()
             </form>
         </div>

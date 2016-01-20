@@ -1,4 +1,5 @@
-﻿using SQLite.Net.Attributes;
+﻿using Newtonsoft.Json;
+using SQLite.Net.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,5 +29,18 @@ namespace SvgStudio.Shared.StorageModel
         public string TemplateShape_TemplateId { get; set; }
         [Indexed]
         public string TemplateShape_ClipPathMarkupFragmentId { get; set; }
+
+        [Ignore, JsonIgnore]
+        public ICollection<Shape_CompatibilityTag> Shape_CompatibilityTags { get; set; }
+        [Ignore, JsonIgnore]
+        public ICollection<ContentLicense> ContentLicenses { get; set; }
+        [Ignore, JsonIgnore]
+        public ICollection<Design> Designs { get; set; }
+        [Ignore, JsonIgnore]
+        public MarkupFragment BasicShape_MarkupFragment { get; set; }
+        [Ignore, JsonIgnore]
+        public MarkupFragment TemplateShape_ClipPathMarkupFragment { get; set; }
+        [Ignore, JsonIgnore]
+        public Template TemplateShape_Template { get; set; }
     }
 }

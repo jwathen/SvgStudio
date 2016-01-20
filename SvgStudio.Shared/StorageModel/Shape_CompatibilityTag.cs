@@ -1,4 +1,5 @@
-﻿using SQLite.Net.Attributes;
+﻿using Newtonsoft.Json;
+using SQLite.Net.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,24 +12,7 @@ namespace SvgStudio.Shared.StorageModel
     {
 
         [PrimaryKey]
-        public string Id
-        {
-            get
-            {
-                if (!string.IsNullOrWhiteSpace(CompatibilityTagId) && !string.IsNullOrWhiteSpace(ShapeId))
-                {
-                    return string.Format("{0}|{1}", ShapeId, CompatibilityTagId);
-                }
-                else
-                {
-                    return null;
-                }
-            }
-            set
-            {
-               // Do nothing;
-            }
-        }
+        public string Id { get; set; }
 
         [Indexed(Name = "IX_Shape_CompatibilityTag_X", Order = 1)]
         public string CompatibilityTagId { get; set; }
@@ -49,6 +33,34 @@ namespace SvgStudio.Shared.StorageModel
                     return Encoding.UTF8.GetBytes(id);
                 }
             }
+        }
+
+        [Ignore, JsonIgnore]
+        public CompatibilityTag CompatibilityTag { get; set; }
+        [Ignore, JsonIgnore]
+        public Shape Shape { get; set; }
+
+        public void ComputeId()
+        {
+            string compatibilityTagId = CompatibilityTagId;
+            if (compatibilityTagId == null && CompatibilityTag != null)
+            {
+                compatibilityTagId = CompatibilityTag.Id;
+            }
+
+            string shapeId = ShapeId;
+            if (shapeId == null && Shape != null)
+            {
+                shapeId = Shape.Id;
+            }
+
+            string id = null;
+            if (!string.IsNullOrWhiteSpace(compatibilityTagId) && !string.IsNullOrWhiteSpace(shapeId))
+            {
+                id = string.Format("{0}|{1}", compatibilityTagId, shapeId);
+            }
+
+            Id = id;
         }
     }
 }

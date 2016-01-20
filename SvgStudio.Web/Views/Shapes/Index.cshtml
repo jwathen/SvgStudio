@@ -13,19 +13,35 @@
             <th>Id</th>
             <th>Name</th>
             <th>Active</th>
-            <th></th>
+            <th>Width</th>
+            <th>Height</th>
+            <th>Stokes</th>
+            <th>Fills</th>
+            <th>Compatibility Tags</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var shape in Model)
         {
             <tr>
-                <td>@shape.Id</td>
+                <td>
+                    @Html.ActionLink(shape.Id, MVC.Shapes.Edit(shape.Id))
+                </td>
                 <td>@shape.Name</td>
                 <td>@Helpers.YesNo(shape.IsActive)</td>
+                <td>@shape.Width</td>
+                <td>@shape.Height</td>
+                <td>@shape.NumberOfStrokesSupported</td>
+                <td>@shape.NumberOfFillsSupported</td>
                 <td>
-                    <a href="@Url.Action(MVC.Shapes.Edit(shape.Id))"><i class="fa fa-edit"></i> Edit</a> |
-                    <a href="#"><i class="fa fa-trash"></i> Delete</a>
+                    @if (shape.ExtractCompatiblityTags().Any())
+                    {
+                        <text>@string.Join(", ", shape.ExtractCompatiblityTags())</text>
+                    }
+                    else
+                    {
+                        <em>none</em>
+                    }
                 </td>
             </tr>
         }

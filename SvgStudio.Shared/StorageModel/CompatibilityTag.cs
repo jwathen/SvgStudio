@@ -1,4 +1,5 @@
-﻿using SQLite.Net.Attributes;
+﻿using Newtonsoft.Json;
+using SQLite.Net.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,10 @@ namespace SvgStudio.Shared.StorageModel
         public string Id { get; set; }
         public byte[] RowVersion { get; set; }
         public string Tag { get; set; }
+
+        [Ignore, JsonIgnore]
+        public ICollection<Shape_CompatibilityTag> Shape_CompatibilityTags { get; set; }
+        [Ignore, JsonIgnore]
+        public ICollection<DesignRegion_CompatibilityTag> DesignRegion_CompatibilityTags { get; set; }        
     }
 }

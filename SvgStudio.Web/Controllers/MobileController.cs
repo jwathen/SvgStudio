@@ -9,6 +9,8 @@ using System.Web.Mvc;
 using SvgStudio.Shared.Helpers;
 using System.Data.Entity;
 using SvgStudio.Shared.StorageModel;
+using SvgStudio.Web.Web;
+using Newtonsoft.Json;
 
 namespace SvgStudio.Web.Controllers
 {
@@ -24,7 +26,7 @@ namespace SvgStudio.Web.Controllers
 
         [HttpPost]
         [Route("Sync")]
-        public virtual async Task<JsonResult> Sync(MobileSyncRequest request)
+        public virtual async Task<JsonNetResult> Sync(MobileSyncRequest request)
         {
             MobileSyncResponse response = new MobileSyncResponse();
 
@@ -80,7 +82,7 @@ namespace SvgStudio.Web.Controllers
             var serverTemplates = await db.Templates.Where(x => x.IsActive).ToDictionaryAsync(x => x.Id);
             response.TemplateChanges = DetectServerChanges(serverTemplates, request.TemplateRowVersions);
 
-            return Json(response);
+            return new JsonNetResult(response, Formatting.Indented);
         }
 
         private EntityChangeData<T> DetectServerChanges<T>(Dictionary<string, T> serverRecords, Dictionary<string, byte[]> mobileRowVersions) where T : ISyncableRecord

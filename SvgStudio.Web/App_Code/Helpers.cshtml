@@ -1,3 +1,10 @@
 ﻿@helper YesNo(bool input) { 
     @(input ? "Yes" : "No")
 }
+
+@helper DeleteIcon() { 
+    <a href="#" class="delete-icon" data-confirm="Are you sure you want to delete this item?">
+        <i class="fa fa-trash"></i>
+        Delete
+    </a>
+}

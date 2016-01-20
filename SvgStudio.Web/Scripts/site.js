@@ -17,4 +17,15 @@
         var theme = $(this).val().toLowerCase();
         $('#themeCssLink').attr('href', 'https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/' + theme + '/bootstrap.min.css');
     });
+
+    $('[data-confirm]').click(function (e) {
+        var $this = $(this);
+        if (confirm($this.attr('data-confirm'))) {
+            $this.parent('form').submit();
+        }
+        else {
+            e.stopPropagation();
+            e.preventDefault();
+        }
+    });
 });
