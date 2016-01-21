@@ -1,0 +1,59 @@
+﻿@model SvgStudio.Web.ViewModels.Shapes.ShapeViewModel
+<script>
+    $(function () {
+        var widthId = '#@Html.IdFor(x => x.Width)';
+        var heightId = '#@Html.IdFor(x => x.Height)';
+        var elementIds = [widthId, heightId];
+
+        var xmlEditor = $('#@Html.IdFor(x => x.BasicShape_MarkupFragment.Content)').data('CodeMirrorInstance');
+
+        var updatePreviews = function () {
+            var data = {
+                width: $(widthId).val(),
+                height: $(heightId).val(),
+                xml: xmlEditor.getValue()
+            };
+
+            $.ajax({
+                url: '@Url.Action(MVC.Shapes.GeneratePreview())',
+                method: 'POST',
+                data: data,
+                success: function (preview) {
+                    $('#DefaultPreviewContainer').html(preview);
+                }
+            });
+
+            data.paletteId = '@AppSettings.PreviewPaletteId';
+            $.ajax({
+                url: '@Url.Action(MVC.Shapes.GeneratePreview())',
+                method: 'POST',
+                data: data,
+                success: function (preview) {
+                    $('#FilledPreviewContainer').html(preview);
+                }
+            });
+        };
+
+        $(elementIds.join(',')).change(updatePreviews);
+        xmlEditor.on('change', updatePreviews);
+        updatePreviews();
+
+        $('#autoCalcWidth').click(function (e) {
+            e.preventDefault();
+            var $svg = $('#DefaultPreviewContainer').find('svg');
+            if ($svg.length) {
+                var box = $svg[0].getBBox();
+                console.log(box.width);
+                $(widthId).val(box.width);
+            }
+        });
+        $('#autoCalcHeight').click(function (e) {
+            e.preventDefault();
+            var $svg = $('#DefaultPreviewContainer').find('svg');
+            if ($svg.length) {
+                var box = $svg[0].getBBox();
+                $(heightId).val(box.height);
+            }
+        });
+    });
+</script>

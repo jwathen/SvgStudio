@@ -72,8 +72,6 @@ Shapes:
         Name: Lion
         Width: 378
         Height: 334
-        NumberOfFillsSupported: 1
-        NumberOfStrokesSupported: 1
         SortOrder: 1
 Shape_CompatibilityTags:
     left_supporter:

@@ -28,8 +28,6 @@ namespace SvgStudio.Web.ViewModels.Shapes
         public string Name { get; set; }
         public string Width { get; set; }
         public string Height { get; set; }
-        public int NumberOfFillsSupported { get; set; }
-        public int NumberOfStrokesSupported { get; set; }
         public string LicenseId { get; set; }
         public string ContentUrl { get; set; }
         public string AttributionUrl { get; set; }
@@ -115,8 +113,6 @@ namespace SvgStudio.Web.ViewModels.Shapes
                 viewModel.Name = shape.Name;
                 viewModel.Width = shape.Width.ToString();
                 viewModel.Height = shape.Height.ToString();
-                viewModel.NumberOfFillsSupported = shape.NumberOfFillsSupported;
-                viewModel.NumberOfStrokesSupported = shape.NumberOfStrokesSupported;
             }
 
             viewModel.BasicShape_MarkupFragment = await MarkupFragmentViewModel.BuildAsync(shape?.BasicShape_MarkupFragmentId);
@@ -166,10 +162,8 @@ namespace SvgStudio.Web.ViewModels.Shapes
             shape.IsActive = this.IsActive;
             shape.ShapeType = this.ShapeType;
             shape.Name = this.Name;
-            shape.Width = int.Parse(this.Width);
-            shape.Height = int.Parse(this.Height);
-            shape.NumberOfFillsSupported = this.NumberOfFillsSupported;
-            shape.NumberOfStrokesSupported = this.NumberOfStrokesSupported;
+            shape.Width = double.Parse(this.Width);
+            shape.Height = double.Parse(this.Height);
 
             ContentLicense contentLicense = await db.ContentLicenses.FirstOrDefaultAsync(x => x.ShapeId == this.Id);
             if (contentLicense == null)
@@ -252,10 +246,8 @@ namespace SvgStudio.Web.ViewModels.Shapes
                 // Rendering Data
                 RuleFor(x => x.Name).NotEmpty().WithMessage("Shape name is required.");
                 RuleFor(x => x.Name).Must(BeUnique).When(IsNew).WithMessage("Shape names must be unique.  There is already a shape named \"{0}\".", x => x.Name);
-                RuleFor(x => x.Width).Must(BeAPositiveInteger).WithMessage("Width must be positive.");
-                RuleFor(x => x.Height).Must(BeAPositiveInteger).WithMessage("Width must be positive.");
-                RuleFor(x => x.NumberOfStrokesSupported).GreaterThanOrEqualTo(0).WithMessage("The number of fills supported must be positive.");
-                RuleFor(x => x.NumberOfFillsSupported).GreaterThanOrEqualTo(0).WithMessage("The number of strokes supported must be positive.");
+                RuleFor(x => x.Width).Must(BeAPositiveNumber).WithMessage("Width must be positive.");
+                RuleFor(x => x.Height).Must(BeAPositiveNumber).WithMessage("Width must be positive.");
                 RuleFor(x => x.CompatibilityTags).Must(AllBeValidTags).WithMessage("Invalid compatibility tag(s): {0}", x => string.Join(", ", x.GetInvalidCompatiblityTags()));
 
                 RuleFor(x => x.BasicShape_MarkupFragment).SetValidator(new MarkupFragmentViewModelValidator()).When(IsBasicShape);
@@ -269,10 +261,10 @@ namespace SvgStudio.Web.ViewModels.Shapes
             return !alreadyExists;
         }
 
-        public bool BeAPositiveInteger(string input)
+        public bool BeAPositiveNumber(string input)
         {
-            int number = 0;
-            if (int.TryParse(input, out number))
+            double number = 0;
+            if (double.TryParse(input, out number))
             {
                 return number >= 0;
             }

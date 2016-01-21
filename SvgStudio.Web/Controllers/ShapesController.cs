@@ -97,10 +97,9 @@ namespace SvgStudio.Web.Controllers
         [HttpPost]
         [ValidateInput(false)]
         [Route("GeneratePreview")]
-        public virtual ActionResult GeneratePreview(string width, 
+        public virtual ActionResult GeneratePreview(
+            string width, 
             string height, 
-            int numberOfFillsSupported, 
-            int numberOfStrokesSupported, 
             string xml, 
             string paletteId)
         {
@@ -108,10 +107,8 @@ namespace SvgStudio.Web.Controllers
             {
                 var factory = new DrawingFactory(db);
                 var drawingShape = new Shared.Drawing.BasicShape(
-                    int.Parse(width),
-                    int.Parse(height), 
-                    numberOfFillsSupported, 
-                    numberOfStrokesSupported, 
+                    double.Parse(width),
+                    double.Parse(height), 
                     null,
                     (x) => xml);
                 var palette = factory.BuildPalette(paletteId);
@@ -121,7 +118,7 @@ namespace SvgStudio.Web.Controllers
                     new XAttribute("width", renderResult.Width),
                     new XAttribute("height", renderResult.Height),
                     new XAttribute("version", "1.1"),
-                    new XAttribute("class", "center-block"));
+                    new XAttribute("class", "center-block svg-content"));
                 var defs = new XElement("defs");
                 defs.Add(renderResult.Defs);
                 var g = new XElement("g");

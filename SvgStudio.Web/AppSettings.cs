@@ -72,9 +72,19 @@ namespace SvgStudio.Web
             get { return ConfigurationManager.AppSettings["Password"]; }
         }
 
+        public static string PreviewPaletteId
+        {
+            get { return ConfigurationManager.AppSettings["PreviewPaletteId"]; }
+        }
+
         public static string UnobtrusiveJavaScriptEnabled
         {
             get { return ConfigurationManager.AppSettings["UnobtrusiveJavaScriptEnabled"]; }
+        }
+
+        public static string VecteezyPassword
+        {
+            get { return ConfigurationManager.AppSettings["VecteezyPassword"]; }
         }
 
         public static class Webpages

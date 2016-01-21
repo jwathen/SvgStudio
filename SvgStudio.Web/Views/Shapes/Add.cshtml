@@ -1,5 +1,5 @@
 ﻿@model SvgStudio.Web.ViewModels.Shapes.ShapeViewModel
-@{ 
+@{
     ViewBag.Title = "Add New Shape";
 }
 <h2>Shapes</h2>
@@ -25,4 +25,5 @@
 </div>
 @section scripts {
     @Html.Partial(MVC.Shared.Views._CodeMirrorScript)
+    @Html.Partial(MVC.Shapes.Views._LivePreviewScript)
 }

@@ -15,8 +15,6 @@
             <th>Active</th>
             <th>Width</th>
             <th>Height</th>
-            <th>Stokes</th>
-            <th>Fills</th>
             <th>Compatibility Tags</th>
         </tr>
     </thead>
@@ -31,8 +29,6 @@
                 <td>@Helpers.YesNo(shape.IsActive)</td>
                 <td>@shape.Width</td>
                 <td>@shape.Height</td>
-                <td>@shape.NumberOfStrokesSupported</td>
-                <td>@shape.NumberOfFillsSupported</td>
                 <td>
                     @if (shape.ExtractCompatiblityTags().Any())
                     {

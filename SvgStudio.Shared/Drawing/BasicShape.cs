@@ -13,17 +13,13 @@ namespace SvgStudio.Shared.Drawing
         private readonly Func<string, string> _markupFragmentAccessor;
 
         public BasicShape(
-            int width,
-            int height,
-            int numberOfFillsSupported,
-            int numberOfStrokesSupported,
+            double width,
+            double height,
             string markupFragmentId,
             Func<string, string> markupFragmentAccessor)
         {
             Width = width;
             Height = height;
-            NumberOfFillsSupported = numberOfFillsSupported;
-            NumberOfStrokesSupported = numberOfStrokesSupported;
             _markupFragmentId = markupFragmentId;
             _markupFragmentAccessor = markupFragmentAccessor;
         }

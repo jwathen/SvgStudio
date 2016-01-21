@@ -8,6 +8,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mobile", "Mobile", "{39E31AF2-EA56-44D8-9E00-4A9314C98E6A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{29B8F8B3-13AB-4185-9EFF-C97C54802E2F}"
+	ProjectSection(SolutionItems) = preProject
+		SvgStudio.Test\packages.config = SvgStudio.Test\packages.config
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SvgStudio.Mobile.Core", "Mobile\SvgStudio.Mobile.Core\SvgStudio.Mobile.Core.csproj", "{D55142EC-238D-4F15-AA1E-A5F9C9F45CCF}"
 EndProject

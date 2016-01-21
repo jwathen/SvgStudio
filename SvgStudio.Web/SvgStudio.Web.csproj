@@ -152,12 +152,16 @@
     </Compile>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\HelpController.cs" />
     <Compile Include="Controllers\LicensesController.cs" />
     <Compile Include="Controllers\MobileController.cs" />
     <Compile Include="Controllers\ShapesController.cs" />
     <Compile Include="Controllers\SvgStudioControllerBase.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="HelpController.generated.cs">
+      <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
     <Compile Include="LicensesController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
@@ -202,6 +206,8 @@
     <Content Include="Views\Shapes\Index.cshtml" />
     <Content Include="Views\Shapes\Edit.cshtml" />
     <Content Include="Views\Account\SignIn.cshtml" />
+    <Content Include="Views\Help\Index.cshtml" />
+    <Content Include="Views\Shapes\_LivePreviewScript.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

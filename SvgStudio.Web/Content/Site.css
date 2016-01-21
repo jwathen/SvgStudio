@@ -5,5 +5,9 @@
 .svg-container { 
 	padding: 1em;
     margin-bottom: 1em;
-    border: 1px solid gray
+}
+
+.svg-content { 
+    border: 1px solid gray;
+    padding: 1px;
 }

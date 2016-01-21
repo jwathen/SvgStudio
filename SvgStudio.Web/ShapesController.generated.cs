@@ -129,8 +129,6 @@ namespace SvgStudio.Web.Controllers
         {
             public readonly string width = "width";
             public readonly string height = "height";
-            public readonly string numberOfFillsSupported = "numberOfFillsSupported";
-            public readonly string numberOfStrokesSupported = "numberOfStrokesSupported";
             public readonly string xml = "xml";
             public readonly string paletteId = "paletteId";
         }
@@ -144,10 +142,12 @@ namespace SvgStudio.Web.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
+                public readonly string _LivePreviewScript = "_LivePreviewScript";
                 public readonly string Add = "Add";
                 public readonly string Edit = "Edit";
                 public readonly string Index = "Index";
             }
+            public readonly string _LivePreviewScript = "~/Views/Shapes/_LivePreviewScript.cshtml";
             public readonly string Add = "~/Views/Shapes/Add.cshtml";
             public readonly string Edit = "~/Views/Shapes/Edit.cshtml";
             public readonly string Index = "~/Views/Shapes/Index.cshtml";
@@ -225,19 +225,17 @@ namespace SvgStudio.Web.Controllers
         }
 
         [NonAction]
-        partial void GeneratePreviewOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string width, string height, int numberOfFillsSupported, int numberOfStrokesSupported, string xml, string paletteId);
+        partial void GeneratePreviewOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string width, string height, string xml, string paletteId);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult GeneratePreview(string width, string height, int numberOfFillsSupported, int numberOfStrokesSupported, string xml, string paletteId)
+        public override System.Web.Mvc.ActionResult GeneratePreview(string width, string height, string xml, string paletteId)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GeneratePreview, "https");
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "width", width);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "height", height);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "numberOfFillsSupported", numberOfFillsSupported);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "numberOfStrokesSupported", numberOfStrokesSupported);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "xml", xml);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "paletteId", paletteId);
-            GeneratePreviewOverride(callInfo, width, height, numberOfFillsSupported, numberOfStrokesSupported, xml, paletteId);
+            GeneratePreviewOverride(callInfo, width, height, xml, paletteId);
             return callInfo;
         }
 

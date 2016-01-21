@@ -124,6 +124,43 @@ values ('17357035047828-d1521e76cab048158', '17356785688033-9e07eca871544023a', 
 insert into Strokes(Id, PaletteId, Color, Width)
 values ('17357083173350-3b39df80b7d24a6ab', '17356785688033-9e07eca871544023a', '#CF4A30', 3)
 
+-- Kuler - Avoidance
+insert into Palettes(Id, Name)
+values ('17420954799731-e18a9862f86b46f8b', 'Kuler - Unlike')
+
+insert into Fills(Id, FillType, PaletteId, SolidColorFill_Color)
+values ('17421153295968-e9c3d2623fbe43058', 1, '17420954799731-e18a9862f86b46f8b', '#5E0042')
+
+insert into Fills(Id, FillType, PaletteId, SolidColorFill_Color)
+values ('17421183921350-269845b694794f829', 1, '17420954799731-e18a9862f86b46f8b', '#2C2233')
+
+insert into Fills(Id, FillType, PaletteId, SolidColorFill_Color)
+values ('17421213270184-37cc554d36bc4e4da', 1, '17420954799731-e18a9862f86b46f8b', '#005869')
+
+insert into Strokes(Id, PaletteId, Color, Width)
+values ('17421242042963-f4ada1babd2543d7a', '17420954799731-e18a9862f86b46f8b', '#00856A', 3)
+
+insert into Strokes(Id, PaletteId, Color, Width)
+values ('17421271418307-03693822f0e84dd2b', '17420954799731-e18a9862f86b46f8b', '#8DB500', 3)
+
+-- Kuler - Avoidance
+insert into Palettes(Id, Name)
+values ('17422281803177-3bbd1744cb3c42cea', 'Kuler - Unlike')
+
+insert into Fills(Id, FillType, PaletteId, SolidColorFill_Color)
+values ('17422424235869-70e7e6eae62242c79', 1, '17422281803177-3bbd1744cb3c42cea', '#F2F2F2')
+
+insert into Fills(Id, FillType, PaletteId, SolidColorFill_Color)
+values ('17422463839467-fadb26a9496d49219', 1, '17422281803177-3bbd1744cb3c42cea', '#C6E070')
+
+insert into Fills(Id, FillType, PaletteId, SolidColorFill_Color)
+values ('17422498266592-ff478c241f1c48279', 1, '17422281803177-3bbd1744cb3c42cea', '#91C46C')
+
+insert into Strokes(Id, PaletteId, Color, Width)
+values ('17422536079554-27b1c761270a4fbca', '17422281803177-3bbd1744cb3c42cea', '#287D7D', 3)
+
+insert into Strokes(Id, PaletteId, Color, Width)
+values ('17422566915641-6f330e34b9a54bc7b', '17422281803177-3bbd1744cb3c42cea', '#1C344C', 3)
 
 -- MARKUP FRAGMENTS
 insert into MarkupFragments(Id, Content)

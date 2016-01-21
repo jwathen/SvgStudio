@@ -10,12 +10,8 @@ namespace SvgStudio.Shared.Drawing
     {
         public string StorageId { get; set; }
         public string Name { get; set; }
-        public int Width { get; set; }
-        public int Height { get; set; }
-
-        public int NumberOfFillsSupported { get; set; }
-
-        public int NumberOfStrokesSupported { get; set; }
+        public double Width { get; set; }
+        public double Height { get; set; }
 
         public abstract RenderDesignResult Render(Palette palette);
     }

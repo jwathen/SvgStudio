@@ -89,9 +89,7 @@ namespace SvgStudio.Shared.Materializer
             {
                 result = new Drawing.BasicShape(
                     storageShape.Width, 
-                    storageShape.Height, 
-                    storageShape.NumberOfFillsSupported, 
-                    storageShape.NumberOfStrokesSupported, 
+                    storageShape.Height,
                     storageShape.BasicShape_MarkupFragmentId,
                     _db.LoadMarkupFragmentContent);
             }
@@ -106,8 +104,6 @@ namespace SvgStudio.Shared.Materializer
             result.Name = storageShape.Name;
             result.Width = storageShape.Width;
             result.Height = storageShape.Height;
-            result.NumberOfFillsSupported = storageShape.NumberOfFillsSupported;
-            result.NumberOfStrokesSupported = storageShape.NumberOfStrokesSupported;
 
             return result;
         }
