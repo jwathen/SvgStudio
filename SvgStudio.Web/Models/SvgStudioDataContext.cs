@@ -1,4 +1,5 @@
-﻿using SvgStudio.Shared.StorageModel;
+﻿using SvgStudio.Shared.Materializer;
+using SvgStudio.Shared.StorageModel;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -8,7 +9,7 @@ using System.Web;
 
 namespace SvgStudio.Web.Models
 {
-    public class SvgStudioDataContext : DbContext
+    public class SvgStudioDataContext : DbContext, IStorageRepository
     {
         public static SvgStudioDataContext Current
         {
@@ -81,5 +82,40 @@ namespace SvgStudio.Web.Models
         public DbSet<Shape_CompatibilityTag> Shape_CompatibilityTags { get; set; }
         public DbSet<Stroke> Strokes { get; set; }
         public DbSet<Template> Templates { get; set; }
+
+        public List<Fill> LoadFillsByPaletteId(string paletteId)
+        {
+            return Fills.Where(x => x.PaletteId == paletteId).ToList();
+        }
+
+        public List<Stroke> LoadStrokesByPaletteId(string paletteId)
+        {
+            return Strokes.Where(x => x.PaletteId == paletteId).ToList();
+        }
+
+        public Design LoadDesign(string id)
+        {
+            return Designs.Find(id);
+        }
+
+        public Shape LoadShape(string id)
+        {
+            return Shapes.Find(id);
+        }
+
+        public string LoadMarkupFragmentContent(string id)
+        {
+            return MarkupFragments.Where(x => x.Id == id).Select(x => x.Content).FirstOrDefault();
+        }
+
+        public Template LoadTemplate(string id)
+        {
+            return Templates.Find(id);
+        }
+
+        public List<DesignRegion> LoadDesignRegionsByTemplateId(string templateId)
+        {
+            return DesignRegions.Where(x => x.TemplateId == templateId).ToList();
+        }
     }
 }

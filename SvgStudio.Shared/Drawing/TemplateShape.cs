@@ -9,15 +9,23 @@ namespace SvgStudio.Shared.Drawing
 {
     public class TemplateShape : Shape
     {
+        private readonly string _clipPathMarkupId;
+        private readonly Func<string, string> _markupFragmentAcessor;
         private readonly Template _template = null;
         private Dictionary<string, Design> _designs = new Dictionary<string, Design>();
 
-        public TemplateShape(Template template)
+        public TemplateShape(Template template, string clipPathMarkupId, Func<string, string> _markupFragmentAccessor)
         {
             _template = template;
         }
 
-        public string ClipPathMarkup { get; set; }
+        public string ClipPathMarkup
+        {
+            get
+            {
+                return _markupFragmentAcessor(_clipPathMarkupId);
+            }
+        }
 
         public void AddDesign(string designRegionKey, Shape shape, Palette palette)
         {

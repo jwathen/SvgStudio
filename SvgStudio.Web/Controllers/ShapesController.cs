@@ -8,6 +8,8 @@ using System.Data.Entity;
 using System.Threading.Tasks;
 using SvgStudio.Shared.StorageModel;
 using SvgStudio.Web.ViewModels.Shapes;
+using System.Xml.Linq;
+using SvgStudio.Shared.Materializer;
 
 namespace SvgStudio.Web.Controllers
 {
@@ -90,6 +92,49 @@ namespace SvgStudio.Web.Controllers
                 }
             }
             return RedirectToAction(MVC.Shapes.Index());
+        }
+
+        [HttpPost]
+        [ValidateInput(false)]
+        [Route("GeneratePreview")]
+        public virtual ActionResult GeneratePreview(string width, 
+            string height, 
+            int numberOfFillsSupported, 
+            int numberOfStrokesSupported, 
+            string xml, 
+            string paletteId)
+        {
+            try
+            {
+                var factory = new DrawingFactory(db);
+                var drawingShape = new Shared.Drawing.BasicShape(
+                    int.Parse(width),
+                    int.Parse(height), 
+                    numberOfFillsSupported, 
+                    numberOfStrokesSupported, 
+                    null,
+                    (x) => xml);
+                var palette = factory.BuildPalette(paletteId);
+                var renderResult = drawingShape.Render(palette);
+
+                var svg = new XElement("svg",
+                    new XAttribute("width", renderResult.Width),
+                    new XAttribute("height", renderResult.Height),
+                    new XAttribute("version", "1.1"),
+                    new XAttribute("class", "center-block"));
+                var defs = new XElement("defs");
+                defs.Add(renderResult.Defs);
+                var g = new XElement("g");
+                g.Add(renderResult.Xml);
+                svg.Add(defs);
+                svg.Add(g);
+
+                return Content(svg.ToString(), "text/html");
+            }
+            catch (Exception ex)
+            {
+                return Content("Error: " + ex.Message, "text/html");
+            }
         }
     }
 }

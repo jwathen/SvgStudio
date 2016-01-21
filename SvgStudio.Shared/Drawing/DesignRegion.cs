@@ -16,6 +16,7 @@ namespace SvgStudio.Shared.Drawing
             Height = height;
         }
 
+        public string StorageId { get; set; }
         public string Name { get; set; }
         public int X { get; set; }
         public int Y { get; set; }
@@ -26,10 +27,10 @@ namespace SvgStudio.Shared.Drawing
         public Design BuildPlaceholder()
         {
             var palette = new Palette();
-            palette.Strokes.Add(new Stroke { Color = Color.FromName("DarkGray"), Width = 1, DashArray = new[] { 5, 5 } });
+            palette.Strokes.Add(new Stroke { Color = Color.FromName("DarkGray"), Width = 1, DashArray = "5,5" });
 
             string xml = string.Format("<rect width=\"{0}\" height=\"{1}\" data-stroke-index=\"0\" data-fill-index=\"0\" />", Width, Height);
-            var shape = new BasicShape(Width, Height, 1, 1, xml);
+            var shape = new BasicShape(Width, Height, 1, 1, null, (x) => xml);
 
             return new Design { Shape = shape, Palette = palette };
         }

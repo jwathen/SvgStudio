@@ -8,6 +8,8 @@ namespace SvgStudio.Shared.Drawing
 {
     public abstract class Fill : IDefProvider
     {
+        public string StorageId { get; set; }
+
         public abstract void ApplyTo(XElement target);
         public abstract DefinitionCollection GetDefs();
     }

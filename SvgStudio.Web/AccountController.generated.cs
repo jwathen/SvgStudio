@@ -87,6 +87,15 @@ namespace SvgStudio.Web.Controllers
         }
 
 
+        static readonly ActionParamsClass_SignIn s_params_SignIn = new ActionParamsClass_SignIn();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_SignIn SignInParams { get { return s_params_SignIn; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_SignIn
+        {
+            public readonly string username = "username";
+            public readonly string password = "password";
+        }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ViewsClass Views { get { return s_views; } }
@@ -97,7 +106,9 @@ namespace SvgStudio.Web.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
+                public readonly string SignIn = "SignIn";
             }
+            public readonly string SignIn = "~/Views/Account/SignIn.cshtml";
         }
     }
 
@@ -112,8 +123,21 @@ namespace SvgStudio.Web.Controllers
         [NonAction]
         public override System.Web.Mvc.ActionResult SignIn()
         {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SignIn);
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SignIn, "https");
             SignInOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void SignInOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string username, string password);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult SignIn(string username, string password)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SignIn, "https");
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "username", username);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "password", password);
+            SignInOverride(callInfo, username, password);
             return callInfo;
         }
 
@@ -123,7 +147,7 @@ namespace SvgStudio.Web.Controllers
         [NonAction]
         public override System.Web.Mvc.ActionResult SignOut()
         {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SignOut);
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SignOut, "https");
             SignOutOverride(callInfo);
             return callInfo;
         }

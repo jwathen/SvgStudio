@@ -16,7 +16,7 @@ namespace SvgStudio.Web.ViewModels.Shared
     {
         public string Id { get; set; }
         [AllowHtml]
-        public string Content { get; set; }
+        public string Content { get; set; }        
 
         public static async Task<MarkupFragmentViewModel> BuildAsync(string id)
         {

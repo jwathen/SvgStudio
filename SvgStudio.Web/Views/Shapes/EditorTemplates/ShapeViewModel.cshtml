@@ -66,8 +66,25 @@
             <p>Options are: @Model.CompatibilityTagOptions</p>
         </div>
     </div>
-    @Html.EditorFor(x => x.BasicShape_MarkupFragment)
+    <div class="col-lg-12">
+        @Html.EditorFor(x => x.BasicShape_MarkupFragment)
+    </div>
+    <div class="col-lg-6">
+        <p>
+            <strong>Preview (default):</strong>
+        </p>
+        <div id="DefaultPreviewContainer" class="svg-container">
+            
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <p>
+            <strong>Preview (filled):</strong>
+        </p>
+        <div id="FilledPreviewContainer" class="svg-container">
+
+        </div>
+    </div>
 </fieldset>
 @Html.HiddenFor(x => x.Id)
 @Html.HiddenFor(x => x.ShapeType)
-

@@ -85,11 +85,10 @@ values ('16286326311881-9b53368169a34e299|16287860489062-1944ba15018e4787b', '16
 insert into DesignRegion_CompatibilityTag(Id, DesignRegionId, CompatibilityTagId)
 values ('16286544643326-dbe98aecd80b4a348|16287889574439-1a0f21d3bf784920a', '16286544643326-dbe98aecd80b4a348', '16287889574439-1a0f21d3bf784920a')
 
--- PALETTES
+-- Kuler - sandy stone beach ocean diver
 insert into Palettes(Id, Name)
 values ('16299015013094-5c5eb130afac4702b', 'Kuler - sandy stone beach ocean diver')
 
--- FILLS
 insert into Fills(Id, FillType, PaletteId, SolidColorFill_Color)
 values ('16299528512142-1b9891c0b7f54f4ca', 1, '16299015013094-5c5eb130afac4702b', '#E6E2AF')
 
@@ -99,12 +98,32 @@ values ('16299981008008-60c93488c10b4d8f8', 1, '16299015013094-5c5eb130afac4702b
 insert into Fills(Id, FillType, PaletteId, SolidColorFill_Color)
 values ('16300158507824-53241c6f467a48e6a', 1, '16299015013094-5c5eb130afac4702b', '#EFECCA')
 
--- STROKES
 insert into Strokes(Id, PaletteId, Color, Width)
 values ('16300705545315-0647a7c0f57d469f9', '16299015013094-5c5eb130afac4702b', '#002F2F', 3)
 
 insert into Strokes(Id, PaletteId, Color, Width)
 values ('16300961050852-addaf2b8800641fbb', '16299015013094-5c5eb130afac4702b', '#046380', 3)
+
+
+-- Kuler - unlike
+insert into Palettes(Id, Name)
+values ('17356785688033-9e07eca871544023a', 'Kuler - Unlike')
+
+insert into Fills(Id, FillType, PaletteId, SolidColorFill_Color)
+values ('17358222366265-24f0c5de692e473d8', 1, '17356785688033-9e07eca871544023a', '#88A825')
+
+insert into Fills(Id, FillType, PaletteId, SolidColorFill_Color)
+values ('17356964620568-ac09690fdc494667a', 1, '17356785688033-9e07eca871544023a', '#35203B')
+
+insert into Fills(Id, FillType, PaletteId, SolidColorFill_Color)
+values ('17357002781865-cfe7955c55d049d99', 1, '17356785688033-9e07eca871544023a', '#911146')
+
+insert into Strokes(Id, PaletteId, Color, Width)
+values ('17357035047828-d1521e76cab048158', '17356785688033-9e07eca871544023a', '#ED8C2B', 3)
+
+insert into Strokes(Id, PaletteId, Color, Width)
+values ('17357083173350-3b39df80b7d24a6ab', '17356785688033-9e07eca871544023a', '#CF4A30', 3)
+
 
 -- MARKUP FRAGMENTS
 insert into MarkupFragments(Id, Content)

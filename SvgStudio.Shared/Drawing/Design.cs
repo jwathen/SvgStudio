@@ -12,6 +12,7 @@ namespace SvgStudio.Shared.Drawing
             Palette = new Palette();
         }
 
+        public string StorageId { get; set; }
         public Shape Shape { get; set; }
         public Palette Palette { get; set; }
 

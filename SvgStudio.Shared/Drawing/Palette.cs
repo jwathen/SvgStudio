@@ -13,6 +13,7 @@ namespace SvgStudio.Shared.Drawing
             Fills = new List<Fill>();
         }
 
+        public string StorageId { get; set; }
         public List<Stroke> Strokes { get; private set; }
         public List<Fill> Fills { get; private set; }
 

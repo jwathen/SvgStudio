@@ -9,11 +9,22 @@ namespace SvgStudio.Shared.Drawing
 {
     public class Stroke
     {
+        public static Stroke FromStorageModel(StorageModel.Stroke stroke)
+        {
+            return new Stroke
+            {
+                Color = Color.FromName(stroke.Color),
+                Width = stroke.Width,
+                // DashArray = TODO
+            };
+        }
+
+        public string StorageId { get; set; }
         public Color Color { get; set; }
 
         public int Width { get; set; }
 
-        public int[] DashArray { get; set; }
+        public string DashArray { get; set; }
 
         public void ApplyTo(XElement target)
         {
@@ -58,7 +69,7 @@ namespace SvgStudio.Shared.Drawing
                     dashArrayAttr = new XAttribute("stroke-dasharry", string.Empty);
                     target.Add(dashArrayAttr);
                 }
-                dashArrayAttr.Value = string.Join(",", DashArray);
+                dashArrayAttr.Value = DashArray;
             }
         }
     }

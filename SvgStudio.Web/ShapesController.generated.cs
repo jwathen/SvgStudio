@@ -63,8 +63,14 @@ namespace SvgStudio.Web.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> Edit()
         {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Edit);
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Edit, "https");
             return System.Threading.Tasks.Task.FromResult(callInfo as System.Web.Mvc.ActionResult);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult GeneratePreview()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GeneratePreview, "https");
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -85,6 +91,7 @@ namespace SvgStudio.Web.Controllers
             public readonly string Index = "Index";
             public readonly string Add = "Add";
             public readonly string Edit = "Edit";
+            public readonly string GeneratePreview = "GeneratePreview";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -93,6 +100,7 @@ namespace SvgStudio.Web.Controllers
             public const string Index = "Index";
             public const string Add = "Add";
             public const string Edit = "Edit";
+            public const string GeneratePreview = "GeneratePreview";
         }
 
 
@@ -112,6 +120,19 @@ namespace SvgStudio.Web.Controllers
         {
             public readonly string id = "id";
             public readonly string model = "model";
+        }
+        static readonly ActionParamsClass_GeneratePreview s_params_GeneratePreview = new ActionParamsClass_GeneratePreview();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_GeneratePreview GeneratePreviewParams { get { return s_params_GeneratePreview; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_GeneratePreview
+        {
+            public readonly string width = "width";
+            public readonly string height = "height";
+            public readonly string numberOfFillsSupported = "numberOfFillsSupported";
+            public readonly string numberOfStrokesSupported = "numberOfStrokesSupported";
+            public readonly string xml = "xml";
+            public readonly string paletteId = "paletteId";
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -151,7 +172,7 @@ namespace SvgStudio.Web.Controllers
         [NonAction]
         public override System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> Index()
         {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index, "https");
             IndexOverride(callInfo);
             return System.Threading.Tasks.Task.FromResult(callInfo as System.Web.Mvc.ActionResult);
         }
@@ -162,7 +183,7 @@ namespace SvgStudio.Web.Controllers
         [NonAction]
         public override System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> Add()
         {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Add);
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Add, "https");
             AddOverride(callInfo);
             return System.Threading.Tasks.Task.FromResult(callInfo as System.Web.Mvc.ActionResult);
         }
@@ -173,7 +194,7 @@ namespace SvgStudio.Web.Controllers
         [NonAction]
         public override System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> Add(SvgStudio.Web.ViewModels.Shapes.ShapeViewModel model)
         {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Add);
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Add, "https");
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "model", model);
             AddOverride(callInfo, model);
             return System.Threading.Tasks.Task.FromResult(callInfo as System.Web.Mvc.ActionResult);
@@ -185,7 +206,7 @@ namespace SvgStudio.Web.Controllers
         [NonAction]
         public override System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> Edit(string id)
         {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Edit);
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Edit, "https");
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             EditOverride(callInfo, id);
             return System.Threading.Tasks.Task.FromResult(callInfo as System.Web.Mvc.ActionResult);
@@ -197,10 +218,27 @@ namespace SvgStudio.Web.Controllers
         [NonAction]
         public override System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> Edit(SvgStudio.Web.ViewModels.Shapes.ShapeViewModel model)
         {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Edit);
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Edit, "https");
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "model", model);
             EditOverride(callInfo, model);
             return System.Threading.Tasks.Task.FromResult(callInfo as System.Web.Mvc.ActionResult);
+        }
+
+        [NonAction]
+        partial void GeneratePreviewOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string width, string height, int numberOfFillsSupported, int numberOfStrokesSupported, string xml, string paletteId);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult GeneratePreview(string width, string height, int numberOfFillsSupported, int numberOfStrokesSupported, string xml, string paletteId)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GeneratePreview, "https");
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "width", width);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "height", height);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "numberOfFillsSupported", numberOfFillsSupported);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "numberOfStrokesSupported", numberOfStrokesSupported);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "xml", xml);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "paletteId", paletteId);
+            GeneratePreviewOverride(callInfo, width, height, numberOfFillsSupported, numberOfStrokesSupported, xml, paletteId);
+            return callInfo;
         }
 
     }

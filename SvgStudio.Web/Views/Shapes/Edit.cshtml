@@ -30,4 +30,48 @@
 </div>
 @section scripts {
     @Html.Partial(MVC.Shared.Views._CodeMirrorScript)
+    <script>
+        $(function () {
+            var widthId = '#@Html.IdFor(x => x.Width)';
+            var heightId = '#@Html.IdFor(x => x.Height)';
+            var numberOfStrokesSupportedId = '#@Html.IdFor(x => x.NumberOfStrokesSupported)';
+            var numberOfFillsSupportedId = '#@Html.IdFor(x => x.NumberOfFillsSupported)';
+            var elementIds = [widthId, heightId, numberOfStrokesSupportedId, numberOfFillsSupportedId];
+
+            var xmlEditor = $('#@Html.IdFor(x => x.BasicShape_MarkupFragment.Content)').data('CodeMirrorInstance');
+
+            var updatePreviews = function () {
+                var data = {
+                    width: $(widthId).val(),
+                    height: $(heightId).val(),
+                    numberOfStrokesSupported: $(numberOfStrokesSupportedId).val(),
+                    numberOfFillsSupported: $(numberOfFillsSupportedId).val(),
+                    xml: xmlEditor.getValue()
+                };
+
+                $.ajax({
+                    url: '@Url.Action(MVC.Shapes.GeneratePreview())',
+                    method: 'POST',
+                    data: data,
+                    success: function (preview) {
+                        $('#DefaultPreviewContainer').html(preview);
+                    }
+                });
+
+                data.paletteId = '17356785688033-9e07eca871544023a';
+                $.ajax({
+                    url: '@Url.Action(MVC.Shapes.GeneratePreview())',
+                    method: 'POST',
+                    data: data,
+                    success: function (preview) {
+                        $('#FilledPreviewContainer').html(preview);
+                    }
+                });
+            };
+
+            $(elementIds.join(',')).change(updatePreviews);
+            xmlEditor.on('change', updatePreviews);
+            updatePreviews();
+        });
+    </script>
 }

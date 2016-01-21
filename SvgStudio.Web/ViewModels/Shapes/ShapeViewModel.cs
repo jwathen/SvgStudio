@@ -12,6 +12,7 @@ using System.Threading;
 using System.Xml.Linq;
 using System.Web.Mvc;
 using SvgStudio.Web.ViewModels.Shared;
+using SvgStudio.Shared.Materializer;
 
 namespace SvgStudio.Web.ViewModels.Shapes
 {

@@ -13,6 +13,7 @@ namespace SvgStudio.Shared.Drawing
             DesignRegions = new List<DesignRegion>();
         }
 
+        public string StorageId { get; set; }
         public string Name { get; set; }
         public List<DesignRegion> DesignRegions { get; private set; }
     }

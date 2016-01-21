@@ -7,13 +7,14 @@
 <script>
     $(function () {
         $('.xml-editor').each(function () {
-            CodeMirror.fromTextArea($(this)[0],
+            var editor = CodeMirror.fromTextArea($(this)[0],
             {
                 mode: 'xml',
                 theme: '@AppSettings.CodeMirrorTheme',
                 lineNumbers: true,
                 autoCloseTags: true
             });
+            $(this).data('CodeMirrorInstance', editor);
         });
     });
 </script>

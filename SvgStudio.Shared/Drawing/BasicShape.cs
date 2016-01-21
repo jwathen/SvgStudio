@@ -9,21 +9,32 @@ namespace SvgStudio.Shared.Drawing
 {
     public class BasicShape : Shape
     {
+        private readonly string _markupFragmentId;
+        private readonly Func<string, string> _markupFragmentAccessor;
+
         public BasicShape(
             int width,
             int height,
             int numberOfFillsSupported,
             int numberOfStrokesSupported,
-            string xml)
+            string markupFragmentId,
+            Func<string, string> markupFragmentAccessor)
         {
             Width = width;
             Height = height;
             NumberOfFillsSupported = numberOfFillsSupported;
             NumberOfStrokesSupported = numberOfStrokesSupported;
-            Markup = XElement.Parse(xml);
+            _markupFragmentId = markupFragmentId;
+            _markupFragmentAccessor = markupFragmentAccessor;
         }
 
-        public XElement Markup { get; set; }
+        public XElement Markup
+        {
+            get
+            {
+                return XElement.Parse(_markupFragmentAccessor(_markupFragmentId));
+            }
+        }
 
         public override RenderDesignResult Render(Palette palette)
         {
@@ -33,24 +44,27 @@ namespace SvgStudio.Shared.Drawing
 
             XElement shape = new XElement(this.Markup);
 
-            foreach (var element in shape.DescendantsAndSelf())
+            if (palette != null)
             {
-                var strokeIndexAttr = element.Attribute("data-stroke-index");
-                if (strokeIndexAttr != null)
+                foreach (var element in shape.DescendantsAndSelf())
                 {
-                    int index = int.Parse(strokeIndexAttr.Value);
-                    palette.GetStroke(index).ApplyTo(element);
-                    strokeIndexAttr.Remove();
-                }
+                    var strokeIndexAttr = element.Attribute("data-stroke-index");
+                    if (strokeIndexAttr != null)
+                    {
+                        int index = int.Parse(strokeIndexAttr.Value);
+                        palette.GetStroke(index).ApplyTo(element);
+                        strokeIndexAttr.Remove();
+                    }
 
-                var fillIndexAttr = element.Attribute("data-fill-index");
-                if (fillIndexAttr != null)
-                {
-                    int index = int.Parse(fillIndexAttr.Value);
-                    var fill = palette.GetFill(index);
-                    fill.ApplyTo(element);
-                    result.Defs.Add(fill.GetDefs());
-                    fillIndexAttr.Remove();
+                    var fillIndexAttr = element.Attribute("data-fill-index");
+                    if (fillIndexAttr != null)
+                    {
+                        int index = int.Parse(fillIndexAttr.Value);
+                        var fill = palette.GetFill(index);
+                        fill.ApplyTo(element);
+                        result.Defs.Add(fill.GetDefs());
+                        fillIndexAttr.Remove();
+                    }
                 }
             }
 
