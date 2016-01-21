@@ -6,6 +6,8 @@ using System.Web.Mvc;
 
 namespace SvgStudio.Web.Controllers
 {
+    [Authorize]
+    [RequireHttps]
     public partial class HelpController : Controller
     {
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
