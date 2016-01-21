@@ -8,21 +8,35 @@
     We're trying to create a mobile application to create a Coat of Arms as seen at
     <a target="_blank" href="http://imgur.com/gallery/Al2N6tv">http://imgur.com/gallery/Al2N6tv</a>
 </p>
+<h3>LLC</h3>
+<p>
+    I've submitted the documentation to create our LLC.  It's official name is <strong>CD312F2E, LLC</strong> and you can check if the
+    filing has been processed at the Arizona Corporation Commission site.  If this link returns a result then that means we're in business :)
+</p>
+<p>
+    <a target="_blank" href="http://ecorp.azcc.gov/Search/Details?Category=0&Type=1&Term=cd312f2e&IsActive=True&EntityType=0&Check=">
+        http://ecorp.azcc.gov/Search/Details?Category=0&Type=1&Term=cd312f2e&IsActive=True&EntityType=0&Check=
+    </a>
+</p>
 <h3>Finding Images</h3>
 <h4>What kind of images do we want?</h4>
 <p>
-    We need to find a bunch of images that could fit into one of the slots labeled in step 11 of the Imgur post.
+    We need to find a bunch of images that could fit into one of the slots labeled in step 11 of the Imgur post.  Feel free to find more
+    &quot;fun&quot; images though. For example, just because a real Coat of Arms might have a fancy eagle on the shield that doesn't mean
+    that ours can't have a giant pot leaf or an American flag.  Try to think of it in terms of people just having fun messing around on their
+    phones.  In particular I'd like you to search for graphics to fill the slots with a star below.  For supporters (the animals on either
+    side of the shield) you don't need to find graphics that face in both directions.  We can use one graphic have it correctly flipped when it appears
+    in the app.
     <ul>
-        <li>Coronet</li>
+        <li>Coronet <small><i class="fa fa-star"></i></small></li>
         <li>Crest</li>
-        <li>Helm</li>
+        <li>Helm <small><i class="fa fa-star"></i></small></li>
         <li>Mantelling</li>
         <li>Motto</li>
         <li>Shield</li>
-        <li>Supporter (left and right)</li>
-        <li>Stamp*</li>
+        <li>Supporter<small><i class="fa fa-star"></i></small></li>
+        <li>Stamp* <small><i class="fa fa-star"></i></small></li>
     </ul>
-
     <em>
         * stamps are graphics that will be &quot;stamped&quot; onto the shield.  In the Imgur post it's black and white polka dots
         and red and white
@@ -31,7 +45,8 @@
     </em>
 </p>
 <p>
-    It's best to find images that don't have a ton of gradient fills.  For example, we would rather use the image on the right than the one on the left.
+    It's best to find images that don't have a ton of gradient fills.  For example, we would rather use the image on the right than the one on the left.  
+    See how the colors are more flat?
     <div class="col-lg-6">
         <h5 class="text-danger">
             <i class="fa fa-times"></i> Bad
@@ -76,28 +91,37 @@
 <p>Once you've found an image, follow these steps to import it into our application:</p>
 <ol>
     <li>Save the *.svg file to your hard drive.</li>
-    <li>Open up the svg file with Inkscape.</li>
+    <li>Open up the *.svg file with Inkscape.</li>
     <li>
-        Adjust the file so that the canvas is the exact same size as the graphic. Drag a box around the
+        First let's adjust the file so that the canvas is the exact same size as the graphic. Drag a box around the
         graphic to select it.  Click <em>File</em> -> <em>Document Properites</em>.
         Expand the <em>Resize page to content...</em> option then click the <em>Resize page to drawing or selection</em>
         button.  Close out of the <em>Document Properites</em> window.  You should see the canvas size shrink down so it's
         the same size as the graphic.
     </li>
     <li>
-        Resave the file as an optimized SVG.  Click <em>File</em> -> <em>Save As</em> and choose <em>Optimized SVG (*.svg)</em> near
+        Now let's resave the file as an optimized SVG.  Saving as an optimized SVG will clean out
+        a bunch of the garbage in the XML so that it's easier to make sense of when you look at it in the next steps.
+          Click <em>File</em> -> <em>Save As</em> and choose <em>Optimized SVG (*.svg)</em> near
         bottom of the list as the file type to save it as.  Hit save. You'll be presented with the a window full of options for how 
         to save the optimized SVG.  Check <strong>all</strong> of the options except for <em>Keep editor data</em>. 
-        Go ahead and overwrite the original file that you downloaded. Saving as an optimized SVG will clean out
-        a bunch of the garbage in the XML so that it's easier to make sense of when you look at it in the next steps.
+        Go ahead and overwrite the original file that you downloaded.
     </li>
     <li>
         Open up the *.svg file with Sublime Text or some other decent text editor and tremble at how scary the XML looks :)
     </li>
     <li>
         Open up the @Html.ActionLink("Add New Shape", MVC.Shapes.Add(), new { target = "_blank" }).
-        <ul>
-            <li><strong>Governing License</strong> Th</li>
-        </ul>
+    </li>
+    <li>
+        Copy the XML from the *.svg file and paste it into the XML editor at the bottom of the page.  Click the &quot;magic wand&quot; icon next to the XML editor
+        and hope it formats the XML nicely for you.  If it does then click the magic wand next to height and width to auto calculate those as well.
+    </li>
+    <li>
+        Fill out the licensing information, shape name, and compatiblity tags and then save the shape.
+    </li>
+    <li>
+        TODO: The part of this that takes some art is setting up the place holders for strokes and fills I'll to walk you through it a few times 
+        over remote desktop before you get the hang of it but then I'll ad more information about it here.
     </li>
 </ol>

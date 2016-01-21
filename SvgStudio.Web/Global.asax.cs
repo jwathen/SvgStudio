@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -16,6 +17,7 @@ namespace SvgStudio.Web
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             FluentValidation.Mvc.FluentValidationModelValidatorProvider.Configure();
+            Database.SetInitializer<SvgStudioDataContext>(null);
         }
 
         protected void Application_BeginRequest()

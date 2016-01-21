@@ -15,7 +15,7 @@ namespace SvgStudio.Web.Controllers
             ViewBag.Nav = "Help";
         }
 
-        [Route("Help/Index")]
+        [Route("Help")]
         public virtual ActionResult Index()
         {
             return View();

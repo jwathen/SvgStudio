@@ -105,7 +105,7 @@ insert into Strokes(Id, PaletteId, Color, Width)
 values ('16300961050852-addaf2b8800641fbb', '16299015013094-5c5eb130afac4702b', '#046380', 3)
 
 
--- Kuler - unlike
+-- Kuler - Unlike
 insert into Palettes(Id, Name)
 values ('17356785688033-9e07eca871544023a', 'Kuler - Unlike')
 
@@ -126,7 +126,7 @@ values ('17357083173350-3b39df80b7d24a6ab', '17356785688033-9e07eca871544023a', 
 
 -- Kuler - Avoidance
 insert into Palettes(Id, Name)
-values ('17420954799731-e18a9862f86b46f8b', 'Kuler - Unlike')
+values ('17420954799731-e18a9862f86b46f8b', 'Kuler - Avoidance')
 
 insert into Fills(Id, FillType, PaletteId, SolidColorFill_Color)
 values ('17421153295968-e9c3d2623fbe43058', 1, '17420954799731-e18a9862f86b46f8b', '#5E0042')
@@ -143,9 +143,9 @@ values ('17421242042963-f4ada1babd2543d7a', '17420954799731-e18a9862f86b46f8b', 
 insert into Strokes(Id, PaletteId, Color, Width)
 values ('17421271418307-03693822f0e84dd2b', '17420954799731-e18a9862f86b46f8b', '#8DB500', 3)
 
--- Kuler - Avoidance
+-- Kuler - My Portfolio
 insert into Palettes(Id, Name)
-values ('17422281803177-3bbd1744cb3c42cea', 'Kuler - Unlike')
+values ('17422281803177-3bbd1744cb3c42cea', 'Kuler - My Portfolio')
 
 insert into Fills(Id, FillType, PaletteId, SolidColorFill_Color)
 values ('17422424235869-70e7e6eae62242c79', 1, '17422281803177-3bbd1744cb3c42cea', '#F2F2F2')
