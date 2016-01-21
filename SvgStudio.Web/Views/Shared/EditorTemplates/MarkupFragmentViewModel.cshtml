@@ -2,7 +2,7 @@
 
 <div class="form-group">
     @Html.HiddenFor(x => x.Id)
-    <label for="@Html.NameFor(x => x.Content)">XML</label>
+    <label for="@Html.NameFor(x => x.Content)">XML <a id="autoFixShapeMarkup" href="#"><i class="fa fa-magic"></i></a></label>
     <div style="border: 1px solid gray;">
         @Html.TextAreaFor(x => x.Content, new { rows = 8, @class = "form-control xml-editor" })
     </div>

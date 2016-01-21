@@ -72,6 +72,12 @@ namespace SvgStudio.Web.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GeneratePreview, "https");
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult AutoFixShapeMarkup()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AutoFixShapeMarkup, "https");
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ShapesController Actions { get { return MVC.Shapes; } }
@@ -92,6 +98,7 @@ namespace SvgStudio.Web.Controllers
             public readonly string Add = "Add";
             public readonly string Edit = "Edit";
             public readonly string GeneratePreview = "GeneratePreview";
+            public readonly string AutoFixShapeMarkup = "AutoFixShapeMarkup";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -101,6 +108,7 @@ namespace SvgStudio.Web.Controllers
             public const string Add = "Add";
             public const string Edit = "Edit";
             public const string GeneratePreview = "GeneratePreview";
+            public const string AutoFixShapeMarkup = "AutoFixShapeMarkup";
         }
 
 
@@ -131,6 +139,14 @@ namespace SvgStudio.Web.Controllers
             public readonly string height = "height";
             public readonly string xml = "xml";
             public readonly string paletteId = "paletteId";
+        }
+        static readonly ActionParamsClass_AutoFixShapeMarkup s_params_AutoFixShapeMarkup = new ActionParamsClass_AutoFixShapeMarkup();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_AutoFixShapeMarkup AutoFixShapeMarkupParams { get { return s_params_AutoFixShapeMarkup; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_AutoFixShapeMarkup
+        {
+            public readonly string xml = "xml";
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -236,6 +252,18 @@ namespace SvgStudio.Web.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "xml", xml);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "paletteId", paletteId);
             GeneratePreviewOverride(callInfo, width, height, xml, paletteId);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void AutoFixShapeMarkupOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string xml);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult AutoFixShapeMarkup(string xml)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AutoFixShapeMarkup, "https");
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "xml", xml);
+            AutoFixShapeMarkupOverride(callInfo, xml);
             return callInfo;
         }
 

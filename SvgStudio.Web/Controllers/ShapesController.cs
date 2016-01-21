@@ -10,6 +10,7 @@ using SvgStudio.Shared.StorageModel;
 using SvgStudio.Web.ViewModels.Shapes;
 using System.Xml.Linq;
 using SvgStudio.Shared.Materializer;
+using SvgStudio.Web.Helpers;
 
 namespace SvgStudio.Web.Controllers
 {
@@ -132,6 +133,41 @@ namespace SvgStudio.Web.Controllers
             {
                 return Content("Error: " + ex.Message, "text/html");
             }
+        }
+
+        [HttpPost]
+        [ValidateInput(false)]
+        [Route("AutoFixShapeMarkup")]
+        public virtual ActionResult AutoFixShapeMarkup(string xml)
+        {
+            bool gWrapped = false;
+            try
+            {
+                XElement.Parse(xml);
+            }
+            catch
+            {
+                xml = "<g>" + xml + "</g>";
+                gWrapped = true;
+            }
+
+            try
+            {
+                xml = XmlHelper.RemoveAllNamespaces(xml);
+                XElement svg = XElement.Parse(xml);
+                if (svg.Name == "svg" || gWrapped)
+                {
+                    string result = string.Join(Environment.NewLine, svg.Elements().Select(x => XmlHelper.EmitStrokeAndFillAttributesFirst(x)));
+                    return Content(result);
+                }
+                else
+                {
+                    string result = svg.ToString();
+                    return Content(result);
+                }
+            }
+            catch { }
+            return Content(string.Empty);
         }
     }
 }

@@ -45,6 +45,7 @@
                 var box = $svg[0].getBBox();
                 console.log(box.width);
                 $(widthId).val(box.width);
+                updatePreviews();
             }
         });
         $('#autoCalcHeight').click(function (e) {
@@ -53,7 +54,24 @@
             if ($svg.length) {
                 var box = $svg[0].getBBox();
                 $(heightId).val(box.height);
+                updatePreviews();
             }
+        });
+
+        $('#autoFixShapeMarkup').click(function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: '@Url.Action(MVC.Shapes.AutoFixShapeMarkup())',
+                method: 'POST',
+                data: {
+                    xml: xmlEditor.getValue()
+                },
+                success: function (fixed) {
+                    if (fixed) {
+                        xmlEditor.setValue(fixed);
+                    }
+                }
+            });
         });
     });
 </script>

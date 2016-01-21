@@ -114,6 +114,11 @@ namespace SvgStudio.Web.ViewModels.Shapes
                 viewModel.Width = shape.Width.ToString();
                 viewModel.Height = shape.Height.ToString();
             }
+            else
+            {
+                viewModel.Width = "400";
+                viewModel.Height = "400";
+            }
 
             viewModel.BasicShape_MarkupFragment = await MarkupFragmentViewModel.BuildAsync(shape?.BasicShape_MarkupFragmentId);
 

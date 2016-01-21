@@ -163,6 +163,7 @@
     <Compile Include="HelpController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\XmlHelper.cs" />
     <Compile Include="LicensesController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>

@@ -28,7 +28,11 @@ namespace SvgStudio.Shared.Drawing
         {
             get
             {
-                return XElement.Parse(_markupFragmentAccessor(_markupFragmentId));
+                StringBuilder markup = new StringBuilder();
+                markup.AppendLine("<g>");
+                markup.Append(_markupFragmentAccessor(_markupFragmentId));
+                markup.AppendLine("</g>");
+                return XElement.Parse(markup.ToString());
             }
         }
 
