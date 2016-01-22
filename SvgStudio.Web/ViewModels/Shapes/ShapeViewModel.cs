@@ -55,6 +55,20 @@ namespace SvgStudio.Web.ViewModels.Shapes
             }
         }
 
+        public IEnumerable<SelectListItem> PaletteOptions
+        {
+            get
+            {
+                var db = SvgStudioDataContext.Current;
+                return (from x in db.Palettes
+                        select new SelectListItem
+                        {
+                            Text = x.Name,
+                            Value = x.Id
+                        }).ToList();
+            }
+        }
+
         public string CompatibilityTagOptions
         {
             get

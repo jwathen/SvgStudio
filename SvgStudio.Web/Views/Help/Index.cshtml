@@ -114,7 +114,41 @@
         Open up the @Html.ActionLink("Add New Shape", MVC.Shapes.Add(), new { target = "_blank" }).
     </li>
     <li>
-        Copy the XML from the *.svg file and paste it into the XML editor at the bottom of the page.  Click the &quot;magic wand&quot; icon next to the XML editor
+        Copy the XML from the *.svg file and paste it into the XML editor at the bottom of the page. 
+        <p class="text-danger">
+            Only copy the elements that are inside the &lt;svg&gt; tag!  Don't copy the start and end &lt;svg&gt; tags.
+        </p>
+        For example, if you opened up the *.svg file and saw content like this:
+<pre>
+&lt;svg xmlns:rdf=&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; height=&quot;500&quot; width=&quot;950&quot; version=&quot;1.1&quot; xmlns:cc=&quot;http://creativecommons.org/ns#&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; viewBox=&quot;0 0 247 130&quot; xmlns:dc=&quot;http://purl.org/dc/elements/1.1/&quot;&gt;
+    &lt;g&gt;
+        &lt;clipPath id=&quot;t&quot;&gt;
+            &lt;path d=&quot;m30 15h30v15zv15h-30zh-30v-15zv-15h30z&quot;&gt;&lt;/path&gt;
+        &lt;/clipPath&gt;
+        &lt;path data-fill-index=&quot;0&quot; fill=&quot;#00247d&quot; d=&quot;m0 0v30h60v-30z&quot;&gt;&lt;/path&gt;
+        &lt;path data-stroke-index=&quot;0&quot; stroke-width=&quot;6&quot; stroke=&quot;#fff&quot; d=&quot;m0 0 60 30m0-30-60 30&quot;&gt;&lt;/path&gt;
+        &lt;path data-stroke-index=&quot;1&quot; stroke=&quot;#cf142b&quot; stroke-width=&quot;4&quot; clip-path=&quot;url(#t)&quot; d=&quot;m0 0 60 30m0-30-60 30&quot;&gt;&lt;/path&gt;
+        &lt;path data-stroke-index=&quot;0&quot; stroke-width=&quot;10&quot; stroke=&quot;#fff&quot; d=&quot;m30 0v30m-30-15h60&quot;&gt;&lt;/path&gt;
+        &lt;path data-stroke-index=&quot;1&quot; stroke-width=&quot;6&quot; stroke=&quot;#cf142b&quot; d=&quot;m30 0v30m-30-15h60&quot;&gt;&lt;/path&gt;
+    &lt;/g&gt;
+&lt;/svg&gt;
+</pre>
+        <p>Then you would only grab the content inside the root &lt;svg&gt;.  Like this:</p>
+<pre>
+&lt;g&gt;
+    &lt;clipPath id=&quot;t&quot;&gt;
+        &lt;path d=&quot;m30 15h30v15zv15h-30zh-30v-15zv-15h30z&quot;&gt;&lt;/path&gt;
+    &lt;/clipPath&gt;
+    &lt;path data-fill-index=&quot;0&quot; fill=&quot;#00247d&quot; d=&quot;m0 0v30h60v-30z&quot;&gt;&lt;/path&gt;
+    &lt;path data-stroke-index=&quot;0&quot; stroke-width=&quot;6&quot; stroke=&quot;#fff&quot; d=&quot;m0 0 60 30m0-30-60 30&quot;&gt;&lt;/path&gt;
+    &lt;path data-stroke-index=&quot;1&quot; stroke=&quot;#cf142b&quot; stroke-width=&quot;4&quot; clip-path=&quot;url(#t)&quot; d=&quot;m0 0 60 30m0-30-60 30&quot;&gt;&lt;/path&gt;
+    &lt;path data-stroke-index=&quot;0&quot; stroke-width=&quot;10&quot; stroke=&quot;#fff&quot; d=&quot;m30 0v30m-30-15h60&quot;&gt;&lt;/path&gt;
+    &lt;path data-stroke-index=&quot;1&quot; stroke-width=&quot;6&quot; stroke=&quot;#cf142b&quot; d=&quot;m30 0v30m-30-15h60&quot;&gt;&lt;/path&gt;
+&lt;/g&gt;
+</pre>
+    </li>
+    <li>
+        Click the &quot;magic wand&quot; icon next to the XML editor
         and hope it formats the XML nicely for you.  If it does then click the magic wand next to height and width to auto calculate those as well.
     </li>
     <li>

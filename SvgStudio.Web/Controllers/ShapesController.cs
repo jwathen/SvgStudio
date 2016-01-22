@@ -112,14 +112,15 @@ namespace SvgStudio.Web.Controllers
                     double.Parse(height), 
                     null,
                     (x) => xml);
+                drawingShape.Name = "Preview Shape " + paletteId;
                 var palette = factory.BuildPalette(paletteId);
                 var renderResult = drawingShape.Render(palette);
 
                 var svg = new XElement("svg",
-                    new XAttribute("width", renderResult.Width),
-                    new XAttribute("height", renderResult.Height),
+                    new XAttribute("viewBox", string.Format("0 0 {0} {1}", renderResult.Width, renderResult.Height)),
                     new XAttribute("version", "1.1"),
-                    new XAttribute("class", "center-block svg-content"));
+                    new XAttribute("class", "center-block svg-content"),
+                    new XAttribute(XNamespace.Xmlns + "xlink", "http://www.w3.org/1999/xlink"));
                 var defs = new XElement("defs");
                 defs.Add(renderResult.Defs);
                 var g = new XElement("g");
@@ -127,7 +128,9 @@ namespace SvgStudio.Web.Controllers
                 svg.Add(defs);
                 svg.Add(g);
 
-                return Content(svg.ToString(), "text/html");
+                var result = XmlHelper.AddRootNamespace(svg, "http://www.w3.org/2000/svg");
+
+                return Content(result, "text/html");
             }
             catch (Exception ex)
             {
@@ -140,33 +143,35 @@ namespace SvgStudio.Web.Controllers
         [Route("AutoFixShapeMarkup")]
         public virtual ActionResult AutoFixShapeMarkup(string xml)
         {
-            bool gWrapped = false;
+            XNamespace xmlns = "http://www.w3.org/2000/svg";
             try
             {
-                XElement.Parse(xml);
+                var parsed = XElement.Parse(xml);
+                // if the outer element is an svg element then remove it
+                //if (parsed.Name == "svg" || parsed.Name == xmlns + "svg")
+                //{
+                //    xml = "<g>" + string.Join(Environment.NewLine, parsed.Elements()) + "</g>";
+                //}
             }
             catch
             {
                 xml = "<g>" + xml + "</g>";
-                gWrapped = true;
+            }
+
+            if (xml.Contains("xlink:") && !xml.Contains("xmlns:xlink"))
+            {
+                xml = "<g xmlns:xlink=\"http://www.w3.org/1999/xlink\" > " + xml + "</g>";
             }
 
             try
             {
-                xml = XmlHelper.RemoveAllNamespaces(xml);
                 XElement svg = XElement.Parse(xml);
-                if (svg.Name == "svg" || gWrapped)
-                {
-                    string result = string.Join(Environment.NewLine, svg.Elements().Select(x => XmlHelper.EmitStrokeAndFillAttributesFirst(x)));
-                    return Content(result);
-                }
-                else
-                {
-                    string result = svg.ToString();
-                    return Content(result);
-                }
+                string result = XmlHelper.EmitStrokeAndFillAttributesFirst(svg);
+                return Content(result);
             }
-            catch { }
+            catch (Exception ex)
+            {
+            }
             return Content(string.Empty);
         }
     }

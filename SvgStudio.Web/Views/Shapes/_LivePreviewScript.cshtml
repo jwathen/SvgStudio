@@ -3,7 +3,8 @@
     $(function () {
         var widthId = '#@Html.IdFor(x => x.Width)';
         var heightId = '#@Html.IdFor(x => x.Height)';
-        var elementIds = [widthId, heightId];
+        var previewPaletteId = '#@Html.Id("PreviewPaletteId")'
+        var elementIds = [widthId, heightId, previewPaletteId];
 
         var xmlEditor = $('#@Html.IdFor(x => x.BasicShape_MarkupFragment.Content)').data('CodeMirrorInstance');
 
@@ -23,7 +24,7 @@
                 }
             });
 
-            data.paletteId = '@AppSettings.PreviewPaletteId';
+            data.paletteId = $(previewPaletteId).val();
             $.ajax({
                 url: '@Url.Action(MVC.Shapes.GeneratePreview())',
                 method: 'POST',
@@ -33,6 +34,7 @@
                 }
             });
         };
+        updatePreviews = $.debounce(500, updatePreviews);
 
         $(elementIds.join(',')).change(updatePreviews);
         xmlEditor.on('change', updatePreviews);

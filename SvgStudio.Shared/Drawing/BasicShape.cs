@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SvgStudio.Shared.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,7 +30,7 @@ namespace SvgStudio.Shared.Drawing
             get
             {
                 StringBuilder markup = new StringBuilder();
-                markup.AppendLine("<g>");
+                markup.AppendLine("<g xmlns:xlink=\"http://www.w3.org/1999/xlink\">");
                 markup.Append(_markupFragmentAccessor(_markupFragmentId));
                 markup.AppendLine("</g>");
                 return XElement.Parse(markup.ToString());
@@ -42,11 +43,12 @@ namespace SvgStudio.Shared.Drawing
             result.Width = this.Width;
             result.Height = this.Height;
 
+            XNamespace xlink = "http://www.w3.org/1999/xlink";
             XElement shape = new XElement(this.Markup);
 
-            if (palette != null)
+            foreach (var element in shape.DescendantsAndSelf())
             {
-                foreach (var element in shape.DescendantsAndSelf())
+                if (palette != null)
                 {
                     var strokeIndexAttr = element.Attribute("data-stroke-index");
                     if (strokeIndexAttr != null)
@@ -66,11 +68,50 @@ namespace SvgStudio.Shared.Drawing
                         fillIndexAttr.Remove();
                     }
                 }
+
+                var xlinkHrefAttr = element.Attribute(xlink + "href");
+                if (xlinkHrefAttr != null)
+                {
+                    PrefixHrefWithShapeName(xlinkHrefAttr);
+                }
+            }
+
+            if (shape.Descendants("defs").Any())
+            {
+                foreach (var defs in shape.Descendants("defs").ToList())
+                {
+                    defs.Remove();
+                    foreach (var def in defs.Elements())
+                    {
+                        var idAttr = def.Attribute("id");
+                        if (idAttr != null)
+                        {
+                            PrefixIdWithShapeName(idAttr);
+                        }
+                        result.Defs.Add(def);
+                    }
+                }
             }
 
             result.Xml = shape;
 
             return result;
+        }
+
+        private void PrefixHrefWithShapeName(XAttribute attr)
+        {
+            string href = attr.Value;
+            href = string.Format("#{0}_{1}", 
+                StringHelper.StripNonAlphaNumericChars(this.Name), 
+                attr.Value.Substring(1, attr.Value.Length - 1));
+            attr.Value = href;
+        }
+
+        private void PrefixIdWithShapeName(XAttribute attr)
+        {
+            string id = attr.Value;
+            id = string.Format("{0}_{1}", StringHelper.StripNonAlphaNumericChars(this.Name), attr.Value);
+            attr.Value = id;
         }
     }
 }

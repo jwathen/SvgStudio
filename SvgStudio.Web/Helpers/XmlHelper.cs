@@ -9,6 +9,8 @@ namespace SvgStudio.Web.Helpers
 {
     public static class XmlHelper
     {
+        public const int INDENT_AMOUNT = 2;
+
         //Implemented based on interface, not part of algorithm
         public static string RemoveAllNamespaces(string xmlDocument)
         {
@@ -24,42 +26,88 @@ namespace SvgStudio.Web.Helpers
             }
         }
 
+        public static string AddRootNamespace(XElement element, string ns)
+        {
+            var result = element.ToString();
+            int nameLength = element.Name.LocalName.Length;
+            result = result.Substring(nameLength + 1, result.Length - (nameLength + 1));
+            result = "<" + element.Name.LocalName + " xmlns=\"" + ns + "\" " + result;
+            return result;
+        }
+
         public static string EmitStrokeAndFillAttributesFirst(XElement element, int indent = 0)
         {
-            StringBuilder result = new StringBuilder();
-            string indentString = new string(' ', indent);
-            result.Append(indentString);
-            result.Append("<" + element.Name);            
-            foreach(var attr in element.Attributes().OrderBy(x => PrioritizeAttribute(x)))
+            StringBuilder builder = new StringBuilder();
+
+            bool isUnnecessaryGroupTag = element.Name == "g" && !element.Attributes().Any(x => !x.IsNamespaceDeclaration) && indent != 0;
+            bool isSvgTag = element.Name == "svg";
+            
+            if (isUnnecessaryGroupTag)
             {
-                result.Append(" " + attr);
+                indent -= INDENT_AMOUNT;
             }
-            result.Append(">");
+
+            string indentString = new string(' ', indent);
+            if (!isUnnecessaryGroupTag && !isSvgTag)
+            {
+                builder.Append(indentString);
+                builder.Append("<" + element.Name);
+                foreach (var attr in element.Attributes().OrderBy(x => PrioritizeAttribute(x)))
+                {
+                    if (!attr.IsNamespaceDeclaration)
+                    {
+                        builder.Append(" " + attr);
+                    }
+                }
+                builder.Append(">");
+                if (element.HasElements)
+                {
+                    builder.Append(Environment.NewLine);
+                }
+            }
+
             foreach(var child in element.Elements())
             {
-                result.AppendLine(EmitStrokeAndFillAttributesFirst(child, indent + 2));
+                builder.AppendLine(EmitStrokeAndFillAttributesFirst(child, indent + INDENT_AMOUNT));
             }
-            result.Append(indentString + "</" + element.Name + ">");
-            return result.ToString();
+            if (!isUnnecessaryGroupTag && !isSvgTag)
+            {
+                if (element.HasElements)
+                {
+                    builder.Append(indentString);
+                }
+                builder.Append("</" + element.Name + ">");
+            }
+
+            string result = string.Join(Environment.NewLine, builder.ToString().Split(new[] { Environment.NewLine },StringSplitOptions.RemoveEmptyEntries));
+            return result;
         }
 
         private static int PrioritizeAttribute(XAttribute attribute)
         {
-            if (attribute.Name.ToString().StartsWith("stroke"))
+            if (attribute.Name.ToString().StartsWith("data-stroke-index"))
             {
                 return 1;
             }
-            else  if (attribute.Name.ToString().StartsWith("fill"))
+            else if (attribute.Name.ToString().StartsWith("data-fill-index"))
             {
                 return 2;
             }
-            else if (attribute.Name.ToString() != "d")
+            else if (attribute.Name.ToString().StartsWith("stroke"))
             {
                 return 3;
             }
-            else
+            else  if (attribute.Name.ToString().StartsWith("fill"))
             {
                 return 4;
+            }
+            else if (attribute.Name.ToString() != "d")
+            {
+                return 5;
+            }
+            else
+            {
+                return 6;
             }
         }
 
