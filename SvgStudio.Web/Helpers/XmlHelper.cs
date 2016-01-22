@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web;
+using System.Xml;
 using System.Xml.Linq;
 
 namespace SvgStudio.Web.Helpers
@@ -111,7 +113,6 @@ namespace SvgStudio.Web.Helpers
             }
         }
 
-        //Core recursion function
         private static XElement RemoveAllNamespaces(XElement xmlDocument)
         {
             if (!xmlDocument.HasElements)
@@ -125,6 +126,18 @@ namespace SvgStudio.Web.Helpers
                 return xElement;
             }
             return new XElement(xmlDocument.Name.LocalName, xmlDocument.Elements().Select(el => RemoveAllNamespaces(el)));
+        }
+
+        public static string RenderWithoutDoctype(XDocument doc)
+        {
+            XmlWriterSettings settings = new XmlWriterSettings();
+            settings.OmitXmlDeclaration = true;
+            StringWriter stringWriter = new StringWriter();
+            using (XmlWriter xmlWriter = XmlWriter.Create(stringWriter, settings))
+            {
+                doc.Save(xmlWriter);
+            }
+            return stringWriter.ToString();
         }
     }
 }

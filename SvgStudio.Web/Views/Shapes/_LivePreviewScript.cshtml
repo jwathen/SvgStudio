@@ -15,12 +15,21 @@
                 xml: xmlEditor.getValue()
             };
 
+            var addCssClassesToSvg = function ($svgContainer) {
+                var $svg = $svgContainer.find('svg');
+                if ($svg.length) {
+                    console.log($svg);
+                    $svg.attr('class', 'center-block svg-content');
+                }
+            }
+
             $.ajax({
                 url: '@Url.Action(MVC.Shapes.GeneratePreview())',
                 method: 'POST',
                 data: data,
                 success: function (preview) {
                     $('#DefaultPreviewContainer').html(preview);
+                    addCssClassesToSvg($('#DefaultPreviewContainer'));
                 }
             });
 
@@ -31,6 +40,7 @@
                 data: data,
                 success: function (preview) {
                     $('#FilledPreviewContainer').html(preview);
+                    addCssClassesToSvg($('#FilledPreviewContainer'));
                 }
             });
         };

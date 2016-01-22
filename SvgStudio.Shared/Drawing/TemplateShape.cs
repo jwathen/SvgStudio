@@ -14,9 +14,11 @@ namespace SvgStudio.Shared.Drawing
         private readonly Template _template = null;
         private Dictionary<string, Design> _designs = new Dictionary<string, Design>();
 
-        public TemplateShape(Template template, string clipPathMarkupId, Func<string, string> _markupFragmentAccessor)
+        public TemplateShape(Template template, string clipPathMarkupId, Func<string, string> markupFragmentAccessor)
         {
             _template = template;
+            _clipPathMarkupId = clipPathMarkupId;
+            _markupFragmentAcessor = markupFragmentAccessor;
         }
 
         public string ClipPathMarkup
@@ -60,11 +62,17 @@ namespace SvgStudio.Shared.Drawing
                 defs.Remove();
             }
 
-            result.ClipPath = this.ClipPathMarkup;
-
-            // Remove the rendered design from it's svg element and just 
-            // wrap it in a g element.
             var g = new XElement("g");
+            string clipMatchMarkup = ClipPathMarkup;
+            if (clipMatchMarkup != null)
+            {
+                string clipPathId = string.Format("{0}_ClipPath", Name);
+                var clipPathDef = new XElement("clipPath");
+                clipPathDef.Add(new XAttribute("id", clipPathId));
+                clipPathDef.Add(XElement.Parse(clipMatchMarkup));
+                g.Add(new XAttribute("clip-path", string.Format("url(#{0})", clipPathId)));
+                defs.Add(clipPathDef);
+            }
             g.Add(renderedDesign.Elements());
             result.Xml = g;
 

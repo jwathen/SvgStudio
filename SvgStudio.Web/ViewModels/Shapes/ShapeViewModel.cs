@@ -13,6 +13,7 @@ using System.Xml.Linq;
 using System.Web.Mvc;
 using SvgStudio.Web.ViewModels.Shared;
 using SvgStudio.Shared.Materializer;
+using SvgStudio.Web.Helpers;
 
 namespace SvgStudio.Web.ViewModels.Shapes
 {
@@ -100,6 +101,28 @@ namespace SvgStudio.Web.ViewModels.Shapes
                 .Where(x => !string.IsNullOrWhiteSpace(x))
                 .ToArray();
             return tags;
+        }
+
+        public HtmlString GeneratePreview(double width, double height)
+        {
+            try
+            {
+                var db = SvgStudioDataContext.Current;
+                var factory = new DrawingFactory(db);
+                var drawingShape = new SvgStudio.Shared.Drawing.BasicShape(
+                    double.Parse(Width),
+                    double.Parse(Height),
+                    null,
+                    (x) => BasicShape_MarkupFragment.Content);
+                var renderResult = drawingShape.Render(null);
+                var svgDocument = renderResult.AsStandaloneSvg(width, height);
+
+                return new HtmlString(XmlHelper.RenderWithoutDoctype(svgDocument));
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public IEnumerable<SelectListItem> NumberOfStrokeAndFillOptions

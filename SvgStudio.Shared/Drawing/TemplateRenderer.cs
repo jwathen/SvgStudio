@@ -43,17 +43,6 @@ namespace SvgStudio.Shared.Drawing
                     group.Add(new XAttribute("id", designRegion.Name));
                     string transform = string.Format("{0} {1}", CalculateTranslateTransform(designRegion), CalculateScaleTransform(designRegion, renderedDesign));
                     group.Add(new XAttribute("transform", transform));
-
-                    if (!string.IsNullOrWhiteSpace(renderedDesign.ClipPath))
-                    {
-                        string clipPathId = string.Format("{0}_ClipPath", designRegion.Name);
-                        var clipPathDef = new XElement("clipPath");
-                        clipPathDef.Add(new XAttribute("id", clipPathId));
-                        clipPathDef.Add(XElement.Parse(renderedDesign.ClipPath));
-                        group.Add(new XAttribute("clip-path", string.Format("url(#{0})", clipPathId)));
-                        defs.Add(clipPathDef);
-                    }
-
                     group.Add(renderedDesign.Xml);
                     groups.Add(group);
 

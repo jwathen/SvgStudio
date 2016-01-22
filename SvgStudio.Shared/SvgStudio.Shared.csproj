@@ -50,6 +50,7 @@
     <Compile Include="Drawing\Template.cs" />
     <Compile Include="Drawing\TemplateRenderer.cs" />
     <Compile Include="Drawing\TemplateShape.cs" />
+    <Compile Include="Drawing\xmlns.cs" />
     <Compile Include="Helpers\HexHelper.cs" />
     <Compile Include="Helpers\StringHelper.cs" />
     <Compile Include="Materializer\DrawingFactory.cs" />

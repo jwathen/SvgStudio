@@ -115,22 +115,9 @@ namespace SvgStudio.Web.Controllers
                 drawingShape.Name = "Preview Shape " + paletteId;
                 var palette = factory.BuildPalette(paletteId);
                 var renderResult = drawingShape.Render(palette);
+                var svgDocument = renderResult.AsStandaloneSvg(double.Parse(width), double.Parse(height));
 
-                var svg = new XElement("svg",
-                    new XAttribute("viewBox", string.Format("0 0 {0} {1}", renderResult.Width, renderResult.Height)),
-                    new XAttribute("version", "1.1"),
-                    new XAttribute("class", "center-block svg-content"),
-                    new XAttribute(XNamespace.Xmlns + "xlink", "http://www.w3.org/1999/xlink"));
-                var defs = new XElement("defs");
-                defs.Add(renderResult.Defs);
-                var g = new XElement("g");
-                g.Add(renderResult.Xml);
-                svg.Add(defs);
-                svg.Add(g);
-
-                var result = XmlHelper.AddRootNamespace(svg, "http://www.w3.org/2000/svg");
-
-                return Content(result, "text/html");
+                return Content(XmlHelper.RenderWithoutDoctype(svgDocument), "text/html");
             }
             catch (Exception ex)
             {
@@ -147,11 +134,6 @@ namespace SvgStudio.Web.Controllers
             try
             {
                 var parsed = XElement.Parse(xml);
-                // if the outer element is an svg element then remove it
-                //if (parsed.Name == "svg" || parsed.Name == xmlns + "svg")
-                //{
-                //    xml = "<g>" + string.Join(Environment.NewLine, parsed.Elements()) + "</g>";
-                //}
             }
             catch
             {

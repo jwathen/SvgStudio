@@ -10,6 +10,7 @@
 <table class="table">
     <thead>
         <tr>
+            <th>Shape</th>
             <th>Id</th>
             <th>Name</th>
             <th>Active</th>
@@ -22,6 +23,9 @@
         @foreach (var shape in Model)
         {
             <tr>
+                <td>
+                    @shape.GeneratePreview(30, 30)
+                </td>
                 <td>
                     @Html.ActionLink(shape.Id, MVC.Shapes.Edit(shape.Id))
                 </td>
