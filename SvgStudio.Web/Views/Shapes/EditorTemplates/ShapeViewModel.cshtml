@@ -41,22 +41,34 @@
             </label>
         </div>
     </div>
-    <div class="col-lg-6">
+    <div class="col-lg-4">
         <div class="form-group">
             <label for="@Html.NameFor(x => x.Name)">Shape Name <small>(Must be unique.)</small></label>
             @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
         </div>
     </div>
-    <div class="col-lg-3">
+    <div class="col-lg-2">
         <div class="form-group">
             <label for="@Html.NameFor(x => x.Width)">Width <a id="autoCalcWidth" href="#"><i class="fa fa-magic"></i></a></label>
             @Html.TextBoxFor(x => x.Width, new { type = "tel", @class = "form-control" })
         </div>
     </div>
-    <div class="col-lg-3">
+    <div class="col-lg-2">
         <div class="form-group">
             <label for="@Html.NameFor(x => x.Height)">Height <a id="autoCalcHeight" href="#"><i class="fa fa-magic"></i></a></label>
             @Html.TextBoxFor(x => x.Height, new { type = "tel", @class = "form-control" })
+        </div>
+    </div>
+    <div class="col-lg-2">
+        <div class="form-group">
+            <label for="@Html.NameFor(x => x.NumberOfStrokesSupported)">Strokes Supported</label>
+            @Html.DropDownListFor(x => x.NumberOfStrokesSupported, Model.NumberOfStrokeAndFillOptions, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="col-lg-2">
+        <div class="form-group">
+            <label for="@Html.NameFor(x => x.NumberOfFillsSupported)">Fills Supported</label>
+            @Html.DropDownListFor(x => x.NumberOfFillsSupported, Model.NumberOfStrokeAndFillOptions, new { @class = "form-control" })
         </div>
     </div>
     <div class="col-lg-12">

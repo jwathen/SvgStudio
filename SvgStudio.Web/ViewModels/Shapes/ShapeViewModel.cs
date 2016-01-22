@@ -28,6 +28,8 @@ namespace SvgStudio.Web.ViewModels.Shapes
         public string Name { get; set; }
         public string Width { get; set; }
         public string Height { get; set; }
+        public int NumberOfFillsSupported { get; set; }
+        public int NumberOfStrokesSupported { get; set; }
         public string LicenseId { get; set; }
         public string ContentUrl { get; set; }
         public string AttributionUrl { get; set; }
@@ -127,6 +129,8 @@ namespace SvgStudio.Web.ViewModels.Shapes
                 viewModel.Name = shape.Name;
                 viewModel.Width = shape.Width.ToString();
                 viewModel.Height = shape.Height.ToString();
+                viewModel.NumberOfFillsSupported = shape.NumberOfFillsSupported;
+                viewModel.NumberOfStrokesSupported = shape.NumberOfStrokesSupported;
             }
             else
             {
@@ -183,6 +187,8 @@ namespace SvgStudio.Web.ViewModels.Shapes
             shape.Name = this.Name;
             shape.Width = double.Parse(this.Width);
             shape.Height = double.Parse(this.Height);
+            shape.NumberOfFillsSupported = this.NumberOfFillsSupported;
+            shape.NumberOfStrokesSupported = this.NumberOfStrokesSupported;
 
             ContentLicense contentLicense = await db.ContentLicenses.FirstOrDefaultAsync(x => x.ShapeId == this.Id);
             if (contentLicense == null)
