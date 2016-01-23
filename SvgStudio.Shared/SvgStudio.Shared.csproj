@@ -53,6 +53,7 @@
     <Compile Include="Drawing\xmlns.cs" />
     <Compile Include="Helpers\HexHelper.cs" />
     <Compile Include="Helpers\StringHelper.cs" />
+    <Compile Include="Helpers\XmlHelper.cs" />
     <Compile Include="Materializer\DrawingFactory.cs" />
     <Compile Include="Materializer\IStorageRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

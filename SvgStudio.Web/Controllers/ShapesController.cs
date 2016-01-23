@@ -10,7 +10,8 @@ using SvgStudio.Shared.StorageModel;
 using SvgStudio.Web.ViewModels.Shapes;
 using System.Xml.Linq;
 using SvgStudio.Shared.Materializer;
-using SvgStudio.Web.Helpers;
+using SvgStudio.Shared.Helpers;
+using SvgStudio.Shared.Drawing;
 
 namespace SvgStudio.Web.Controllers
 {
@@ -19,6 +20,8 @@ namespace SvgStudio.Web.Controllers
     [RoutePrefix("Shapes")]
     public partial class ShapesController : SvgStudioControllerBase
     {
+        private static object locker = new object();
+
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
@@ -106,18 +109,21 @@ namespace SvgStudio.Web.Controllers
         {
             try
             {
-                var factory = new DrawingFactory(db);
-                var drawingShape = new Shared.Drawing.BasicShape(
-                    double.Parse(width),
-                    double.Parse(height), 
-                    null,
-                    (x) => xml);
-                drawingShape.Name = "Preview Shape " + paletteId;
-                var palette = factory.BuildPalette(paletteId);
-                var renderResult = drawingShape.Render(palette);
-                var svgDocument = renderResult.AsStandaloneSvg(double.Parse(width), double.Parse(height));
+                lock(locker)
+                {
+                    var factory = new DrawingFactory(db);
+                    var drawingShape = new Shared.Drawing.BasicShape(
+                        double.Parse(width),
+                        double.Parse(height),
+                        null,
+                        (x) => xml);
+                    drawingShape.Name = "Preview Shape " + paletteId;
+                    var palette = factory.BuildPalette(paletteId);
+                    var renderResult = drawingShape.Render(palette);
+                    var svgDocument = renderResult.AsStandaloneSvg(double.Parse(width), double.Parse(height));
 
-                return Content(XmlHelper.RenderWithoutDoctype(svgDocument), "text/html");
+                    return Content(XmlHelper.RenderWithoutDoctype(svgDocument), "text/html");
+                }
             }
             catch (Exception ex)
             {
@@ -130,25 +136,19 @@ namespace SvgStudio.Web.Controllers
         [Route("AutoFixShapeMarkup")]
         public virtual ActionResult AutoFixShapeMarkup(string xml)
         {
-            XNamespace xmlns = "http://www.w3.org/2000/svg";
             try
             {
                 var parsed = XElement.Parse(xml);
             }
             catch
             {
-                xml = "<g>" + xml + "</g>";
-            }
-
-            if (xml.Contains("xlink:") && !xml.Contains("xmlns:xlink"))
-            {
-                xml = "<g xmlns:xlink=\"http://www.w3.org/1999/xlink\" > " + xml + "</g>";
+                xml = "<g xmlns=\"" + xmlns.svg + "\" xmlns:xlink=\"" + xmlns.xlink + "\">" + xml + "</g>";
             }
 
             try
             {
                 XElement svg = XElement.Parse(xml);
-                string result = XmlHelper.EmitStrokeAndFillAttributesFirst(svg);
+                string result = XmlHelper.WriteXElement(svg);
                 return Content(result);
             }
             catch (Exception ex)

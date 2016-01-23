@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Web;
 using System.Xml;
@@ -128,16 +129,6 @@ namespace SvgStudio.Web.Helpers
             return new XElement(xmlDocument.Name.LocalName, xmlDocument.Elements().Select(el => RemoveAllNamespaces(el)));
         }
 
-        public static string RenderWithoutDoctype(XDocument doc)
-        {
-            XmlWriterSettings settings = new XmlWriterSettings();
-            settings.OmitXmlDeclaration = true;
-            StringWriter stringWriter = new StringWriter();
-            using (XmlWriter xmlWriter = XmlWriter.Create(stringWriter, settings))
-            {
-                doc.Save(xmlWriter);
-            }
-            return stringWriter.ToString();
-        }
+        
     }
 }

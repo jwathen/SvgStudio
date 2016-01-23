@@ -13,7 +13,7 @@ using System.Xml.Linq;
 using System.Web.Mvc;
 using SvgStudio.Web.ViewModels.Shared;
 using SvgStudio.Shared.Materializer;
-using SvgStudio.Web.Helpers;
+using SvgStudio.Shared.Helpers;
 
 namespace SvgStudio.Web.ViewModels.Shapes
 {
