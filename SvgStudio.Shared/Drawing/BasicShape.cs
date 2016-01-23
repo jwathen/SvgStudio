@@ -69,6 +69,12 @@ namespace SvgStudio.Shared.Drawing
                 {
                     PrefixHrefWithShapeName(xlinkHrefAttr);
                 }
+
+                foreach (var urlRefAttr in element.Attributes().Where(x => x.Value.StartsWith("url(#")))
+                {
+                    string referencedId = urlRefAttr.Value.Replace("url(#", string.Empty).Replace(")", string.Empty);
+                    urlRefAttr.Value = "url(#" + PrefixIdWithShapeName(referencedId) + ")";
+                }
             }
 
             foreach (var defs in shape.Descendants(xmlns.svg + "defs").ToList())
@@ -101,9 +107,12 @@ namespace SvgStudio.Shared.Drawing
 
         private void PrefixIdWithShapeName(XAttribute attr)
         {
-            string id = attr.Value;
-            id = string.Format("{0}_{1}", StringHelper.StripNonAlphaNumericChars(this.Name), attr.Value);
-            attr.Value = id;
+            attr.Value = PrefixIdWithShapeName(attr.Value);
+        }
+
+        private string PrefixIdWithShapeName(string id)
+        {
+            return string.Format("{0}_{1}", StringHelper.StripNonAlphaNumericChars(this.Name), id);
         }
     }
 }

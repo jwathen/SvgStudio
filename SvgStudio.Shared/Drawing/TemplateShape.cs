@@ -71,10 +71,11 @@ namespace SvgStudio.Shared.Drawing
                 clipPathDef.Add(new XAttribute("id", clipPathId));
                 clipPathDef.Add(XElement.Parse(clipMatchMarkup));
                 g.Add(new XAttribute("clip-path", string.Format("url(#{0})", clipPathId)));
-                defs.Add(clipPathDef);
+                result.Defs.Add(clipPathDef);
             }
             g.Add(renderedDesign.Elements());
             result.Xml = g;
+
 
             return result;
         }

@@ -27,7 +27,7 @@ namespace SvgStudio.Shared.Drawing
         public Design BuildPlaceholder()
         {
             var palette = new Palette();
-            palette.Strokes.Add(new Stroke { Color = Color.FromName("DarkGray"), Width = 1, DashArray = "5,5" });
+            palette.Strokes.Add(new Stroke { Color = Color.FromName("DarkGray"), Width = 1 });
 
             string xml = string.Format("<rect width=\"{0}\" height=\"{1}\" data-stroke-index=\"0\" data-fill-index=\"0\" />", Width, Height);
             var shape = new BasicShape(Width, Height, null, (x) => xml);

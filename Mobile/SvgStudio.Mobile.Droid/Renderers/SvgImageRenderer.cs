@@ -37,11 +37,24 @@ namespace SvgStudio.Mobile.Droid.Renderers
             }
         }
 
+        protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            base.OnElementPropertyChanged(sender, e);
+            if (e.PropertyName == "SvgMarkup")
+            {
+                DrawImage();
+            }
+        }
+
         protected override void OnElementChanged(ElementChangedEventArgs<SvgImage> e)
         {
             base.OnElementChanged(e);
+            DrawImage();
+        }
 
-            if (_formsControl != null)
+        protected void DrawImage()
+        {
+            if (_formsControl != null && !string.IsNullOrWhiteSpace(_formsControl.SvgMarkup))
             {
                 Task.Run(() =>
                 {
@@ -68,7 +81,6 @@ namespace SvgStudio.Mobile.Droid.Renderers
 
                         imageView.SetScaleType(ImageView.ScaleType.FitXy);
                         imageView.SetImageBitmap(taskResult.Result);
-
                         SetNativeControl(imageView);
                     });
                 });

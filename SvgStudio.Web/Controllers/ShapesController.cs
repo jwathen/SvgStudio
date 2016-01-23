@@ -136,6 +136,8 @@ namespace SvgStudio.Web.Controllers
         [Route("AutoFixShapeMarkup")]
         public virtual ActionResult AutoFixShapeMarkup(string xml)
         {
+            xml = XmlHelper.RemoveRootSvgElement(xml);
+
             try
             {
                 var parsed = XElement.Parse(xml);

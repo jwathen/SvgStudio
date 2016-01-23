@@ -16,7 +16,6 @@ namespace SvgStudio.Shared.StorageModel
         public bool IsActive { get; set; }
         public string Color { get; set; }
         public int Width { get; set; }
-        public string DashArray { get; set; }
         public string PaletteId { get; set; }
 
         [Ignore, JsonIgnore]

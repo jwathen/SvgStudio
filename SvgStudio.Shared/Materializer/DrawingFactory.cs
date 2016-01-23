@@ -37,7 +37,6 @@ namespace SvgStudio.Shared.Materializer
             result.StorageId = storageStroke.Id;
             result.Color = Drawing.Color.FromName(storageStroke.Color);
             result.Width = storageStroke.Width;
-            result.DashArray = storageStroke.DashArray;
             return result;
         }
 

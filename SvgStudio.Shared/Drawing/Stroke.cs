@@ -14,8 +14,7 @@ namespace SvgStudio.Shared.Drawing
             return new Stroke
             {
                 Color = Color.FromName(stroke.Color),
-                Width = stroke.Width,
-                // DashArray = TODO
+                Width = stroke.Width
             };
         }
 
@@ -23,8 +22,6 @@ namespace SvgStudio.Shared.Drawing
         public Color Color { get; set; }
 
         public int Width { get; set; }
-
-        public string DashArray { get; set; }
 
         public void ApplyTo(XElement target)
         {
@@ -49,27 +46,8 @@ namespace SvgStudio.Shared.Drawing
             var widthAttr = target.Attribute("stroke-width");
             if (widthAttr == null)
             {
-                widthAttr = new XAttribute("stroke-width", string.Empty);
+                widthAttr = new XAttribute("stroke-width", Width);
                 target.Add(widthAttr);
-            }
-            widthAttr.Value = Width.ToString();
-
-            var dashArrayAttr = target.Attribute("stroke-dasharray");
-            if (DashArray == null)
-            {
-                if (dashArrayAttr != null)
-                {
-                    dashArrayAttr.Remove();
-                }
-            }
-            else
-            {
-                if (dashArrayAttr == null)
-                {
-                    dashArrayAttr = new XAttribute("stroke-dasharry", string.Empty);
-                    target.Add(dashArrayAttr);
-                }
-                dashArrayAttr.Value = DashArray;
             }
         }
     }

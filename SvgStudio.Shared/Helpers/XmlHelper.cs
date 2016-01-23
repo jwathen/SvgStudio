@@ -19,6 +19,21 @@ namespace SvgStudio.Shared.Helpers
             return WriteXElement(doc.Root);
         }
 
+        public static string RemoveRootSvgElement(string input)
+        {
+            try
+            {
+                XElement svg = XElement.Parse(input);
+                if (svg.Name.LocalName == "svg")
+                {
+                    return string.Join(Environment.NewLine, svg.Elements());
+                }
+            }
+            catch { }
+
+            return input;
+        }
+
         public static string WriteXElement(XElement element, int indent = 0)
         {
             StringBuilder builder = new StringBuilder();

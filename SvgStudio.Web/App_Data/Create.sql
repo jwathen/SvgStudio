@@ -146,7 +146,6 @@ create table Strokes
 	IsActive bit not null default(1),
 	Color nvarchar(50) not null,
 	Width int not null,
-	DashArray nvarchar(max) null,
 	PaletteId varchar(32) null references Palettes(Id)
 )
 go

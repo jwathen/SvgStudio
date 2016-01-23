@@ -114,6 +114,7 @@
   <ItemGroup>
     <Compile Include="Mobile\Core\Models\Synchronization\ModelSynchronizerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Shared\Drawing\StrokeTests.cs" />
     <Compile Include="Shared\Drawing\TemplateRendererTests.cs" />
     <Compile Include="TestHelpers\Fixtures\ServerData.cs" />
     <Compile Include="TestHelpers\SvgStudioDataContextExtensions.cs" />

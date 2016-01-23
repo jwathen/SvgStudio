@@ -34,9 +34,10 @@ namespace SvgStudio.Mobile.Core.UI
         private void Button_Clicked(object sender, EventArgs args)
         {
             var button = (Button)sender;
-            //button.Text = "Sync...";
-            ////string endpoint = "http://192.168.1.14:14501/";
+            button.Text = "Sync...";
+            //string endpoint = "http://192.168.1.14:14501/";
             //string endpoint = "http://172.16.17.166:14501/";
+            //string endpoint = "http://svgstudio.azurewebsites.net/";
             //var sync = new DatabaseSynchronizer(DependencyService.Get<IDatabaseConnectionProvider>(), new MobileServiceGateway(endpoint));
             //Task.Run(sync.SynchronizeModelWithServer)
             //    .ContinueWith(result =>
@@ -55,6 +56,9 @@ namespace SvgStudio.Mobile.Core.UI
             //        });
             //    });
 
+
+            //var db = DependencyService.Get<IDatabaseConnectionProvider>().GetConnection();
+
             int rnd = random.Next(1, 4);
             string markup = null;
             if (rnd % 3 == 0)
@@ -69,7 +73,11 @@ namespace SvgStudio.Mobile.Core.UI
             {
                 markup = svgDrawing;
             }
-            Wrap.Children.Add(new SvgImage { SvgMarkup = markup, WidthRequest = 70, HeightRequest = 70 });
+			markup = svgDrawing;
+            //TestImage.WidthRequest = 300;
+            //TestImage.HeightRequest = 500;
+            //TestImage.SvgMarkup = markup;
+            Wrap.Children.Add(new SvgImage { SvgMarkup = markup, WidthRequest = 300, HeightRequest = 500 });
         }
 
         //int i = 0;
