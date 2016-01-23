@@ -30,8 +30,6 @@ namespace SvgStudio.Shared.Drawing
             var svg = new XElement(xmlns.svg + "svg");
             svg.Add(
                 new XAttribute("viewBox", string.Format("0 0 {0} {1}", this.Width, this.Height)),
-                new XAttribute("width", width),
-                new XAttribute("height", height),
                 new XAttribute("version", "1.1"));
             var defs = new XElement("defs");
             defs.Add(Defs);

@@ -90,7 +90,7 @@ namespace SvgStudio.Shared.Drawing
                     var idAttr = def.Attribute(xmlns.svg + "id") ?? def.Attribute("id");
                     if (idAttr != null)
                     {
-                        AddNamingPrefixToId(idAttr.Value, namingContext);
+                        idAttr.Value = AddNamingPrefixToId(idAttr.Value, namingContext);
                     }
                     result.Defs.Add(def);
                 }

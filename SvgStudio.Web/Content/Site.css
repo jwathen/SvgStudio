@@ -3,11 +3,12 @@
 }
 
 .svg-container { 
-	padding: 1em;
+	/*padding: 1em;*/
     margin-bottom: 1em;
 }
 
 .svg-content { 
-    border: 1px solid gray;
-    padding: 1px;
+    /*border: 1px solid gray;*/
+    /*padding: 1px;*/
+    max-height: 300px;
 }
