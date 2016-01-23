@@ -47,7 +47,7 @@ namespace SvgStudio.Shared.Drawing
             DefinitionCollection result = new DefinitionCollection();
             result.Add(patternEl);
 
-            var renderedDesign = Design.Render();
+            var renderedDesign = Design.Render(Id);
             patternEl.Add(renderedDesign.Xml);
             result.Add(renderedDesign.Defs);
             return result;

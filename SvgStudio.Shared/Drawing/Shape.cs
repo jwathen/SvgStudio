@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SvgStudio.Shared.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,11 @@ namespace SvgStudio.Shared.Drawing
         public int NumberOfFillsSupported { get; set; }
         public int NumberOfStrokesSupported { get; set; }
 
-        public abstract RenderDesignResult Render(Palette palette);
+        public abstract RenderDesignResult Render(Palette palette, string namingContext);
+
+        protected string AddNamingPrefixToId(string id, string namingContext)
+        {
+            return StringHelper.StripNonAlphaNumericChars(string.Format("{0}_{1}_{2}", namingContext, Name, id));
+        }
     }
 }

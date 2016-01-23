@@ -16,9 +16,9 @@ namespace SvgStudio.Shared.Drawing
         public Shape Shape { get; set; }
         public Palette Palette { get; set; }
 
-        public RenderDesignResult Render()
+        public RenderDesignResult Render(string namingContext)
         {
-            return Shape.Render(Palette);
+            return Shape.Render(Palette, namingContext);
         }
     }
 }

@@ -114,7 +114,7 @@ namespace SvgStudio.Web.ViewModels.Shapes
                     double.Parse(Height),
                     null,
                     (x) => BasicShape_MarkupFragment.Content);
-                var renderResult = drawingShape.Render(null);
+                var renderResult = drawingShape.Render(null, "Preview");
                 var svgDocument = renderResult.AsStandaloneSvg(width, height);
 
                 return new HtmlString(XmlHelper.RenderWithoutDoctype(svgDocument));

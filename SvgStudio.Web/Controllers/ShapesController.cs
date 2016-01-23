@@ -119,7 +119,7 @@ namespace SvgStudio.Web.Controllers
                         (x) => xml);
                     drawingShape.Name = "Preview Shape " + paletteId;
                     var palette = factory.BuildPalette(paletteId);
-                    var renderResult = drawingShape.Render(palette);
+                    var renderResult = drawingShape.Render(palette, "Preview");
                     var svgDocument = renderResult.AsStandaloneSvg(double.Parse(width), double.Parse(height));
 
                     return Content(XmlHelper.RenderWithoutDoctype(svgDocument), "text/html");

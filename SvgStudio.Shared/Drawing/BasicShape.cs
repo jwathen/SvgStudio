@@ -33,7 +33,7 @@ namespace SvgStudio.Shared.Drawing
             }
         }
 
-        public override RenderDesignResult Render(Palette palette)
+        public override RenderDesignResult Render(Palette palette, string namingContext)
         {
             RenderDesignResult result = new RenderDesignResult();
             result.Width = this.Width;
@@ -65,15 +65,20 @@ namespace SvgStudio.Shared.Drawing
                 }
 
                 var xlinkHrefAttr = element.Attribute(xmlns.xlink + "href");
-                if (xlinkHrefAttr != null)
+                if (xlinkHrefAttr != null && xlinkHrefAttr.Value.StartsWith("#"))
                 {
-                    PrefixHrefWithShapeName(xlinkHrefAttr);
+                    string referenedId = xlinkHrefAttr.Value.Substring(1, xlinkHrefAttr.Value.Length - 1);
+                    string prefixedId = AddNamingPrefixToId(referenedId, namingContext);
+                    xlinkHrefAttr.Value = "#" + prefixedId;
                 }
 
                 foreach (var urlRefAttr in element.Attributes().Where(x => x.Value.StartsWith("url(#")))
                 {
-                    string referencedId = urlRefAttr.Value.Replace("url(#", string.Empty).Replace(")", string.Empty);
-                    urlRefAttr.Value = "url(#" + PrefixIdWithShapeName(referencedId) + ")";
+                    if (!urlRefAttr.Value.StartsWith("url(#PatternFill_"))
+                    {
+                        string referencedId = urlRefAttr.Value.Replace("url(#", string.Empty).Replace(")", string.Empty);
+                        urlRefAttr.Value = "url(#" + AddNamingPrefixToId(referencedId, namingContext) + ")";
+                    }
                 }
             }
 
@@ -85,7 +90,7 @@ namespace SvgStudio.Shared.Drawing
                     var idAttr = def.Attribute(xmlns.svg + "id") ?? def.Attribute("id");
                     if (idAttr != null)
                     {
-                        PrefixIdWithShapeName(idAttr);
+                        AddNamingPrefixToId(idAttr.Value, namingContext);
                     }
                     result.Defs.Add(def);
                 }
@@ -94,25 +99,6 @@ namespace SvgStudio.Shared.Drawing
             result.Xml = shape;
 
             return result;
-        }
-
-        private void PrefixHrefWithShapeName(XAttribute attr)
-        {
-            string href = attr.Value;
-            href = string.Format("#{0}_{1}",
-                StringHelper.StripNonAlphaNumericChars(this.Name),
-                attr.Value.Substring(1, attr.Value.Length - 1));
-            attr.Value = href;
-        }
-
-        private void PrefixIdWithShapeName(XAttribute attr)
-        {
-            attr.Value = PrefixIdWithShapeName(attr.Value);
-        }
-
-        private string PrefixIdWithShapeName(string id)
-        {
-            return string.Format("{0}_{1}", StringHelper.StripNonAlphaNumericChars(this.Name), id);
         }
     }
 }

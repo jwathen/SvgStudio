@@ -39,7 +39,7 @@ namespace SvgStudio.Shared.Drawing
             _designs[designRegionKey] = design;
         }
 
-        public override RenderDesignResult Render(Palette palette)
+        public override RenderDesignResult Render(Palette palette, string namingContext)
         {
             var result = new RenderDesignResult();
             result.Width = this.Width;
@@ -50,7 +50,7 @@ namespace SvgStudio.Shared.Drawing
             {
                 renderer.AddDesign(kvp.Key, kvp.Value.Shape, kvp.Value.Palette);
             }
-            var renderedDesign = renderer.Render();
+            var renderedDesign = renderer.Render(namingContext);
 
             var defs = renderedDesign.Element("defs");
             if (defs != null)
@@ -66,7 +66,7 @@ namespace SvgStudio.Shared.Drawing
             string clipMatchMarkup = ClipPathMarkup;
             if (clipMatchMarkup != null)
             {
-                string clipPathId = string.Format("{0}_ClipPath", Name);
+                string clipPathId = AddNamingPrefixToId("ClipPath", namingContext);
                 var clipPathDef = new XElement("clipPath");
                 clipPathDef.Add(new XAttribute("id", clipPathId));
                 clipPathDef.Add(XElement.Parse(clipMatchMarkup));

@@ -23,6 +23,7 @@ namespace SvgStudio.Test.Shared.Drawing
 
             string lionPath = File.ReadAllText(@"TestHelpers\Fixtures\LionPath.txt");
             Shape lionShape = new BasicShape(378, 334, null, (x) => lionPath);
+            lionShape.Name = "Lion";
 
             var shieldTemplate = new Template();
             shieldTemplate.Name = "ShieldWithThreeBars";
@@ -30,7 +31,7 @@ namespace SvgStudio.Test.Shared.Drawing
             shieldTemplate.DesignRegions.Add(new DesignRegion("MiddleBar", 0, 330, 825, 330));
             shieldTemplate.DesignRegions.Add(new DesignRegion("BottomBar", 0, 660, 825, 330));
 
-            var rectangle = new BasicShape(1, 1, null, (x) => File.ReadAllText(@"TestHelpers\Fixtures\RectanglePath.txt"));
+            var rectangle = new BasicShape(825, 330, null, (x) => File.ReadAllText(@"TestHelpers\Fixtures\RectanglePath.txt"));
 
             var redPalette = new Palette();
             redPalette.Fills.Add(new SolidColorFill(Color.FromName("red")));
@@ -54,6 +55,7 @@ namespace SvgStudio.Test.Shared.Drawing
 
             string shieldPath = File.ReadAllText(@"TestHelpers\Fixtures\ShieldPath.txt");
             TemplateShape shieldShape = new TemplateShape(shieldTemplate, null, (x) => File.ReadAllText(@"TestHelpers\Fixtures\ShieldClipPath.txt"));
+            shieldShape.Name = "Shield";
             shieldShape.Width = 825;
             shieldShape.Height = 990;
             shieldShape.NumberOfFillsSupported = 0;
@@ -69,7 +71,7 @@ namespace SvgStudio.Test.Shared.Drawing
             var renderer = new TemplateRenderer(coatOfArms);
             renderer.AddDesign("LeftSupporter", lionShape, grayAndBlue);
             renderer.AddDesign("Shield", shieldShape, polkaDotsPalette);
-            XElement svg = renderer.Render();
+            XElement svg = renderer.Render("Master");
             string result = svg.ToString();
             result = result.Replace("<svg ", "<svg xmlns=\"http://www.w3.org/2000/svg\" ");
             File.WriteAllText("output.svg", result);

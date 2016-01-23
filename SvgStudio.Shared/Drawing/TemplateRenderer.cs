@@ -27,7 +27,7 @@ namespace SvgStudio.Shared.Drawing
             _designs[designRegionKey] = design;
         }
 
-        public XElement Render()
+        public XElement Render(string namingContext = "")
         {
             DefinitionCollection defs = new DefinitionCollection();
             List<XElement> groups = new List<XElement>();
@@ -37,7 +37,7 @@ namespace SvgStudio.Shared.Drawing
                 Design design = null;
                 if (_designs.TryGetValue(designRegion.Name, out design))
                 {
-                    var renderedDesign = design.Render();
+                    var renderedDesign = design.Render(namingContext);
 
                     var group = new XElement("g");
                     group.Add(new XAttribute("id", designRegion.Name));
