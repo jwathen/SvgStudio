@@ -14,9 +14,15 @@ namespace SvgStudio.Shared.Helpers
     {
         private static readonly int INDENT_AMOUNT = 2;
 
-        public static string RenderWithoutDoctype(XDocument doc)
+        public static string RenderDocument(XDocument doc, bool includeDocTypeDelcaration)
         {
-            return WriteXElement(doc.Root);
+            StringBuilder builder = new StringBuilder();
+            if (includeDocTypeDelcaration)
+            {
+                builder.AppendLine("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+            }
+            builder.Append(WriteXElement(doc.Root));
+            return builder.ToString();
         }
 
         public static string RemoveRootSvgElement(string input)

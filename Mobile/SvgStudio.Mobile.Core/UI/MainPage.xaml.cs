@@ -12,94 +12,66 @@ using System.ComponentModel;
 using SvgStudio.Mobile.Core.Services;
 using System.IO;
 using SvgStudio.Mobile.Core.UI.Controls;
+using SvgStudio.Shared.Materializer;
+using System.Xml.Linq;
+using SvgStudio.Shared.Helpers;
+using System.Diagnostics;
+using SvgStudio.Shared;
+using SvgStudio.Mobile.Core.ViewModels;
 
 namespace SvgStudio.Mobile.Core.UI
 {
     public partial class MainPage : ContentPage
     {
-        string svgFlag = "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"30\" width=\"60\" version=\"1.1\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"><g><clipPath id=\"t\"><path d=\"m30 15h30v15zv15h-30zh-30v-15zv-15h30z\"></path></clipPath><path data-fill-index=\"0\" fill=\"#00247d\" d=\"m0 0v30h60v-30z\"></path><path data-stroke-index=\"0\" stroke-width=\"6\" stroke=\"#fff\" d=\"m0 0 60 30m0-30-60 30\"></path><path data-stroke-index=\"1\" stroke=\"#cf142b\" stroke-width=\"4\" clip-path=\"url(#t)\" d=\"m0 0 60 30m0-30-60 30\"></path><path data-stroke-index=\"0\" stroke-width=\"10\" stroke=\"#fff\" d=\"m30 0v30m-30-15h60\"></path><path data-stroke-index=\"1\" stroke-width=\"6\" stroke=\"#cf142b\" d=\"m30 0v30m-30-15h60\"></path></g></svg>";
-        string svgBear = null;
-        string svgDrawing = null;
+        private readonly IStorageRepository _db;
 
-        public MainPage()
+        public MainPage(IStorageRepository db)
         {
             InitializeComponent();
-            MyButton.Clicked += Button_Clicked;
-            svgBear = GetBear();
-            svgDrawing = GetDrawing();
+            _db = db;
+            SyncToolbarItem.Clicked += SyncToolbarItem_Clicked;
+            DoIt();
         }
 
-        Random random = new Random();
-
-        private void Button_Clicked(object sender, EventArgs args)
+        public void DoIt()
         {
-            var button = (Button)sender;
-            button.Text = "Sync...";
+            Task.Factory.StartNew(() =>
+            {
+                var vm = new StudioViewModel("16284653806660-fda6c4c1ae034e5ea", StepView, _db);
+                vm.Init();
+                return vm;
+            }).ContinueWith(task =>
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    BindingContext = task.Result;
+                    task.Result.Steps.First(x => x.DisplayText.StartsWith("Left")).Start(StepView);
+                });
+            });
+        }
+
+        private void SyncToolbarItem_Clicked(object sender, EventArgs e)
+        {
             //string endpoint = "http://192.168.1.14:14501/";
             //string endpoint = "http://172.16.17.166:14501/";
-            //string endpoint = "http://svgstudio.azurewebsites.net/";
-            //var sync = new DatabaseSynchronizer(DependencyService.Get<IDatabaseConnectionProvider>(), new MobileServiceGateway(endpoint));
-            //Task.Run(sync.SynchronizeModelWithServer)
-            //    .ContinueWith(result =>
-            //    {
-            //        Device.BeginInvokeOnMainThread(() =>
-            //        {
-            //            if (result != null)
-            //            {
-            //                SummaryLabel.Text = string.Join(Environment.NewLine, result.Result.Select(x => x.ToString()));
-            //                button.Text = "Done";
-            //            }
-            //            else
-            //            {
-            //                button.Text = "Error";
-            //            }
-            //        });
-            //    });
-
-
-            //var db = DependencyService.Get<IDatabaseConnectionProvider>().GetConnection();
-
-            int rnd = random.Next(1, 4);
-            string markup = null;
-            if (rnd % 3 == 0)
-            {
-                markup = svgFlag;
-            }
-            else if (rnd % 3 == 1)
-            {
-                markup = svgBear;
-            }
-            else
-            {
-                markup = svgDrawing;
-            }
-			markup = svgDrawing;
-            //TestImage.WidthRequest = 300;
-            //TestImage.HeightRequest = 500;
-            //TestImage.SvgMarkup = markup;
-            Wrap.Children.Add(new SvgImage { SvgMarkup = markup, WidthRequest = 300, HeightRequest = 500 });
-        }
-
-        //int i = 0;
-
-        private string GetBear()
-        {
-            var assembly = typeof(MainPage).GetTypeInfo().Assembly;
-            using (var resourceStream = assembly.GetManifestResourceStream("SvgStudio.Mobile.Core.Bear.svg"))
-            using (var reader = new StreamReader(resourceStream))
-            {
-                return reader.ReadToEnd();
-            }
-        }
-
-        private string GetDrawing()
-        {
-            var assembly = typeof(MainPage).GetTypeInfo().Assembly;
-            using (var resourceStream = assembly.GetManifestResourceStream("SvgStudio.Mobile.Core.drawing.svg"))
-            using (var reader = new StreamReader(resourceStream))
-            {
-                return reader.ReadToEnd();
-            }
+            string endpoint = "http://svgstudio.azurewebsites.net/";
+            var sync = new DatabaseSynchronizer(DependencyService.Get<IDatabaseConnectionProvider>(), new MobileServiceGateway(endpoint));
+            Task.Run(sync.SynchronizeModelWithServer)
+                .ContinueWith(result =>
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        if (result != null)
+                        {
+                            string message = string.Join(Environment.NewLine, result.Result.Select(x => x.ToString()));
+                            DisplayAlert("Complete", message, "OK");
+                        }
+                        else
+                        {
+                            DisplayAlert("Alert", "Error", "OK");
+                        }
+                    });
+                });
         }
     }
 }

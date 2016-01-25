@@ -14,12 +14,10 @@ namespace SvgStudio
     {
         public App()
         {
-            // The root page of your application
-            MainPage = new MainPage();
-
             var connectionProvider = DependencyService.Get<IDatabaseConnectionProvider>();
             var connection = connectionProvider.GetConnection();
             DatabaseInitilizer.Init(connection);
+            MainPage = new NavigationPage(new MainPage(new MobileStorageRepository(connection)));
         }
 
         protected override void OnStart()

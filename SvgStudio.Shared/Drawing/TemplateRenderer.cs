@@ -17,14 +17,34 @@ namespace SvgStudio.Shared.Drawing
             _template = template;
         }
 
-        public void AddDesign(string designRegionKey, Shape shape, Palette palette)
+        public void AddDesign(string designRegionName, Shape shape, Palette palette)
         {
-            var design = new Design
+            if (shape == null)
             {
-                Shape = shape,
-                Palette = palette
-            };
-            _designs[designRegionKey] = design;
+                _designs[designRegionName] = null;
+            }
+            else
+            {
+                var design = new Design
+                {
+                    Shape = shape,
+                    Palette = palette
+                };
+                _designs[designRegionName] = design;
+            }
+        }
+
+        public Design GetDesign(string designRegionName)
+        {
+            Design design = null;
+            if (_designs.TryGetValue(designRegionName, out design))
+            {
+                return design;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public XElement Render(string namingContext = "")
@@ -34,20 +54,21 @@ namespace SvgStudio.Shared.Drawing
 
             foreach (var designRegion in _template.DesignRegions.OrderBy(x => x.SortOrder))
             {
-                Design design = null;
-                if (_designs.TryGetValue(designRegion.Name, out design))
+                Design design = GetDesign(designRegion.Name);
+                if (design != null)
                 {
                     var renderedDesign = design.Render(namingContext);
 
                     var group = new XElement("g");
                     group.Add(new XAttribute("id", designRegion.Name));
-                    string transform = string.Format("{0} {1}", CalculateTranslateTransform(designRegion), CalculateScaleTransform(designRegion, renderedDesign));
+                    string transform = CalculateTransforms(designRegion, renderedDesign);
                     group.Add(new XAttribute("transform", transform));
                     group.Add(renderedDesign.Xml);
                     groups.Add(group);
 
                     defs.Add(renderedDesign.Defs);
                 }
+                groups.Add(XElement.Parse(designRegion.BuildPlaceholderXml()));
             }
 
             
@@ -57,6 +78,8 @@ namespace SvgStudio.Shared.Drawing
             XDocument doc = new XDocument();
             doc.Add(new XElement("svg"));
             doc.Root.Add(new XAttribute("version", "1.1"));
+            doc.Root.Add(new XAttribute("width", _template.CalculateWidth()));
+            doc.Root.Add(new XAttribute("height", _template.CalculateHeight()));
             if (defs.Count > 0)
             {
                 doc.Root.Add(defsElement);
@@ -66,26 +89,17 @@ namespace SvgStudio.Shared.Drawing
             return doc.Root;
         }
 
-        private string CalculateTranslateTransform(DesignRegion designRegion)
+        private string CalculateTransforms(DesignRegion designRegion, RenderDesignResult design)
         {
-            return string.Format("translate({0},{1})", designRegion.X, designRegion.Y);
-        }
+            //return string.Empty;
+            double scale = Math.Min(designRegion.Width / design.Width, designRegion.Height / design.Height);
+            double cx = designRegion.X + (designRegion.Width / 2);
+            double cy = designRegion.Y + (designRegion.Height / 2);
 
-        private string CalculateScaleTransform(DesignRegion designRegion, RenderDesignResult design)
-        {
-            double scaleX = 0;
-            if (design.Width > 0)
-            {
-                scaleX = ((double)designRegion.Width / design.Width);
-            }
+            double translateX = cx - ((design.Width * scale) / 2);
+            double translateY = cy - ((design.Height * scale) / 2);
 
-            double scaleY = 0;
-            if (design.Height > 0)
-            {
-                scaleY = ((double)designRegion.Height / design.Height);
-            }
-
-            return string.Format("scale({0},{1})", scaleX, scaleY);
+            return string.Format("translate({0},{1}) scale({2},{2})", translateX, translateY, scale);
         }
     }
 }

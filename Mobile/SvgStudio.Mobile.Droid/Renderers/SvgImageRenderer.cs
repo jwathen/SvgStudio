@@ -40,7 +40,7 @@ namespace SvgStudio.Mobile.Droid.Renderers
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             base.OnElementPropertyChanged(sender, e);
-            if (e.PropertyName == "SvgMarkup")
+            if (e.PropertyName == "SvgMarkup" || e.PropertyName == "SvgMarkupAccessor")
             {
                 DrawImage();
             }
@@ -54,35 +54,69 @@ namespace SvgStudio.Mobile.Droid.Renderers
 
         protected void DrawImage()
         {
-            if (_formsControl != null && !string.IsNullOrWhiteSpace(_formsControl.SvgMarkup))
+            if (_formsControl != null && (_formsControl.SvgMarkup != null || _formsControl.SvgMarkupAccessor != null))
             {
                 Task.Run(() =>
                 {
-                    var svg = SVG.GetFromString(_formsControl.SvgMarkup);
+                    try
+                    {
+                        string markup = null;
+                        if (!string.IsNullOrWhiteSpace(_formsControl.SvgMarkup))
+                        {
+                            markup = _formsControl.SvgMarkup;
+                        }
+                        else if (_formsControl.SvgMarkupAccessor != null)
+                        {
+                            markup = _formsControl.SvgMarkupAccessor();
+                        }
+                        if (markup == null)
+                        {
+                            return null;
+                        }
 
-                    var width = PixelToDP((int)_formsControl.WidthRequest <= 0 ? 100 : (int)_formsControl.WidthRequest);
-                    var height = PixelToDP((int)_formsControl.HeightRequest <= 0 ? 100 : (int)_formsControl.HeightRequest);
+                        var svg = SVG.GetFromString(markup);
 
-                    svg.SetDocumentViewBox(0, 0, svg.DocumentWidth, svg.DocumentHeight);
-                    svg.SetDocumentWidth(width.ToString());
-                    svg.SetDocumentHeight(height.ToString());
+                        var width = PixelToDP((int)_formsControl.Width <= 0 ? 100 : (int)_formsControl.Width);
+                        var height = PixelToDP((int)_formsControl.Height <= 0 ? 100 : (int)_formsControl.Height);
 
-                    Bitmap bitmap = Bitmap.CreateBitmap(width, height, Bitmap.Config.Argb8888);
-                    Canvas canvas = new Canvas(bitmap);
-                    RectF viewport = new RectF(0, 0, svg.DocumentWidth, svg.DocumentHeight);
-                    svg.RenderToCanvas(canvas, viewport);
+                        float documentWidth = svg.DocumentWidth;
+                        float documentHeight = svg.DocumentHeight;
 
-                    return bitmap;
+                        if (documentWidth == -1 || documentHeight == -1 && svg.DocumentViewBox != null)
+                        {
+                            documentWidth = svg.DocumentViewBox.Width();
+                            documentHeight = svg.DocumentViewBox.Height();
+                        }
+
+                        svg.SetDocumentViewBox(0, 0, documentWidth, documentHeight);
+                        svg.SetDocumentWidth(width.ToString());
+                        svg.SetDocumentHeight(height.ToString());
+
+                        Bitmap bitmap = Bitmap.CreateBitmap(width, height, Bitmap.Config.Argb8888);
+                        Canvas canvas = new Canvas(bitmap);
+                        RectF viewport = new RectF(0, 0, svg.DocumentWidth, svg.DocumentHeight);
+                        svg.RenderToCanvas(canvas, viewport);
+
+                        return bitmap;
+                    }
+                    catch (Exception ex)
+                    {
+                        Xamarin.Insights.Report(ex);
+                        return null;
+                    }
                 }).ContinueWith(taskResult =>
                 {
-                    Device.BeginInvokeOnMainThread(() =>
+                    if (taskResult.Result != null)
                     {
-                        var imageView = new ImageView(Context);
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            var imageView = new ImageView(Context);
 
-                        imageView.SetScaleType(ImageView.ScaleType.FitXy);
-                        imageView.SetImageBitmap(taskResult.Result);
-                        SetNativeControl(imageView);
-                    });
+                            imageView.SetScaleType(ImageView.ScaleType.FitXy);
+                            imageView.SetImageBitmap(taskResult.Result);
+                            SetNativeControl(imageView);
+                        });
+                    }
                 });
             }
         }

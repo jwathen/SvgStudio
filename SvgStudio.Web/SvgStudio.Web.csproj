@@ -126,7 +126,7 @@
       <LastGenOutput>AppSettings.cs</LastGenOutput>
     </Content>
     <Content Include="App_Data\Create.sql" />
-    <Content Include="App_Data\Populate.sql" />
+    <EmbeddedResource Include="App_Data\Populate.sql" />
     <Content Include="App_Readme\Elmah.SqlServer.sql" />
     <Content Include="App_Readme\Elmah.SqlServer.txt" />
     <Content Include="App_Readme\Elmah.txt" />

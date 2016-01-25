@@ -16,6 +16,12 @@ namespace SvgStudio.Shared.Drawing
         public int NumberOfFillsSupported { get; set; }
         public int NumberOfStrokesSupported { get; set; }
 
+        public bool CanBeRecolored()
+        {
+            return NumberOfFillsSupported > 0
+                || NumberOfStrokesSupported > 0;
+        }
+
         public abstract RenderDesignResult Render(Palette palette, string namingContext);
 
         protected string AddNamingPrefixToId(string id, string namingContext)

@@ -68,7 +68,7 @@ namespace SvgStudio.Test.TestHelpers
                 var mobileService = new TestMobileServiceGateway();
                 var subject = new DatabaseSynchronizer(this, mobileService);
                 _alreadySyncedWithServer = true;
-                Task.Run(subject.SynchronizeModelWithServer);
+                Task.WaitAll(subject.SynchronizeModelWithServer());
             }
 
             return _connection;

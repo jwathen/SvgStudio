@@ -117,5 +117,20 @@ namespace SvgStudio.Web.Models
         {
             return DesignRegions.Where(x => x.TemplateId == templateId).ToList();
         }
+
+        public List<Shape> LoadShapesByCompatibilityTagIds(List<string> compatibilityTagIds)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DesignRegion LoadDesignRegion(string id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CompatibilityTag> LoadCompatibilityTagsByDesignRegionId(string designRegionId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

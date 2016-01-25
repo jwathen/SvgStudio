@@ -139,7 +139,7 @@ namespace SvgStudio.Web.ViewModels.Shapes
                 var renderResult = drawingShape.Render(null, "Preview");
                 var svgDocument = renderResult.AsStandaloneSvg(width, height);
 
-                return new HtmlString(XmlHelper.RenderWithoutDoctype(svgDocument));
+                return new HtmlString(XmlHelper.RenderDocument(svgDocument, false));
             }
             catch
             {

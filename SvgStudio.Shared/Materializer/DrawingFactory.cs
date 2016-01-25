@@ -79,11 +79,10 @@ namespace SvgStudio.Shared.Materializer
             return result;
         }
 
-        public Drawing.Shape BuildShape(string id)
+        public Drawing.Shape BuildShape(StorageModel.Shape storageShape)
         {
             Drawing.Shape result = null;
 
-            StorageModel.Shape storageShape = _db.LoadShape(id);
             if (storageShape.ShapeType == ShapeType.Basic)
             {
                 result = new Drawing.BasicShape(
@@ -99,12 +98,18 @@ namespace SvgStudio.Shared.Materializer
                 Drawing.TemplateShape templateShape = (Drawing.TemplateShape)result;
             }
 
-            result.StorageId = id;
+            result.StorageId = storageShape.Id;
             result.Name = storageShape.Name;
             result.Width = storageShape.Width;
             result.Height = storageShape.Height;
 
             return result;
+        }
+
+        public Drawing.Shape BuildShape(string id)
+        {
+            StorageModel.Shape storageShape = _db.LoadShape(id);
+            return BuildShape(storageShape);
         }
 
         public Drawing.Template BuildTemplate(string id)
@@ -117,6 +122,12 @@ namespace SvgStudio.Shared.Materializer
             result.DesignRegions.AddRange(_db.LoadDesignRegionsByTemplateId(id).Select(x => BuildDesignRegion(x)));
 
             return result;
+        }
+
+        public Drawing.DesignRegion BuildDesignRegion(string id)
+        {
+            var designRegion = _db.LoadDesignRegion(id);
+            return BuildDesignRegion(designRegion);
         }
 
         public Drawing.DesignRegion BuildDesignRegion(StorageModel.DesignRegion storageDesignRegion)

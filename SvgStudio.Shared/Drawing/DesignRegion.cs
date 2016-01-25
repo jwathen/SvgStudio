@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.Linq;
 
 namespace SvgStudio.Shared.Drawing
 {
@@ -26,13 +27,19 @@ namespace SvgStudio.Shared.Drawing
 
         public Design BuildPlaceholder()
         {
-            var palette = new Palette();
-            palette.Strokes.Add(new Stroke { Color = Color.FromName("DarkGray"), Width = 1 });
-
-            string xml = string.Format("<rect width=\"{0}\" height=\"{1}\" data-stroke-index=\"0\" data-fill-index=\"0\" />", Width, Height);
+            string xml = BuildPlaceholderXml();
             var shape = new BasicShape(Width, Height, null, (x) => xml);
 
-            return new Design { Shape = shape, Palette = palette };
+            return new Design { Shape = shape, Palette = null };
+        }
+
+        public string BuildPlaceholderXml()
+        {
+           return string.Format("<rect transform=\"translate({0},{1})\" width=\"{2}\" height=\"{3}\" stroke=\"gray\" stroke-width=\"3\" stroke-dasharray=\"5,5\" fill=\"none\" />", 
+               X,
+               Y,
+               Width, 
+               Height);
         }
     }
 }

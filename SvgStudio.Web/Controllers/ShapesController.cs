@@ -122,7 +122,7 @@ namespace SvgStudio.Web.Controllers
                     var renderResult = drawingShape.Render(palette, "Preview");
                     var svgDocument = renderResult.AsStandaloneSvg(double.Parse(width), double.Parse(height));
 
-                    return Content(XmlHelper.RenderWithoutDoctype(svgDocument), "text/html");
+                    return Content(XmlHelper.RenderDocument(svgDocument, false), "text/html");
                 }
             }
             catch (Exception ex)

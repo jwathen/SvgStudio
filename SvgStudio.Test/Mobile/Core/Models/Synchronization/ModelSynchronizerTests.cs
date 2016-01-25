@@ -11,37 +11,38 @@ using System.Threading.Tasks;
 using Should;
 using SvgStudio.Test.TestHelpers.Fixtures;
 using SvgStudio.Shared.StorageModel;
+using SvgStudio.Web.Models;
+using System.Configuration;
 
 namespace SvgStudio.Test.Mobile.Core.Models.Synchronization
 {
-    public class ModelSynchronizerTests : IDisposable
+    public class ModelSynchronizerTests
     {
         private readonly IDatabaseConnectionProvider _databaseConnectionProvider = new TestDatabaseConnectionProvider(automaticallySyncWithServer: false);
-        private SvgStudio.Web.Models.SvgStudioDataContext _serverDatabase = new SvgStudio.Web.Models.SvgStudioDataContext("SvgStudio");
-        private ServerData _serverFixtures = null;
+        private readonly SvgStudioDataContext _db = new SvgStudioDataContext(ConfigurationManager.ConnectionStrings["SvgStudio"].ConnectionString);
 
         public ModelSynchronizerTests()
         {
-            _serverFixtures = ServerData.CreateFixtures(_serverDatabase);
+            ServerDatabase.Reset();
         }
 
         public async Task AddsNewRecords()
         {
             var syncResult = await SynchronizesMobileDatabasesWithServer();
 
-            AssertSync<CompatibilityTag>(syncResult, added: _serverFixtures.CompatibilityTags.Count);
-            AssertSync<ContentLicense>(syncResult, added: _serverFixtures.ContentLicenses.Count);
-            AssertSync<Design>(syncResult, added: _serverFixtures.Designs.Count);
-            AssertSync<DesignRegion>(syncResult, added: _serverFixtures.DesignRegions.Count);
-            AssertSync<DesignRegion_CompatibilityTag>(syncResult, added: _serverFixtures.DesignRegion_CompatibilityTags.Count);
-            AssertSync<Fill>(syncResult, added: _serverFixtures.Fills.Count);
-            AssertSync<License>(syncResult, added: _serverFixtures.Licenses.Count);
-            AssertSync<MarkupFragment>(syncResult, added: _serverFixtures.MarkupFragments.Count);
-            AssertSync<Palette>(syncResult, added: _serverFixtures.Palettes.Count);
-            AssertSync<Shape>(syncResult, added: _serverFixtures.Shapes.Count);
-            AssertSync<Shape_CompatibilityTag>(syncResult, added: _serverFixtures.Shape_CompatibilityTags.Count);
-            AssertSync<Stroke>(syncResult, added: _serverFixtures.Strokes.Count);
-            AssertSync<Template>(syncResult, added: _serverFixtures.Templates.Count);
+            AssertSync<CompatibilityTag>(syncResult, added: _db.CompatibilityTags.Count());
+            AssertSync<ContentLicense>(syncResult, added: _db.ContentLicenses.Count());
+            AssertSync<Design>(syncResult, added: _db.Designs.Count());
+            AssertSync<DesignRegion>(syncResult, added: _db.DesignRegions.Count());
+            AssertSync<DesignRegion_CompatibilityTag>(syncResult, added: _db.DesignRegion_CompatibilityTags.Count());
+            AssertSync<Fill>(syncResult, added: _db.Fills.Count());
+            AssertSync<License>(syncResult, added: _db.Licenses.Count());
+            AssertSync<MarkupFragment>(syncResult, added: _db.MarkupFragments.Count());
+            AssertSync<Palette>(syncResult, added: _db.Palettes.Count());
+            AssertSync<Shape>(syncResult, added: _db.Shapes.Count());
+            AssertSync<Shape_CompatibilityTag>(syncResult, added: _db.Shape_CompatibilityTags.Count());
+            AssertSync<Stroke>(syncResult, added: _db.Strokes.Count());
+            AssertSync<Template>(syncResult, added: _db.Templates.Count());
         }
 
         public async Task UpdatesExistingRecords()
@@ -51,17 +52,17 @@ namespace SvgStudio.Test.Mobile.Core.Models.Synchronization
             // Update the first row in each table with random data.
             // The many-to-many tables can only be inserted or deleted
             // so they are not included in this test.
-            _serverDatabase.CompatibilityTags.First().Tag = UniqueId.Generate();
-            _serverDatabase.ContentLicenses.First().AttributionName = UniqueId.Generate();
-            _serverDatabase.DesignRegions.First().Name = UniqueId.Generate();
-            _serverDatabase.Fills.First().SolidColorFill_Color = UniqueId.Generate();
-            _serverDatabase.Licenses.First().LicenseUrl = UniqueId.Generate();
-            _serverDatabase.MarkupFragments.First().Content = UniqueId.Generate();
-            _serverDatabase.Palettes.First().Name = UniqueId.Generate();
-            _serverDatabase.Shapes.First().Name = UniqueId.Generate();
-            _serverDatabase.Strokes.First().Color = UniqueId.Generate();
-            _serverDatabase.Templates.First().Name = UniqueId.Generate();
-            _serverDatabase.SaveChanges();
+            _db.CompatibilityTags.First().Tag = UniqueId.Generate();
+            _db.ContentLicenses.First().AttributionName = UniqueId.Generate();
+            _db.DesignRegions.First().Name = UniqueId.Generate();
+            _db.Fills.First().SolidColorFill_Color = UniqueId.Generate();
+            _db.Licenses.First().LicenseUrl = UniqueId.Generate();
+            _db.MarkupFragments.First().Content = UniqueId.Generate();
+            _db.Palettes.First().Name = UniqueId.Generate();
+            _db.Shapes.First().Name = UniqueId.Generate();
+            _db.Strokes.First().Color = UniqueId.Generate();
+            _db.Templates.First().Name = UniqueId.Generate();
+            _db.SaveChanges();
 
             syncResult = await SynchronizesMobileDatabasesWithServer();
 
@@ -81,24 +82,38 @@ namespace SvgStudio.Test.Mobile.Core.Models.Synchronization
         {
             var syncResult = await SynchronizesMobileDatabasesWithServer();
 
+            int compatibilityTagsCount = _db.CompatibilityTags.Count();
+            int contentLicensesCount = _db.ContentLicenses.Count();
+            int designsCount = _db.Designs.Count();
+            int designRegionsCount = _db.DesignRegions.Count();
+            int designRegion_CompatibilityTagsCount = _db.DesignRegion_CompatibilityTags.Count();
+            int fillsCount = _db.Fills.Count();
+            int licensesCount = _db.Licenses.Count();
+            int markupFragmentsCount = _db.MarkupFragments.Count();
+            int palettesCount = _db.Palettes.Count();
+            int shapesCount = _db.Shapes.Count();
+            int shape_CompatibilityTagsCount = _db.Shape_CompatibilityTags.Count();
+            int strokesCount = _db.Strokes.Count();
+            int templatesCount = _db.Templates.Count();
+
             // Remove all records.
-            _serverDatabase.Reset();
+            ServerDatabase.Empty();
 
             syncResult = await SynchronizesMobileDatabasesWithServer();
 
-            AssertSync<CompatibilityTag>(syncResult, deleted: _serverFixtures.CompatibilityTags.Count);
-            AssertSync<ContentLicense>(syncResult, deleted: _serverFixtures.ContentLicenses.Count);
-            AssertSync<Design>(syncResult, deleted: _serverFixtures.Designs.Count);
-            AssertSync<DesignRegion>(syncResult, deleted: _serverFixtures.DesignRegions.Count);
-            AssertSync<DesignRegion_CompatibilityTag>(syncResult, deleted: _serverFixtures.DesignRegion_CompatibilityTags.Count);
-            AssertSync<Fill>(syncResult, deleted: _serverFixtures.Fills.Count);
-            AssertSync<License>(syncResult, deleted: _serverFixtures.Licenses.Count);
-            AssertSync<MarkupFragment>(syncResult, deleted: _serverFixtures.MarkupFragments.Count);
-            AssertSync<Palette>(syncResult, deleted: _serverFixtures.Palettes.Count);
-            AssertSync<Shape>(syncResult, deleted: _serverFixtures.Shapes.Count);
-            AssertSync<Shape_CompatibilityTag>(syncResult, deleted: _serverFixtures.Shape_CompatibilityTags.Count);
-            AssertSync<Stroke>(syncResult, deleted: _serverFixtures.Strokes.Count);
-            AssertSync<Template>(syncResult, deleted: _serverFixtures.Templates.Count);
+            AssertSync<CompatibilityTag>(syncResult, deleted: compatibilityTagsCount);
+            AssertSync<ContentLicense>(syncResult, deleted: contentLicensesCount);
+            AssertSync<Design>(syncResult, deleted: designsCount);
+            AssertSync<DesignRegion>(syncResult, deleted: designRegionsCount);
+            AssertSync<DesignRegion_CompatibilityTag>(syncResult, deleted: designRegion_CompatibilityTagsCount);
+            AssertSync<Fill>(syncResult, deleted: fillsCount);
+            AssertSync<License>(syncResult, deleted: licensesCount);
+            AssertSync<MarkupFragment>(syncResult, deleted: markupFragmentsCount);
+            AssertSync<Palette>(syncResult, deleted: palettesCount);
+            AssertSync<Shape>(syncResult, deleted: shapesCount);
+            AssertSync<Shape_CompatibilityTag>(syncResult, deleted: shape_CompatibilityTagsCount);
+            AssertSync<Stroke>(syncResult, deleted: strokesCount);
+            AssertSync<Template>(syncResult, deleted: templatesCount);
         }
 
         private async Task<IEnumerable<TableSynchronizationSummary>> SynchronizesMobileDatabasesWithServer()
@@ -115,11 +130,6 @@ namespace SvgStudio.Test.Mobile.Core.Models.Synchronization
             tableResult.RowsAdded.ShouldEqual(added, string.Format("Expected {0} added to {1} but found {2}.", added, tableName, tableResult.RowsAdded));
             tableResult.RowsUpdated.ShouldEqual(updated, string.Format("Expected {0} updated in {1} but found {2}.", added, tableName, tableResult.RowsUpdated));
             tableResult.RowsDeleted.ShouldEqual(deleted, string.Format("Expected {0} deleted from {1} but found {2}.", added, tableName, tableResult.RowsDeleted));
-        }
-
-        public void Dispose()
-        {
-            _serverDatabase.Reset();
         }
     }
 }
