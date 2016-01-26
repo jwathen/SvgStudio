@@ -10,9 +10,10 @@ namespace SvgStudio.Mobile.Core.Models.Storage
 {
     public class MobileStorageRepository : IStorageRepository
     {
-        private readonly SQLite.Net.SQLiteConnection _db;
+        private readonly SQLite.Net.SQLiteConnectionWithLock _db;
+        private static object locker = new object();
 
-        public MobileStorageRepository(SQLite.Net.SQLiteConnection db)
+        public MobileStorageRepository(SQLite.Net.SQLiteConnectionWithLock db)
         {
             _db = db;
         }
@@ -24,6 +25,11 @@ namespace SvgStudio.Mobile.Core.Models.Storage
                            inner join CompatibilityTag ct on ct.Id = drct.CompatibilityTagId
                            where drct.DesignRegionId = ?";
             return _db.Query<CompatibilityTag>(sql, designRegionId);
+        }
+
+        public ContentLicense LoadContentLicenceByShapeId(string shapeId)
+        {
+            return _db.Query<ContentLicense>("select * from ContentLicense where ShapeId = ? limit 1", shapeId).FirstOrDefault();
         }
 
         public Design LoadDesign(string id)
@@ -46,9 +52,21 @@ namespace SvgStudio.Mobile.Core.Models.Storage
             return _db.Query<Fill>("select * from Fill where PaletteId = ?", paletteId);
         }
 
+        public License LoadLicense(string id)
+        {
+            return _db.Find<License>(id);
+        }
+
         public string LoadMarkupFragmentContent(string id)
         {
-            return _db.ExecuteScalar<string>("select Content from MarkupFragment where Id = ? limit 1", id);
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                return null;
+            }
+            lock(locker)
+            {
+                return _db.ExecuteScalar<string>("select Content from MarkupFragment where Id = ? limit 1", id);
+            }
         }
 
         public Shape LoadShape(string id)

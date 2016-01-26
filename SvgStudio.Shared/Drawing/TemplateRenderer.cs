@@ -68,10 +68,12 @@ namespace SvgStudio.Shared.Drawing
 
                     defs.Add(renderedDesign.Defs);
                 }
-                groups.Add(XElement.Parse(designRegion.BuildPlaceholderXml()));
+                else
+                {
+                    groups.Add(XElement.Parse(designRegion.BuildPlaceholderXml()));
+                }
             }
 
-            
             var defsElement = new XElement("defs");
             defsElement.Add(defs.ToList());
 

@@ -27,5 +27,9 @@ namespace SvgStudio.Shared.Materializer
         StorageModel.DesignRegion LoadDesignRegion(string id);
 
         List<StorageModel.CompatibilityTag> LoadCompatibilityTagsByDesignRegionId(string designRegionId);
+
+        StorageModel.ContentLicense LoadContentLicenceByShapeId(string shapeId);
+
+        StorageModel.License LoadLicense(string id);
     }
 }

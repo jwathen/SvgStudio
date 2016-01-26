@@ -15,7 +15,6 @@ namespace SvgStudio.Mobile.Core.UI.Controls
         {
             InitializeComponent();
             BindingContext = viewModel;
-            Image.GestureRecognizers.Add(new TapGestureRecognizer { Command = viewModel.SelectCommand });
         }
     }
 }

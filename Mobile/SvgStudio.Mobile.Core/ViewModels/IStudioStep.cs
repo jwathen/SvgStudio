@@ -12,6 +12,6 @@ namespace SvgStudio.Mobile.Core.ViewModels
     {
         string DisplayText { get; }
         ObservableCollection<IStudioStep> ChildSteps { get; }
-        Task Start(ContentView content);
+        void Start(ContentView content, Action callback);
     }
 }

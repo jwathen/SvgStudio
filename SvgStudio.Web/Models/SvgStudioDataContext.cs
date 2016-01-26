@@ -132,5 +132,15 @@ namespace SvgStudio.Web.Models
         {
             throw new NotImplementedException();
         }
+
+        public License LoadLicense(string id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ContentLicense LoadContentLicenceByShapeId(string shapeId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

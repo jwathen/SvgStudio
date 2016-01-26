@@ -56,6 +56,13 @@ namespace SvgStudio.Mobile.Droid.Renderers
         {
             if (_formsControl != null && (_formsControl.SvgMarkup != null || _formsControl.SvgMarkupAccessor != null))
             {
+                if (_formsControl.ActivityIndicator != null)
+                {
+                    _formsControl.ActivityIndicator.IsRunning = true;
+                }
+
+                Bitmap bitmap = null;
+
                 Task.Run(() =>
                 {
                     try
@@ -71,7 +78,7 @@ namespace SvgStudio.Mobile.Droid.Renderers
                         }
                         if (markup == null)
                         {
-                            return null;
+                            return;
                         }
 
                         var svg = SVG.GetFromString(markup);
@@ -92,29 +99,38 @@ namespace SvgStudio.Mobile.Droid.Renderers
                         svg.SetDocumentWidth(width.ToString());
                         svg.SetDocumentHeight(height.ToString());
 
-                        Bitmap bitmap = Bitmap.CreateBitmap(width, height, Bitmap.Config.Argb8888);
+                        bitmap = Bitmap.CreateBitmap(width, height, Bitmap.Config.Argb8888);
                         Canvas canvas = new Canvas(bitmap);
                         RectF viewport = new RectF(0, 0, svg.DocumentWidth, svg.DocumentHeight);
                         svg.RenderToCanvas(canvas, viewport);
-
-                        return bitmap;
                     }
                     catch (Exception ex)
                     {
+                        if (bitmap != null)
+                        {
+                            bitmap.Dispose();
+                        }
                         Xamarin.Insights.Report(ex);
-                        return null;
                     }
-                }).ContinueWith(taskResult =>
+                }).ContinueWith(task =>
                 {
-                    if (taskResult.Result != null)
+                    if (bitmap != null)
                     {
                         Device.BeginInvokeOnMainThread(() =>
                         {
-                            var imageView = new ImageView(Context);
-
-                            imageView.SetScaleType(ImageView.ScaleType.FitXy);
-                            imageView.SetImageBitmap(taskResult.Result);
-                            SetNativeControl(imageView);
+                            try
+                            {
+                                var imageView = new ImageView(Context);
+                                imageView.SetScaleType(ImageView.ScaleType.FitXy);
+                                imageView.SetImageBitmap(bitmap);
+                                bitmap.Dispose();
+                                SetNativeControl(imageView);
+                                if (_formsControl.ActivityIndicator != null)
+                                {
+                                    _formsControl.ActivityIndicator.IsRunning = false;
+                                }
+                            }
+                            catch { }
                         });
                     }
                 });

@@ -1,4 +1,5 @@
 ﻿using SvgStudio.Shared.Drawing;
+using SvgStudio.Shared.Materializer;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,13 +12,15 @@ namespace SvgStudio.Mobile.Core.ViewModels
 {
     public class ShapeGalleryViewModel : ViewModelBase
     {
+        private readonly IStorageRepository _db;
         private readonly List<Shape> _shapes = null;
         private readonly double _optionWidth;
         private readonly double _optionHeight;
         private ShapeOptionViewModel _selectedOption = null;
 
-        public ShapeGalleryViewModel(List<Shape> shapes, double optionWidth, double optionHeight)
+        public ShapeGalleryViewModel(List<Shape> shapes, double optionWidth, double optionHeight, IStorageRepository db)
         {
+            _db = db;
             _shapes = shapes;
             _optionWidth = optionWidth;
             _optionHeight = optionHeight;
@@ -28,7 +31,7 @@ namespace SvgStudio.Mobile.Core.ViewModels
 
         public void Init()
         {
-            var options = _shapes.Select(x => new ShapeOptionViewModel(x, _optionWidth, _optionHeight)).ToList();
+            var options = _shapes.Select(x => new ShapeOptionViewModel(x, _optionWidth, _optionHeight, _db)).ToList();
             foreach (var option in options)
             {
                 option.PropertyChanged += Option_PropertyChanged;

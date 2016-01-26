@@ -24,8 +24,9 @@ namespace SvgStudio.Mobile.Core.ViewModels
         private Template _template;
 
         private string _previewMarkup = null;
-        private string _currentStepName = null;
+        private IStudioStep _currentStep = null;
         private List<DesignRegionViewModel> _designRegionViewModels = new List<DesignRegionViewModel>();
+        private bool _changingStep = false;
 
         public StudioViewModel(string templateId, ContentView stepView, IStorageRepository db)
         {
@@ -33,6 +34,10 @@ namespace SvgStudio.Mobile.Core.ViewModels
             _stepView = stepView;
             _db = db;
             Steps = new ObservableCollection<IStudioStep>();
+            NextStepCommand = new Command(NextStep);
+            PreviousStepCommand = new Command(PreviousStep);
+            StepSwipedCommand = new Command<MR.Gestures.SwipeEventArgs>(StepSwiped);
+            ShowStepPickerCommand = new Command(ShowStepPicker);
         }
 
         public void Init()
@@ -51,12 +56,23 @@ namespace SvgStudio.Mobile.Core.ViewModels
                     Steps.Add(step);
                 }
             }
-            CurrentStepName = Steps.First().DisplayText;
+            CurrentStep = Steps.First();
             _previewMarkup = GeneratePreviewMarkup();
+        }
+
+        public void ShowStep()
+        {
+            if (_changingStep)
+            {
+                return;
+            }
+            _changingStep = true;
+            CurrentStep.Start(_stepView, () => _changingStep = false);
         }
 
         public Command NextStepCommand { get; set; }
         public Command PreviousStepCommand { get; set; }
+        public Command StepSwipedCommand { get; set; }
         public Command ChangeStepCommand { get; set; }
         public Command ShowStepPickerCommand { get; set; }
         public ObservableCollection<IStudioStep> Steps { get; set; }
@@ -77,18 +93,19 @@ namespace SvgStudio.Mobile.Core.ViewModels
             }
         }
 
-        public string CurrentStepName
+        public IStudioStep CurrentStep
         {
             get
             {
-                return _currentStepName;
+                return _currentStep;
             }
             set
             {
-                if (_currentStepName != value)
+                if (_currentStep != value)
                 {
-                    _currentStepName = value;
+                    _currentStep = value;
                     FirePropertyChanged();
+                    ShowStep();
                 }
             }
         }
@@ -127,6 +144,50 @@ namespace SvgStudio.Mobile.Core.ViewModels
             XDocument svg = new XDocument(renderer.Render("Master"));
             string result = XmlHelper.RenderDocument(svg, true);
             return result;
+        }
+
+        private void NextStep()
+        {
+            if (_changingStep)
+            {
+                return;
+            }
+            int index = Steps.IndexOf(CurrentStep);
+            index++;
+            if (index < Steps.Count)
+            {
+                CurrentStep = Steps.ElementAt(index);
+            }
+        }
+
+        private void PreviousStep()
+        {
+            if (_changingStep)
+            {
+                return;
+            }
+            int index = Steps.IndexOf(CurrentStep);
+            index--;
+            if (index >= 0)
+            {
+                CurrentStep = Steps.ElementAt(index);
+            }
+        }
+        private void StepSwiped(MR.Gestures.SwipeEventArgs e)
+        {
+            if (e.Direction == MR.Gestures.Direction.Left)
+            {
+                NextStep();
+            }
+            else if (e.Direction == MR.Gestures.Direction.Right)
+            {
+                PreviousStep();
+            }
+        }
+
+        private void ShowStepPicker()
+        {
+
         }
     }
 }   

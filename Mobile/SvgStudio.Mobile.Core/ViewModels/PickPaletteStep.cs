@@ -31,7 +31,7 @@ namespace SvgStudio.Mobile.Core.ViewModels
 
         public Palette Palette { get; set; }
 
-        public Task Start(ContentView content)
+        public void Start(ContentView content, Action callback)
         {
             throw new NotImplementedException();
         }

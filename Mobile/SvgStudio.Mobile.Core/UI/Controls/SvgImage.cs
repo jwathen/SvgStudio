@@ -8,7 +8,7 @@ using Xamarin.Forms;
 
 namespace SvgStudio.Mobile.Core.UI.Controls
 {
-    public class SvgImage : Xamarin.Forms.Image, INotifyPropertyChanged
+    public class SvgImage : MR.Gestures.Image, INotifyPropertyChanged
     {
         private static Func<string> noop = () => (string)null;
 
@@ -17,6 +17,9 @@ namespace SvgStudio.Mobile.Core.UI.Controls
 
         public static readonly BindableProperty SvgMarkupAccessorProperty =
             BindableProperty.Create("SvgMarkupAccessor", typeof(Func<string>), typeof(SvgImage), noop);
+
+        public static readonly BindableProperty ActivityIndicatorProperty =
+            BindableProperty.Create("ActivityIndicator", typeof(ActivityIndicator), typeof(SvgImage), null);
 
         public string SvgMarkup
         {
@@ -28,6 +31,12 @@ namespace SvgStudio.Mobile.Core.UI.Controls
         {
             get { return (Func<string>)GetValue(SvgMarkupAccessorProperty); }
             set { SetValue(SvgMarkupAccessorProperty, value); }
+        }
+
+        public ActivityIndicator ActivityIndicator
+        {
+            get { return (ActivityIndicator)GetValue(ActivityIndicatorProperty); }
+            set { SetValue(ActivityIndicatorProperty, value); }
         }
     }
 }

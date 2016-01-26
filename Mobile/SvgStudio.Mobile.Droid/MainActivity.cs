@@ -19,7 +19,9 @@ namespace SvgStudio.Droid
             Xamarin.Insights.Initialize("e1b04cb1343bccb182e2576c5fc682355ea4ea50", this);
             global::Xamarin.Forms.Forms.Init(this, bundle);
             LoadApplication(new App());
-
+            
+            MR.Gestures.Android.Settings.LicenseKey = "VV8A-FA6F-ERJY-VFTS-7MVY-KQD9-ACEW-SUNC-K5TU-2DF5-BUNV-NXZJ-3KPY";
+            
             if ((int)Android.OS.Build.VERSION.SdkInt >= 21)
             {
                 ActionBar.SetIcon(new ColorDrawable(Resources.GetColor(Android.Resource.Color.Transparent)));

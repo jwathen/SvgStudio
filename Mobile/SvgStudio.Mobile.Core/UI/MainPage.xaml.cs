@@ -30,23 +30,17 @@ namespace SvgStudio.Mobile.Core.UI
             InitializeComponent();
             _db = db;
             SyncToolbarItem.Clicked += SyncToolbarItem_Clicked;
-            DoIt();
+            Task.Run(() => DoIt());
         }
 
         public void DoIt()
         {
-            Task.Factory.StartNew(() =>
+            var vm = new StudioViewModel("16284653806660-fda6c4c1ae034e5ea", StepView, _db);
+            vm.Init();
+            Device.BeginInvokeOnMainThread(() =>
             {
-                var vm = new StudioViewModel("16284653806660-fda6c4c1ae034e5ea", StepView, _db);
-                vm.Init();
-                return vm;
-            }).ContinueWith(task =>
-            {
-                Device.BeginInvokeOnMainThread(() =>
-                {
-                    BindingContext = task.Result;
-                    task.Result.Steps.First(x => x.DisplayText.StartsWith("Left")).Start(StepView);
-                });
+                BindingContext = vm;
+                vm.ShowStep();
             });
         }
 

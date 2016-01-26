@@ -47,15 +47,15 @@ namespace SvgStudio.Mobile.Core.ViewModels
         public string DisplayText { get; private set; }
         public ObservableCollection<IStudioStep> ChildSteps { get; private set; }
 
-        public Task Start(ContentView content)
+        public void Start(ContentView content, Action callback)
         {
-            return Task.Run(() =>
+            Task.Run(() =>
             {
                 var compatibilityTags = _db.LoadCompatibilityTagsByDesignRegionId(_designRegion.StorageId);
                 var storageShapes = _db.LoadShapesByCompatibilityTagIds(compatibilityTags.Select(x => x.Id).ToList());
                 var factory = new DrawingFactory(_db);
                 var shapes = storageShapes.Select(x => factory.BuildShape(x)).ToList();
-                var gallery = new ShapeGalleryViewModel(shapes, 70, 70);
+                var gallery = new ShapeGalleryViewModel(shapes, 70, 70, _db);
                 Gallery = gallery;
                 gallery.Init();
                 gallery.PropertyChanged += Gallery_PropertyChanged;
@@ -65,6 +65,7 @@ namespace SvgStudio.Mobile.Core.ViewModels
                 Device.BeginInvokeOnMainThread(() =>
                 {
                     content.Content = new ShapeGalleryControl(galleryTask.Result);
+                    callback();
                 });
             });
         }

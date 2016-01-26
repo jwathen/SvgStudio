@@ -2,6 +2,9 @@
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:SvgStudio.Mobile.Core.UI.Controls;assembly=SvgStudio.Mobile.Core"
+             xmlns:mr="clr-namespace:MR.Gestures;assembly=MR.Gestures"
              x:Class="SvgStudio.Mobile.Core.UI.Controls.ShapeOptionControl">
-  <local:SvgImage x:Name="Image" SvgMarkupAccessor="{Binding PreviewMarkupAccessor}" WidthRequest="70" HeightRequest="70" />
+  <mr:ContentView LongPressingCommand="{Binding ShowLicenseCommand}" TappedCommand="{Binding SelectCommand}">
+    <local:SvgImage SvgMarkupAccessor="{Binding PreviewMarkupAccessor}" WidthRequest="70" HeightRequest="70" />
+  </mr:ContentView>
 </ContentView>
