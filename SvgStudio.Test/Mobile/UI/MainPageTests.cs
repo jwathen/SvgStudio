@@ -26,7 +26,7 @@ namespace SvgStudio.Test.Mobile.UI
             StudioViewModel vm = new StudioViewModel("16284653806660-fda6c4c1ae034e5ea", stepView, mobile);
             vm.Init();
 
-            vm.Steps.First().Start(stepView);
+            vm.AllSteps.First().Start(stepView);
 
             var doc = new XmlDocument();
             doc.LoadXml(vm.PreviewMarkup);

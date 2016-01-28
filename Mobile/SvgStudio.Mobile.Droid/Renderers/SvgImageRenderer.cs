@@ -42,17 +42,17 @@ namespace SvgStudio.Mobile.Droid.Renderers
             base.OnElementPropertyChanged(sender, e);
             if (e.PropertyName == "SvgMarkup" || e.PropertyName == "SvgMarkupAccessor")
             {
-                DrawImage();
+                UpdateBitmap();
             }
         }
 
         protected override void OnElementChanged(ElementChangedEventArgs<SvgImage> e)
         {
             base.OnElementChanged(e);
-            DrawImage();
+            UpdateBitmap();
         }
 
-        protected void DrawImage()
+        protected void UpdateBitmap()
         {
             if (_formsControl != null && (_formsControl.SvgMarkup != null || _formsControl.SvgMarkupAccessor != null))
             {
@@ -61,79 +61,84 @@ namespace SvgStudio.Mobile.Droid.Renderers
                     _formsControl.ActivityIndicator.IsRunning = true;
                 }
 
-                Bitmap bitmap = null;
-
-                Task.Run(() =>
-                {
-                    try
-                    {
-                        string markup = null;
-                        if (!string.IsNullOrWhiteSpace(_formsControl.SvgMarkup))
-                        {
-                            markup = _formsControl.SvgMarkup;
-                        }
-                        else if (_formsControl.SvgMarkupAccessor != null)
-                        {
-                            markup = _formsControl.SvgMarkupAccessor();
-                        }
-                        if (markup == null)
-                        {
-                            return;
-                        }
-
-                        var svg = SVG.GetFromString(markup);
-
-                        var width = PixelToDP((int)_formsControl.Width <= 0 ? 100 : (int)_formsControl.Width);
-                        var height = PixelToDP((int)_formsControl.Height <= 0 ? 100 : (int)_formsControl.Height);
-
-                        float documentWidth = svg.DocumentWidth;
-                        float documentHeight = svg.DocumentHeight;
-
-                        if (documentWidth == -1 || documentHeight == -1 && svg.DocumentViewBox != null)
-                        {
-                            documentWidth = svg.DocumentViewBox.Width();
-                            documentHeight = svg.DocumentViewBox.Height();
-                        }
-
-                        svg.SetDocumentViewBox(0, 0, documentWidth, documentHeight);
-                        svg.SetDocumentWidth(width.ToString());
-                        svg.SetDocumentHeight(height.ToString());
-
-                        bitmap = Bitmap.CreateBitmap(width, height, Bitmap.Config.Argb8888);
-                        Canvas canvas = new Canvas(bitmap);
-                        RectF viewport = new RectF(0, 0, svg.DocumentWidth, svg.DocumentHeight);
-                        svg.RenderToCanvas(canvas, viewport);
-                    }
-                    catch (Exception ex)
-                    {
-                        if (bitmap != null)
-                        {
-                            bitmap.Dispose();
-                        }
-                        Xamarin.Insights.Report(ex);
-                    }
-                }).ContinueWith(task =>
-                {
-                    if (bitmap != null)
+                Task.Run(() => GenerateBitmap())
+                    .ContinueWith(task =>
                     {
                         Device.BeginInvokeOnMainThread(() =>
                         {
-                            try
+                            var bitmap = task.Result;
+                            if (bitmap != null)
                             {
                                 var imageView = new ImageView(Context);
                                 imageView.SetScaleType(ImageView.ScaleType.FitXy);
                                 imageView.SetImageBitmap(bitmap);
                                 bitmap.Dispose();
+
                                 SetNativeControl(imageView);
-                                if (_formsControl.ActivityIndicator != null)
-                                {
-                                    _formsControl.ActivityIndicator.IsRunning = false;
-                                }
                             }
-                            catch { }
+
+                            if (_formsControl.ActivityIndicator != null)
+                            {
+                                _formsControl.ActivityIndicator.IsRunning = false;
+                            }
                         });
-                    }
-                });
+                    });
+            }
+        }
+
+        private Bitmap GenerateBitmap()
+        {
+            Bitmap bitmap = null;
+
+            try
+            {
+                string markup = null;
+                if (!string.IsNullOrWhiteSpace(_formsControl.SvgMarkup))
+                {
+                    markup = _formsControl.SvgMarkup;
+                }
+                else if (_formsControl.SvgMarkupAccessor != null)
+                {
+                    markup = _formsControl.SvgMarkupAccessor();
+                }
+                if (markup == null)
+                {
+                    return null;
+                }
+
+                var svg = SVG.GetFromString(markup);
+
+                var width = PixelToDP((int)_formsControl.Width <= 0 ? 100 : (int)_formsControl.Width);
+                var height = PixelToDP((int)_formsControl.Height <= 0 ? 100 : (int)_formsControl.Height);
+
+                float documentWidth = svg.DocumentWidth;
+                float documentHeight = svg.DocumentHeight;
+
+                if (documentWidth == -1 || documentHeight == -1 && svg.DocumentViewBox != null)
+                {
+                    documentWidth = svg.DocumentViewBox.Width();
+                    documentHeight = svg.DocumentViewBox.Height();
+                }
+
+                svg.SetDocumentViewBox(0, 0, documentWidth, documentHeight);
+                svg.SetDocumentWidth(width.ToString());
+                svg.SetDocumentHeight(height.ToString());
+
+                bitmap = Bitmap.CreateBitmap(width, height, Bitmap.Config.Argb8888);
+                Canvas canvas = new Canvas(bitmap);
+                RectF viewport = new RectF(0, 0, svg.DocumentWidth, svg.DocumentHeight);
+                svg.RenderToCanvas(canvas, viewport);
+
+                return bitmap;
+            }
+            catch (Exception ex)
+            {
+                if (bitmap != null)
+                {
+                    bitmap.Dispose();
+                }
+                Xamarin.Insights.Report(ex);
+                return null;
             }
         }
 

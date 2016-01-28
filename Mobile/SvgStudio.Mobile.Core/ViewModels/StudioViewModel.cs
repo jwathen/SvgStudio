@@ -25,7 +25,6 @@ namespace SvgStudio.Mobile.Core.ViewModels
 
         private string _previewMarkup = null;
         private IStudioStep _currentStep = null;
-        private List<DesignRegionViewModel> _designRegionViewModels = new List<DesignRegionViewModel>();
         private bool _changingStep = false;
 
         public StudioViewModel(string templateId, ContentView stepView, IStorageRepository db)
@@ -33,7 +32,8 @@ namespace SvgStudio.Mobile.Core.ViewModels
             _templateId = templateId;
             _stepView = stepView;
             _db = db;
-            Steps = new ObservableCollection<IStudioStep>();
+            DesignRegionSteps = new List<PickDesignStep>();
+            Steps = new List<IStudioStep>();
             NextStepCommand = new Command(NextStep);
             PreviousStepCommand = new Command(PreviousStep);
             StepSwipedCommand = new Command<MR.Gestures.SwipeEventArgs>(StepSwiped);
@@ -46,18 +46,20 @@ namespace SvgStudio.Mobile.Core.ViewModels
             _template = drawingFactory.BuildTemplate(_templateId);
             foreach (var designRegion in _template.DesignRegions)
             {
-                var designRegionViewModel = new DesignRegionViewModel(designRegion, null, _db);
-                _designRegionViewModels.Add(designRegionViewModel);
-                designRegionViewModel.Init();
-                designRegionViewModel.PropertyChanged += DesignRegionViewModel_PropertyChanged;
-                designRegionViewModel.Steps.CollectionChanged += DesignRegionViewModel_Steps_CollectionChanged;
-                foreach (var step in designRegionViewModel.Steps)
-                {
-                    Steps.Add(step);
-                }
+                var pickDesignStep = new PickDesignStep(null, null, designRegion, _db);
+                pickDesignStep.DecendentStepsChanged += DesignRegionStep_DecendentStepsChanged;
+                pickDesignStep.PropertyChanged += DesignRegionStep_PropertyChanged;
+                DesignRegionSteps.Add(pickDesignStep);
+                Steps.Add(pickDesignStep);
             }
             CurrentStep = Steps.First();
             _previewMarkup = GeneratePreviewMarkup();
+        }
+
+        private void DesignRegionStep_DecendentStepsChanged(object sender, EventArgs e)
+        {
+            Steps.Clear();
+            Steps.AddRange(DesignRegionSteps.SelectMany(x => x.GetDescendentsAndSelf()));
         }
 
         public void ShowStep()
@@ -75,7 +77,8 @@ namespace SvgStudio.Mobile.Core.ViewModels
         public Command StepSwipedCommand { get; set; }
         public Command ChangeStepCommand { get; set; }
         public Command ShowStepPickerCommand { get; set; }
-        public ObservableCollection<IStudioStep> Steps { get; set; }
+        public List<PickDesignStep> DesignRegionSteps { get; set; }
+        public List<IStudioStep> Steps { get; set; }
 
         public string PreviewMarkup
         {
@@ -110,7 +113,7 @@ namespace SvgStudio.Mobile.Core.ViewModels
             }
         }
 
-        private void DesignRegionViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void DesignRegionStep_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "Design")
             {
@@ -125,21 +128,12 @@ namespace SvgStudio.Mobile.Core.ViewModels
             }
         }
 
-        private void DesignRegionViewModel_Steps_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            Steps.Clear();
-            foreach(var step in _designRegionViewModels.SelectMany(x => x.Steps))
-            {
-                Steps.Add(step);
-            }
-        }
-
         private string GeneratePreviewMarkup()
         {
             var renderer = new TemplateRenderer(_template);
-            foreach (var designRegionViewModel in _designRegionViewModels)
+            foreach (var designStep in DesignRegionSteps)
             {
-                renderer.AddDesign(designRegionViewModel.DesignRegion.Name, designRegionViewModel.Design.Shape, designRegionViewModel.Design.Palette);
+                renderer.AddDesign(designStep.DesignRegion.Name, designStep.Design.Shape, designStep.Design.Palette);
             }
             XDocument svg = new XDocument(renderer.Render("Master"));
             string result = XmlHelper.RenderDocument(svg, true);
@@ -187,7 +181,7 @@ namespace SvgStudio.Mobile.Core.ViewModels
 
         private void ShowStepPicker()
         {
-
+            Application.Current.MainPage.DisplayAlert("Steps", string.Join(Environment.NewLine, Steps.Select(x => x.DisplayText)), "Ok");
         }
     }
 }   

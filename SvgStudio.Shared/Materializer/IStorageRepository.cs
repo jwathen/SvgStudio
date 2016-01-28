@@ -16,6 +16,8 @@ namespace SvgStudio.Shared.Materializer
 
         StorageModel.Shape LoadShape(string id);
 
+        List<StorageModel.Palette> LoadPalettes();
+
         List<StorageModel.Shape> LoadShapesByCompatibilityTagIds(List<string> compatibilityTagIds);
 
         string LoadMarkupFragmentContent(string id);

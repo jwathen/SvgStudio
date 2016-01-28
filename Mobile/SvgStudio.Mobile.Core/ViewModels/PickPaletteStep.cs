@@ -1,7 +1,10 @@
-﻿using SvgStudio.Shared.Drawing;
+﻿using SvgStudio.Mobile.Core.UI.Controls;
+using SvgStudio.Shared.Drawing;
+using SvgStudio.Shared.Materializer;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,33 +12,67 @@ using Xamarin.Forms;
 
 namespace SvgStudio.Mobile.Core.ViewModels
 {
-    public class PickPaletteStep : ViewModelBase, IStudioStep
+    public class PickPaletteStep : StudioStepBase
     {
-        public PickPaletteStep()
+        private readonly IStorageRepository _db;
+        private readonly DesignRegion _designRegion;
+        private Palette _selectedPalette = null;
+        private Shape _shape = null;
+
+        public PickPaletteStep(Palette selectedPalette,  Shape shape, DesignRegion designRegion, IStorageRepository db)
         {
-            ChildSteps = new ObservableCollection<IStudioStep>();
+            _db = db;
+            _designRegion = designRegion;
+            _selectedPalette = selectedPalette;
+            _shape = shape;
+            DisplayText = string.Format("{0} Coloring", designRegion.Name);
         }
 
-        public string DisplayText
+        public Palette SelectedPalette
         {
             get
             {
-                throw new NotImplementedException();
+                return _selectedPalette;
             }
-
             set
             {
-                throw new NotImplementedException();
+                if (_selectedPalette != value)
+                {
+                    _selectedPalette = value;
+                    FirePropertyChanged();
+                }
             }
         }
+        public PaletteGalleryViewModel Gallery { get; private set; }
 
-        public Palette Palette { get; set; }
-
-        public void Start(ContentView content, Action callback)
+        public override void Start(ContentView content, Action callback)
         {
-            throw new NotImplementedException();
+            Task.Run(() =>
+            {
+                var storagePalettes = _db.LoadPalettes();
+                var factory = new DrawingFactory(_db);
+                var palettes = storagePalettes.Select(x => factory.BuildPalette(x.Id)).ToList();
+                var gallery = new PaletteGalleryViewModel(palettes, _shape, 70, 70, _db);
+                Gallery = gallery;
+                gallery.Init();
+                gallery.PropertyChanged += Gallery_PropertyChanged;
+                return gallery;
+            }).ContinueWith(galleryTask =>
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    content.Content = new PaletteGalleryControl(galleryTask.Result);
+                    callback();
+                });
+            });
         }
 
-        public ObservableCollection<IStudioStep> ChildSteps { get; private set; }
+        private void Gallery_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "SelectedOption")
+            {
+                SelectedPalette = Gallery.SelectedOption.Palette;
+            }
+        }
     }
 }

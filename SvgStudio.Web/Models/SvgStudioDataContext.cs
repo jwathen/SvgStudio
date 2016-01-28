@@ -142,5 +142,10 @@ namespace SvgStudio.Web.Models
         {
             throw new NotImplementedException();
         }
+
+        public List<Palette> LoadPalettes()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

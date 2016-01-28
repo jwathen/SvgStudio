@@ -99,5 +99,10 @@ namespace SvgStudio.Mobile.Core.Models.Storage
         {
             return _db.Find<Template>(id);
         }
+
+        public List<Palette> LoadPalettes()
+        {
+            return _db.Table<Palette>().ToList();
+        }
     }
 }

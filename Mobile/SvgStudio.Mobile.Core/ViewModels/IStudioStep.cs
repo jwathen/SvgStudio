@@ -10,8 +10,10 @@ namespace SvgStudio.Mobile.Core.ViewModels
 {
     public interface IStudioStep
     {
-        string DisplayText { get; }
+        event EventHandler DecendentStepsChanged;
         ObservableCollection<IStudioStep> ChildSteps { get; }
+        IEnumerable<IStudioStep> GetDescendentsAndSelf();
+        string DisplayText { get; }
         void Start(ContentView content, Action callback);
     }
 }

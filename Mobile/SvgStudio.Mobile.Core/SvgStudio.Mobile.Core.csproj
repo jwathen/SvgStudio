@@ -48,8 +48,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\IMobileServiceGateway.cs" />
     <Compile Include="Threads.cs" />
+    <Compile Include="UI\Controls\PaletteGalleryControl.xaml.cs">
+      <DependentUpon>PaletteGalleryControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\Controls\ShapeGalleryControl.xaml.cs">
       <DependentUpon>ShapeGalleryControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Controls\PaletteOptionControl.xaml.cs">
+      <DependentUpon>PaletteOptionControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Controls\ShapeOptionControl.xaml.cs">
       <DependentUpon>ShapeOptionControl.xaml</DependentUpon>
@@ -59,12 +65,14 @@
     <Compile Include="UI\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\DesignRegionViewModel.cs" />
     <Compile Include="ViewModels\IStudioStep.cs" />
+    <Compile Include="ViewModels\PaletteOptionViewModel.cs" />
+    <Compile Include="ViewModels\PalleteGalleryViewModel.cs" />
     <Compile Include="ViewModels\PickPaletteStep.cs" />
-    <Compile Include="ViewModels\PickShapeStep.cs" />
+    <Compile Include="ViewModels\PickDesignStep.cs" />
     <Compile Include="ViewModels\ShapeGalleryViewModel.cs" />
     <Compile Include="ViewModels\ShapeOptionViewModel.cs" />
+    <Compile Include="ViewModels\StudioStepBase.cs" />
     <Compile Include="ViewModels\StudioViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
   </ItemGroup>
@@ -134,6 +142,18 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="UI\Controls\ShapeGalleryControl.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="UI\Controls\PaletteGalleryControl.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="UI\Controls\PaletteOptionControl.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

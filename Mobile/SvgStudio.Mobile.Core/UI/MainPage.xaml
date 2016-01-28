@@ -24,7 +24,7 @@
             <TapGestureRecognizer Command="{Binding PreviousStepCommand}"/>
           </Image.GestureRecognizers>
         </Image>
-        <mr:Label x:Name="lbl" Text="{Binding CurrentStep.DisplayText}" HorizontalOptions="CenterAndExpand" TextColor="#ffffff" Style="{DynamicResource SubtitleStyle}" />
+        <mr:Label x:Name="lbl" Text="{Binding CurrentStep.DisplayText}" TappedCommand="{Binding ShowStepPickerCommand}" HorizontalOptions="CenterAndExpand" TextColor="#ffffff" Style="{DynamicResource SubtitleStyle}" />
         <Image x:Name="RightChevron" Source="ic_chevron_right_white_24dp.png" HorizontalOptions="End" WidthRequest="70">
           <Image.GestureRecognizers>
             <TapGestureRecognizer Command="{Binding NextStepCommand}"/>
