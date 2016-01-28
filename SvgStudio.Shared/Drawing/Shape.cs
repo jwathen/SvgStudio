@@ -18,7 +18,6 @@ namespace SvgStudio.Shared.Drawing
 
         public bool CanBeRecolored()
         {
-            return true;
             return NumberOfFillsSupported > 0
                 || NumberOfStrokesSupported > 0;
         }

@@ -51,7 +51,9 @@ namespace SvgStudio.Mobile.Core.ViewModels
             {
                 var storagePalettes = _db.LoadPalettes();
                 var factory = new DrawingFactory(_db);
-                var palettes = storagePalettes.Select(x => factory.BuildPalette(x.Id)).ToList();
+                var palettes = new List<Palette>();
+                palettes.Add(null);
+                palettes.AddRange(storagePalettes.Select(x => factory.BuildPalette(x.Id)).ToList());
                 var gallery = new PaletteGalleryViewModel(palettes, _shape, 70, 70, _db);
                 Gallery = gallery;
                 gallery.Init();

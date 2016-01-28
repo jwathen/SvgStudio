@@ -102,6 +102,8 @@ namespace SvgStudio.Shared.Materializer
             result.Name = storageShape.Name;
             result.Width = storageShape.Width;
             result.Height = storageShape.Height;
+            result.NumberOfFillsSupported = storageShape.NumberOfFillsSupported;
+            result.NumberOfStrokesSupported = storageShape.NumberOfStrokesSupported;
 
             return result;
         }
