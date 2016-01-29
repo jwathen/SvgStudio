@@ -11,14 +11,14 @@ namespace SvgStudio.Shared.StorageModel
     public class Stroke : ISyncableRecord
     {
         [PrimaryKey]
-        public string Id { get; set; }
-        public byte[] RowVersion { get; set; }
-        public bool IsActive { get; set; }
-        public string Color { get; set; }
-        public int Width { get; set; }
-        public string PaletteId { get; set; }
+        public virtual string Id { get; set; }
+        public virtual byte[] RowVersion { get; set; }
+        public virtual bool IsActive { get; set; }
+        public virtual string Color { get; set; }
+        public virtual int Width { get; set; }
+        public virtual string PaletteId { get; set; }
 
         [Ignore, JsonIgnore]
-        public Palette Palette { get; set; }
+        public virtual Palette Palette { get; set; }
     }
 }

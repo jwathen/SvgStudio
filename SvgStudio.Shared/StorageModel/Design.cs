@@ -11,18 +11,18 @@ namespace SvgStudio.Shared.StorageModel
     public class Design : ISyncableRecord
     {
         [PrimaryKey]
-        public string Id { get; set; }
-        public byte[] RowVersion { get; set; }
+        public virtual string Id { get; set; }
+        public virtual byte[] RowVersion { get; set; }
         [Indexed]
-        public string ShapeId { get; set; }
+        public virtual string ShapeId { get; set; }
         [Indexed]
-        public string PaletteId { get; set; }
+        public virtual string PaletteId { get; set; }
 
         [Ignore, JsonIgnore]
-        public Shape Shape { get; set; }
+        public virtual Shape Shape { get; set; }
         [Ignore, JsonIgnore]
-        public Palette Palette { get; set; }
+        public virtual Palette Palette { get; set; }
         [Ignore, JsonIgnore]
-        public ICollection<Fill> Fills { get; set; }
+        public virtual ICollection<Fill> Fills { get; set; }
     }
 }

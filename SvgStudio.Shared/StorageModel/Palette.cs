@@ -11,17 +11,17 @@ namespace SvgStudio.Shared.StorageModel
     public class Palette : ISyncableRecord
     {
         [PrimaryKey]
-        public string Id { get; set; }
-        public byte[] RowVersion { get; set; }
-        public bool IsActive { get; set; }
-        public string Name { get; set; }
-        public short SortOrder { get; set; }
+        public virtual string Id { get; set; }
+        public virtual byte[] RowVersion { get; set; }
+        public virtual bool IsActive { get; set; }
+        public virtual string Name { get; set; }
+        public virtual short SortOrder { get; set; }
 
         [Ignore, JsonIgnore]
-        public ICollection<Design> Designs { get; set; }
+        public virtual ICollection<Design> Designs { get; set; }
         [Ignore, JsonIgnore]
-        public ICollection<Fill> Fills { get; set; }
+        public virtual ICollection<Fill> Fills { get; set; }
         [Ignore, JsonIgnore]
-        public ICollection<Stroke> Strokes { get; set; }
+        public virtual ICollection<Stroke> Strokes { get; set; }
     }
 }

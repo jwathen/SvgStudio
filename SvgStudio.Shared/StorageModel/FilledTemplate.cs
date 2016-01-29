@@ -8,7 +8,7 @@ namespace SvgStudio.Shared.StorageModel
 {
     public class FilledTemplateMomento
     {
-        public string TemplateId { get; set; }
-        public Dictionary<string, string> Designs { get; set; }
+        public virtual string TemplateId { get; set; }
+        public virtual Dictionary<string, string> Designs { get; set; }
     }
 }

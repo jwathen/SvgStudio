@@ -11,13 +11,13 @@ namespace SvgStudio.Shared.StorageModel
     public class MarkupFragment : ISyncableRecord
     {
         [PrimaryKey]
-        public string Id { get; set; }
-        public byte[] RowVersion { get; set; }
-        public string Content { get; set; }
+        public virtual string Id { get; set; }
+        public virtual byte[] RowVersion { get; set; }
+        public virtual string Content { get; set; }
 
         [Ignore, JsonIgnore]
-        public ICollection<Shape> BasicShapes { get; set; }
+        public virtual ICollection<Shape> BasicShapes { get; set; }
         [Ignore, JsonIgnore]
-        public ICollection<Shape> TemplateShapeClipPaths { get; set; }
+        public virtual ICollection<Shape> TemplateShapeClipPaths { get; set; }
     }
 }

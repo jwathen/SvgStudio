@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Data.Entity;
+using SvgStudio.Shared.StorageModel;
 
 namespace SvgStudio.Web.ViewModels.Shared
 {
@@ -60,6 +61,8 @@ namespace SvgStudio.Web.ViewModels.Shared
             if (IsNew())
             {
                 template = new SvgStudio.Shared.StorageModel.Template();
+                template.Id = UniqueId.Generate();
+                this.Id = template.Id;
                 db.Templates.Add(template);
             }
             else

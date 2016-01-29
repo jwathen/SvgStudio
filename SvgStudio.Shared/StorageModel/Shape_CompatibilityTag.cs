@@ -12,14 +12,14 @@ namespace SvgStudio.Shared.StorageModel
     {
 
         [PrimaryKey]
-        public string Id { get; set; }
+        public virtual string Id { get; set; }
 
         [Indexed(Name = "IX_Shape_CompatibilityTag_X", Order = 1)]
-        public string CompatibilityTagId { get; set; }
+        public virtual string CompatibilityTagId { get; set; }
         [Indexed(Name = "IX_Shape_CompatibilityTag_X", Order = 2)]
-        public string ShapeId { get; set; }
+        public virtual string ShapeId { get; set; }
 
-        public byte[] RowVersion
+        public virtual byte[] RowVersion
         {
             get
             {
@@ -36,9 +36,9 @@ namespace SvgStudio.Shared.StorageModel
         }
 
         [Ignore, JsonIgnore]
-        public CompatibilityTag CompatibilityTag { get; set; }
+        public virtual CompatibilityTag CompatibilityTag { get; set; }
         [Ignore, JsonIgnore]
-        public Shape Shape { get; set; }
+        public virtual Shape Shape { get; set; }
 
         public void ComputeId()
         {

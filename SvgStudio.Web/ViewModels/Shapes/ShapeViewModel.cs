@@ -107,26 +107,40 @@ namespace SvgStudio.Web.ViewModels.Shapes
 
         public int CalculateNumberOfStrokesSupported()
         {
-            var parsed = XElement.Parse(BasicShape_MarkupFragment.Content);
-            int maxStrokeIndex = parsed.DescendantsAndSelf()
-                .SelectMany(x => x.Attributes())
-                .Where(x => x.Name.LocalName == "data-stroke-index")
-                .Select(x => int.Parse(x.Value))
-                .Concat(new[] { -1 })
-                .Max();
-            return maxStrokeIndex + 1;
+            if (ShapeType == ShapeType.Basic)
+            {
+                var parsed = XElement.Parse(BasicShape_MarkupFragment.Content);
+                int maxStrokeIndex = parsed.DescendantsAndSelf()
+                    .SelectMany(x => x.Attributes())
+                    .Where(x => x.Name.LocalName == "data-stroke-index")
+                    .Select(x => int.Parse(x.Value))
+                    .Concat(new[] { -1 })
+                    .Max();
+                return maxStrokeIndex + 1;
+            }
+            else
+            {
+                return 0;
+            }
         }
 
         public int CalculateNumberOfFillsSupported()
         {
-            var parsed = XElement.Parse(BasicShape_MarkupFragment.Content);
-            int maxFillIndex = parsed.DescendantsAndSelf()
-                .SelectMany(x => x.Attributes())
-                .Where(x => x.Name.LocalName == "data-fill-index")
-                .Select(x => int.Parse(x.Value))
-                .Concat(new[] { -1 })
-                .Max();
-            return maxFillIndex + 1;
+            if (ShapeType == ShapeType.Basic)
+            {
+                var parsed = XElement.Parse(BasicShape_MarkupFragment.Content);
+                int maxFillIndex = parsed.DescendantsAndSelf()
+                    .SelectMany(x => x.Attributes())
+                    .Where(x => x.Name.LocalName == "data-fill-index")
+                    .Select(x => int.Parse(x.Value))
+                    .Concat(new[] { -1 })
+                    .Max();
+                return maxFillIndex + 1;
+            }
+            else
+            {
+                return 0;
+            }
         }
 
         public HtmlString GeneratePreview(double width, double height)
@@ -283,6 +297,38 @@ namespace SvgStudio.Web.ViewModels.Shapes
                 await this.BasicShape_MarkupFragment.SaveAsync();
                 shape.BasicShape_MarkupFragmentId = this.BasicShape_MarkupFragment.Id;
             }
+            else if (ShapeType == ShapeType.Template)
+            {
+                await this.TemplateShape_Template.SaveAsync();
+                shape.TemplateShape_TemplateId = this.TemplateShape_Template.Id;
+
+                var stampComaptibilityTag = await db.CompatibilityTags.FirstOrDefaultAsync(x => x.Tag == "Stamp");
+                foreach (var designRegionViewModel in this.TemplateShape_Template.DesignRegions)
+                {
+                    if (!designRegionViewModel.IsEmpty())
+                    {
+                        if (stampComaptibilityTag != null)
+                        {
+                            bool designRegionAlreadyHasStampCompatibilityTag =
+                                db.DesignRegion_CompatibilityTags.Any(x => x.CompatibilityTagId == stampComaptibilityTag.Id && x.DesignRegionId == designRegionViewModel.Id);
+
+                            if (!designRegionAlreadyHasStampCompatibilityTag)
+                            {
+                                var designRegionCompatibilityTag = new DesignRegion_CompatibilityTag
+                                {
+                                    CompatibilityTagId = stampComaptibilityTag.Id,
+                                    DesignRegionId = designRegionViewModel.Id
+                                };
+                                designRegionCompatibilityTag.ComputeId();
+                                db.DesignRegion_CompatibilityTags.Add(designRegionCompatibilityTag);
+                            }
+                        }
+                    }
+                }
+
+                await this.TemplateShape_ClipPathMarkupFragment.SaveAsync();
+                shape.TemplateShape_ClipPathMarkupFragmentId = this.TemplateShape_ClipPathMarkupFragment.Id;
+            }
 
             if (executeSaveChanges)
             {
@@ -295,7 +341,19 @@ namespace SvgStudio.Web.ViewModels.Shapes
             var db = SvgStudioDataContext.Current;
             db.ContentLicenses.RemoveRange(db.ContentLicenses.Where(x => x.ShapeId == this.Id));
             db.Shape_CompatibilityTags.RemoveRange(db.Shape_CompatibilityTags.Where(x => x.ShapeId == this.Id));
-            db.MarkupFragments.RemoveRange(db.MarkupFragments.Where(x => x.Id == this.BasicShape_MarkupFragment.Id));
+            if (ShapeType == ShapeType.Basic)
+            {
+                db.MarkupFragments.RemoveRange(db.MarkupFragments.Where(x => x.Id == this.BasicShape_MarkupFragment.Id));
+            }
+            else if (ShapeType == ShapeType.Template)
+            {
+                db.MarkupFragments.RemoveRange(db.MarkupFragments.Where(x => x.Id == this.TemplateShape_ClipPathMarkupFragment.Id));
+                foreach(var designRegion in this.TemplateShape_Template.DesignRegions)
+                {
+                    await designRegion.DeleteAsync();
+                }
+                db.Templates.RemoveRange(db.Templates.Where(x => x.Id == this.TemplateShape_Template.Id));
+            }
             db.Shapes.RemoveRange(db.Shapes.Where(x => x.Id == this.Id));
             
             if (executeSaveChanges)

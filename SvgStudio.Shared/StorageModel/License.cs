@@ -11,13 +11,13 @@ namespace SvgStudio.Shared.StorageModel
     public class License : ISyncableRecord
     {
         [PrimaryKey]
-        public string Id { get; set; }
-        public byte[] RowVersion { get; set; }
-        public bool AttributionRequired { get; set; }
-        public string LicenseName { get; set; }
-        public string LicenseUrl { get; set; }
+        public virtual string Id { get; set; }
+        public virtual byte[] RowVersion { get; set; }
+        public virtual bool AttributionRequired { get; set; }
+        public virtual string LicenseName { get; set; }
+        public virtual string LicenseUrl { get; set; }
 
         [Ignore, JsonIgnore]
-        public ICollection<ContentLicense> ContentLicenses { get; set; }
+        public virtual ICollection<ContentLicense> ContentLicenses { get; set; }
     }
 }

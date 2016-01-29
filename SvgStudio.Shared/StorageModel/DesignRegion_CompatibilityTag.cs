@@ -11,13 +11,13 @@ namespace SvgStudio.Shared.StorageModel
     public class DesignRegion_CompatibilityTag : ISyncableRecord
     {
         [PrimaryKey]
-        public string Id { get; set; }
+        public virtual string Id { get; set; }
 
         [Indexed(Name = "IX_DesignRegion_CompatibilityTag_X", Order = 1)]
-        public string CompatibilityTagId { get; set; }
+        public virtual string CompatibilityTagId { get; set; }
         [Indexed(Name = "IX_DesignRegion_CompatibilityTag_X", Order = 2)]
-        public string DesignRegionId { get; set; }
-        public byte[] RowVersion
+        public virtual string DesignRegionId { get; set; }
+        public virtual byte[] RowVersion
         {
             get
             {
@@ -34,9 +34,9 @@ namespace SvgStudio.Shared.StorageModel
         }
 
         [Ignore, JsonIgnore]
-        public DesignRegion DesignRegion { get; set; }
+        public virtual DesignRegion DesignRegion { get; set; }
         [Ignore, JsonIgnore]
-        public CompatibilityTag CompatibilityTag { get; set; }
+        public virtual CompatibilityTag CompatibilityTag { get; set; }
 
         public void ComputeId()
         {

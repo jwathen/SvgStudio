@@ -11,21 +11,21 @@ namespace SvgStudio.Shared.StorageModel
     public class DesignRegion : ISyncableRecord
     {
         [PrimaryKey]
-        public string Id { get; set; }
-        public byte[] RowVersion { get; set; }
-        public bool IsActive { get; set; }
-        public string Name { get; set; }
-        public int X { get; set; }
-        public int Y { get; set; }
-        public int Width { get; set; }
-        public int Height { get; set; }
+        public virtual string Id { get; set; }
+        public virtual byte[] RowVersion { get; set; }
+        public virtual bool IsActive { get; set; }
+        public virtual string Name { get; set; }
+        public virtual int X { get; set; }
+        public virtual int Y { get; set; }
+        public virtual int Width { get; set; }
+        public virtual int Height { get; set; }
         [Indexed]
-        public string TemplateId { get; set; }
-        public short SortOrder { get; set; }
+        public virtual string TemplateId { get; set; }
+        public virtual short SortOrder { get; set; }
 
         [Ignore, JsonIgnore]
-        public Template Template { get; set; }
+        public virtual Template Template { get; set; }
         [Ignore, JsonIgnore]
-        public ICollection<DesignRegion_CompatibilityTag> DesignRegion_CompatibilityTags { get; set; }
+        public virtual ICollection<DesignRegion_CompatibilityTag> DesignRegion_CompatibilityTags { get; set; }
     }
 }

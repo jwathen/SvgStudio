@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Data.Entity;
+using SvgStudio.Shared.StorageModel;
 
 namespace SvgStudio.Web.ViewModels.Shared
 {
@@ -68,6 +69,8 @@ namespace SvgStudio.Web.ViewModels.Shared
             if (IsNew())
             {
                 designRegion = new SvgStudio.Shared.StorageModel.DesignRegion();
+                designRegion.Id = UniqueId.Generate();
+                this.Id = designRegion.Id;
                 db.DesignRegions.Add(designRegion);
             }
             else
@@ -96,6 +99,10 @@ namespace SvgStudio.Web.ViewModels.Shared
             {
                 var db = SvgStudioDataContext.Current;
                 var designRegion = await db.DesignRegions.FirstAsync(x => x.Id == Id);
+                foreach(var compatibilityTag in designRegion.DesignRegion_CompatibilityTags)
+                {
+                    db.DesignRegion_CompatibilityTags.Remove(compatibilityTag);
+                }
                 db.DesignRegions.Remove(designRegion);
 
                 if (executeSaveChanges)

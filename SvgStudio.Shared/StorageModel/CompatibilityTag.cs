@@ -11,13 +11,13 @@ namespace SvgStudio.Shared.StorageModel
     public class CompatibilityTag : ISyncableRecord
     {
         [PrimaryKey]
-        public string Id { get; set; }
-        public byte[] RowVersion { get; set; }
-        public string Tag { get; set; }
+        public virtual string Id { get; set; }
+        public virtual byte[] RowVersion { get; set; }
+        public virtual string Tag { get; set; }
 
         [Ignore, JsonIgnore]
-        public ICollection<Shape_CompatibilityTag> Shape_CompatibilityTags { get; set; }
+        public virtual ICollection<Shape_CompatibilityTag> Shape_CompatibilityTags { get; set; }
         [Ignore, JsonIgnore]
-        public ICollection<DesignRegion_CompatibilityTag> DesignRegion_CompatibilityTags { get; set; }        
+        public virtual ICollection<DesignRegion_CompatibilityTag> DesignRegion_CompatibilityTags { get; set; }        
     }
 }
