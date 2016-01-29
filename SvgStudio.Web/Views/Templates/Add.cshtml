@@ -1,0 +1,27 @@
+﻿@model SvgStudio.Web.ViewModels.Shared.TemplateViewModel
+@{
+    ViewBag.Title = "Add New Template";
+}
+
+<h2>Templates</h2>
+<p>
+    <a href="@Url.Action(MVC.Templates.Index())">
+        <i class="fa fa-chevron-left"></i> Back to Templates
+    </a>
+</p>
+<div class="col-lg-6">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Add New Template
+        </div>
+        <div class="panel-body">
+            @Html.ValidationSummary()
+            <form role="form" action="@Url.Action(MVC.Licenses.Add())" method="post">
+                @Html.EditorForModel()
+                <input type="submit" name="@Html.NameFor(x => x.Action)" value="Save" class="btn btn-primary pull-left" />
+                @Html.AntiForgeryToken()
+            </form>
+        </div>
+    </div>
+</div>
+

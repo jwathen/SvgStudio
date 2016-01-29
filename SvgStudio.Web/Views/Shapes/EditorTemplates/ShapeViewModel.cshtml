@@ -29,16 +29,16 @@
 </fieldset>
 <fieldset>
     <legend>Rendering Data</legend>
-    <div class="col-lg-12">
-        <label>
-            <strong>Activate Shape</strong>
-            <small>(Only activate a shape once it is ready to be downloaded by the mobile app.)</small>
-        </label>
-        <div class="checkbox">
-            <label>
-                @Html.CheckBoxFor(x => x.IsActive)
-                Shape is Active
-            </label>
+    <div class="col-lg-6">
+        <div class="form-group">
+            <label for="@Html.NameFor(x => x.ShapeType)">Shape Type</label>
+            @Html.EnumDropDownListFor(x => x.ShapeType, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="form-group">
+            <label for="@Html.NameFor(x => x.IsActive)">Active</label>
+            @Html.EditorFor(x => x.IsActive)
         </div>
     </div>
     <div class="col-lg-6">
@@ -66,26 +66,33 @@
             <p>Options are: @Model.CompatibilityTagOptions</p>
         </div>
     </div>
-    <div class="col-lg-12">
-        @Html.EditorFor(x => x.BasicShape_MarkupFragment)
-    </div>
-    <div class="col-lg-6">
-        <p>
-            <strong>Preview (default):</strong>
-        </p>
-        <div id="DefaultPreviewContainer" class="svg-container">
+    <div id="BasicShapeFormFields" style="display:none;">
+        <div class="col-lg-12">
+            @Html.EditorFor(x => x.BasicShape_MarkupFragment)
+        </div>
+        <div class="col-lg-6">
+            <p>
+                <strong>Preview (default):</strong>
+            </p>
+            <div id="DefaultPreviewContainer" class="svg-container">
 
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <p>
+                <strong>Preview (recolored):</strong>
+                @Html.DropDownList("PreviewPaletteId", Model.PaletteOptions)
+            </p>
+            <div id="FilledPreviewContainer" class="svg-container">
+
+            </div>
         </div>
     </div>
-    <div class="col-lg-6">
-        <p>
-            <strong>Preview (recolored):</strong>
-            @Html.DropDownList("PreviewPaletteId", Model.PaletteOptions)
-        </p>
-        <div id="FilledPreviewContainer" class="svg-container">
-
+    <div id="TemplateShapeFormFields" style="display:none;">
+        @Html.EditorFor(x => x.TemplateShape_Template)
+        <div class="col-lg-12">
+            @Html.EditorFor(x => x.TemplateShape_ClipPathMarkupFragment, new { MarkupFragmentTitle = "Clip Path" })
         </div>
     </div>
 </fieldset>
 @Html.HiddenFor(x => x.Id)
-@Html.HiddenFor(x => x.ShapeType)

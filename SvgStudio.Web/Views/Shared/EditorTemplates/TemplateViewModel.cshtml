@@ -1,0 +1,22 @@
+﻿@model SvgStudio.Web.ViewModels.Shared.TemplateViewModel
+
+<div class="col-lg-6">
+    <div class="form-group">
+        <label for="@Html.NameFor(x => x.Name)">Template Name</label>
+        @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+    </div>
+</div>
+<div class="col-lg-3">
+    <div class="form-group">
+        <label for="@Html.NameFor(x => x.IsMaster)">Master Template</label>
+        @Html.EditorFor(x => x.IsMaster)
+    </div>
+</div>
+<div class="col-lg-3">
+    <div class="form-group">
+        <label for="@Html.NameFor(x => x.IsActive)">Active</label>
+        @Html.EditorFor(x => x.IsActive)
+    </div>
+</div>
+@Html.HiddenFor(x => x.Id)
+@Html.EditorFor(x => x.DesignRegions)

@@ -86,4 +86,18 @@
             });
         });
     });
+
+    $(function () {
+        $('#@Html.IdFor(x => x.ShapeType)').change(function () {
+            var shapeType = $(this).val();
+            $('#BasicShapeFormFields').hide();
+            $('#TemplateShapeFormFields').hide();
+            if (shapeType == 1) {
+                $('#BasicShapeFormFields').show();
+            }
+            else if (shapeType == 2) {
+                $('#TemplateShapeFormFields').show();
+            }
+        }).change();
+    });
 </script>

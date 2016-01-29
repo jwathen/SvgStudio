@@ -1,0 +1,42 @@
+﻿@model IEnumerable<SvgStudio.Web.ViewModels.Shared.TemplateViewModel>
+@{
+    ViewBag.Title = "Templates";
+}
+
+<h2>Templates</h2>
+<p>
+    <a href="@Url.Action(MVC.Templates.Add())"><i class="fa fa-plus"></i> Add New Template</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Design Regions</th>
+            <th>Is Master</th>
+            <th>Is Active</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var template in Model)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(template.Id, MVC.Templates.Edit(template.Id))
+                </td>
+                <td>
+                    @template.Name
+                </td>
+                <td>
+                    @string.Join(", ", template.DesignRegions.Where(x => !x.IsEmpty()).Select(x => x.Name))
+                </td>
+                <td>
+                    @Helpers.YesNo(template.IsMaster)
+                </td>
+                <td>
+                    @Helpers.YesNo(template.IsActive)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

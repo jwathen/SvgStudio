@@ -3,7 +3,7 @@
 <div class="form-group">
     @Html.HiddenFor(x => x.Id)
     <label for="@Html.NameFor(x => x.Content)">
-        XML <a id="autoFixShapeMarkup" href="#"><i class="fa fa-magic"></i></a>
+        @(ViewBag.MarkupFragmentTitle ?? "XML") <a id="autoFixShapeMarkup" href="#"><i class="fa fa-magic"></i></a>
     </label>
     <div class="clearfix"></div>
     <div style="border: 1px solid gray;">

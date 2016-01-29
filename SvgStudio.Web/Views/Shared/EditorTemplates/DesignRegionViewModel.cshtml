@@ -1,0 +1,40 @@
+﻿@model SvgStudio.Web.ViewModels.Shared.DesignRegionViewModel
+
+<div class="col-lg-3">
+    <div class="form-group">
+        <label for="@Html.NameFor(x => x.Name)">Design Region Name</label>
+        @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+    </div>
+</div>
+<div class="col-lg-2">
+    <div class="form-group">
+        <label for="@Html.NameFor(x => x.X)">Translate X</label>
+        @Html.TextBoxFor(x => x.X, new { type = "tel", @class = "form-control" })
+    </div>
+</div>
+<div class="col-lg-2">
+    <div class="form-group">
+        <label for="@Html.NameFor(x => x.Y)">Translate Y</label>
+        @Html.TextBoxFor(x => x.Y, new { type = "tel", @class = "form-control" })
+    </div>
+</div>
+<div class="col-lg-2">
+    <div class="form-group">
+        <label for="@Html.NameFor(x => x.Width)">Width</label>
+        @Html.TextBoxFor(x => x.Width, new { type = "tel", @class = "form-control" })
+    </div>
+</div>
+<div class="col-lg-2">
+    <div class="form-group">
+        <label for="@Html.NameFor(x => x.Height)">Height</label>
+        @Html.TextBoxFor(x => x.Height, new { type = "tel", @class = "form-control" })
+    </div>
+</div>
+<div class="col-lg-1">
+    <div class="form-group">
+        <label for="@Html.NameFor(x => x.SortOrder)">Sort</label>
+        @Html.TextBoxFor(x => x.SortOrder, new { type = "tel", @class = "form-control" })
+    </div>
+</div>
+@Html.HiddenFor(x => x.IsActive)
+@Html.HiddenFor(x => x.Id)

@@ -48,7 +48,10 @@ namespace T4MVC
             [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
             public partial class _EditorTemplatesClass
             {
+                public readonly string Boolean = "Boolean";
+                public readonly string DesignRegionViewModel = "DesignRegionViewModel";
                 public readonly string MarkupFragmentViewModel = "MarkupFragmentViewModel";
+                public readonly string TemplateViewModel = "TemplateViewModel";
             }
         }
     }

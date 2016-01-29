@@ -37,6 +37,10 @@ namespace SvgStudio.Web.ViewModels.Shapes
 
         public MarkupFragmentViewModel BasicShape_MarkupFragment { get; set; }
 
+        public MarkupFragmentViewModel TemplateShape_ClipPathMarkupFragment { get; set; }
+
+        public TemplateViewModel TemplateShape_Template { get; set; }
+
         public bool IsNew()
         {
             return string.IsNullOrWhiteSpace(Id);
@@ -164,11 +168,11 @@ namespace SvgStudio.Web.ViewModels.Shapes
         {
             var db = SvgStudioDataContext.Current;
             var viewModel = new ShapeViewModel();
-            viewModel.ShapeType = ShapeType.Basic;
 
             if (shape != null)
             {
                 viewModel.Id = shape.Id;
+                viewModel.ShapeType = shape.ShapeType;
                 viewModel.IsActive = shape.IsActive;
                 viewModel.ShapeType = shape.ShapeType;
                 viewModel.Name = shape.Name;
@@ -182,6 +186,8 @@ namespace SvgStudio.Web.ViewModels.Shapes
             }
 
             viewModel.BasicShape_MarkupFragment = await MarkupFragmentViewModel.BuildAsync(shape?.BasicShape_MarkupFragmentId);
+            viewModel.TemplateShape_ClipPathMarkupFragment = await MarkupFragmentViewModel.BuildAsync(shape?.TemplateShape_ClipPathMarkupFragmentId);
+            viewModel.TemplateShape_Template = await TemplateViewModel.BuildAsync(shape?.TemplateShape_Template, 5);
 
             if (!viewModel.IsNew())
             {
@@ -318,7 +324,16 @@ namespace SvgStudio.Web.ViewModels.Shapes
                 RuleFor(x => x.Height).Must(BeAPositiveNumber).WithMessage("Width must be positive.");
                 RuleFor(x => x.CompatibilityTags).Must(AllBeValidTags).WithMessage("Invalid compatibility tag(s): {0}", x => string.Join(", ", x.GetInvalidCompatiblityTags()));
 
-                RuleFor(x => x.BasicShape_MarkupFragment).SetValidator(new MarkupFragmentViewModelValidator()).When(IsBasicShape);
+                When(x => x.ShapeType == ShapeType.Basic, () =>
+                {
+                    RuleFor(x => x.BasicShape_MarkupFragment).SetValidator(new MarkupFragmentViewModelValidator());
+                });
+
+                When(x => x.ShapeType == ShapeType.Template, () =>
+                {
+                    RuleFor(x => x.TemplateShape_Template).SetValidator(new TemplateViewModelValidator());
+                    RuleFor(x => x.TemplateShape_ClipPathMarkupFragment).SetValidator(new MarkupFragmentViewModelValidator());
+                });
             });
         }
 

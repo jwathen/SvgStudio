@@ -156,6 +156,7 @@
     <Compile Include="Controllers\MobileController.cs" />
     <Compile Include="Controllers\ShapesController.cs" />
     <Compile Include="Controllers\SvgStudioControllerBase.cs" />
+    <Compile Include="Controllers\TemplatesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -181,9 +182,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
+    <Compile Include="TemplatesController.generated.cs">
+      <DependentUpon>T4MVC.tt</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\Licenses\LicenseViewModel.cs" />
+    <Compile Include="ViewModels\Shared\DesignRegionViewModel.cs" />
     <Compile Include="ViewModels\Shapes\ShapeViewModel.cs" />
     <Compile Include="ViewModels\Shared\MarkupFragmentViewModel.cs" />
+    <Compile Include="ViewModels\Shared\TemplateViewModel.cs" />
     <Compile Include="Web\JsonNetResult.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -207,6 +213,12 @@
     <Content Include="Views\Account\SignIn.cshtml" />
     <Content Include="Views\Help\Index.cshtml" />
     <Content Include="Views\Shapes\_LivePreviewScript.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\DesignRegionViewModel.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\TemplateViewModel.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Boolean.cshtml" />
+    <Content Include="Views\Templates\Index.cshtml" />
+    <Content Include="Views\Templates\Add.cshtml" />
+    <Content Include="Views\Templates\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -31,6 +31,7 @@
                 <ul class="nav nav-tabs">
                     <li class="@(ViewBag.Nav == "Licenses" ? "active" : null)">@Html.ActionLink("Licenses", MVC.Licenses.Index())</li>
                     <li class="@(ViewBag.Nav == "Shapes" ? "active" : null)">@Html.ActionLink("Shapes", MVC.Shapes.Index())</li>
+                    <li class="@(ViewBag.Nav == "Templates" ? "active" : null)">@Html.ActionLink("Templates", MVC.Templates.Index())</li>
                     <li class="@(ViewBag.Nav == "Help" ? "active" : null)">@Html.ActionLink("Help", MVC.Help.Index())</li>
                 </ul>
             }

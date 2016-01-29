@@ -32,6 +32,7 @@ public static partial class MVC
     public static SvgStudio.Web.Controllers.LicensesController Licenses = new SvgStudio.Web.Controllers.T4MVC_LicensesController();
     public static SvgStudio.Web.Controllers.MobileController Mobile = new SvgStudio.Web.Controllers.T4MVC_MobileController();
     public static SvgStudio.Web.Controllers.ShapesController Shapes = new SvgStudio.Web.Controllers.T4MVC_ShapesController();
+    public static SvgStudio.Web.Controllers.TemplatesController Templates = new SvgStudio.Web.Controllers.T4MVC_TemplatesController();
     public static T4MVC.SharedController Shared = new T4MVC.SharedController();
 }
 
