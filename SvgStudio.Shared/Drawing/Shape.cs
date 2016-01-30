@@ -23,6 +23,7 @@ namespace SvgStudio.Shared.Drawing
         }
 
         public abstract RenderDesignResult Render(Palette palette, string namingContext);
+        public abstract RenderDesignResult RenderPreview();
 
         protected string AddNamingPrefixToId(string id, string namingContext)
         {

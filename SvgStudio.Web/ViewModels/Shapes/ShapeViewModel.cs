@@ -149,12 +149,8 @@ namespace SvgStudio.Web.ViewModels.Shapes
             {
                 var db = SvgStudioDataContext.Current;
                 var factory = new DrawingFactory(db);
-                var drawingShape = new SvgStudio.Shared.Drawing.BasicShape(
-                    double.Parse(Width),
-                    double.Parse(Height),
-                    null,
-                    (x) => BasicShape_MarkupFragment.Content);
-                var renderResult = drawingShape.Render(null, "Preview");
+                var drawingShape= factory.BuildShape(this.Id);
+                var renderResult = drawingShape.RenderPreview();
                 var svgDocument = renderResult.AsStandaloneSvg(width, height);
 
                 return new HtmlString(XmlHelper.RenderDocument(svgDocument, false));

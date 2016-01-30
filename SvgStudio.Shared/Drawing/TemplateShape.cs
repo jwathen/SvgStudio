@@ -64,20 +64,56 @@ namespace SvgStudio.Shared.Drawing
 
             var g = new XElement("g");
             string clipMatchMarkup = ClipPathMarkup;
+            string outlineId = AddNamingPrefixToId("Outline", namingContext);
             if (clipMatchMarkup != null)
             {
+                var outlineDef = XElement.Parse(clipMatchMarkup);
+                outlineDef.Add(new XAttribute("id", outlineId));
+                result.Defs.Add(outlineDef);
+
                 string clipPathId = AddNamingPrefixToId("ClipPath", namingContext);
                 var clipPathDef = new XElement("clipPath");
                 clipPathDef.Add(new XAttribute("id", clipPathId));
-                clipPathDef.Add(XElement.Parse(clipMatchMarkup));
-                g.Add(new XAttribute("clip-path", string.Format("url(#{0})", clipPathId)));
+                clipPathDef.Add(new XElement("use", new XAttribute(xmlns.xlink + "href", string.Format("#{0}", outlineId))));
                 result.Defs.Add(clipPathDef);
+
+                g.Add(new XAttribute("clip-path", string.Format("url(#{0})", clipPathId)));
             }
             g.Add(renderedDesign.Elements());
+            g.Add(new XElement("use", new XAttribute(xmlns.xlink + "href", string.Format("#{0}", outlineId))));
             result.Xml = g;
 
-
             return result;
+        }
+
+        public override RenderDesignResult RenderPreview()
+        {
+            var palette = new Palette();
+
+            // https://color.adobe.com/Black-Math-color-theme-183602/
+            palette.Fills.Add(new SolidColorFill(Color.FromHex("#EB5937")));
+            palette.Fills.Add(new SolidColorFill(Color.FromHex("#1C1919")));
+            palette.Fills.Add(new SolidColorFill(Color.FromHex("#403D3C")));
+            palette.Fills.Add(new SolidColorFill(Color.FromHex("#456F74")));
+            palette.Fills.Add(new SolidColorFill(Color.FromHex("#D3CBBD")));
+
+            // https://color.adobe.com/Painted-peacock-color-theme-946978/
+            palette.Fills.Add(new SolidColorFill(Color.FromHex("#E5DD00")));
+            palette.Fills.Add(new SolidColorFill(Color.FromHex("#8CB202")));
+            palette.Fills.Add(new SolidColorFill(Color.FromHex("#008C74")));
+            palette.Fills.Add(new SolidColorFill(Color.FromHex("#004C66")));
+            palette.Fills.Add(new SolidColorFill(Color.FromHex("#332B40")));
+
+            int fillIndex = 0;
+            foreach(var designRegion in _template.DesignRegions)
+            {
+                string markupFragment = string.Format("<rect width=\"{0}\" height=\"{1}\" data-fill-index=\"{2}\" />", designRegion.Width, designRegion.Height, fillIndex);
+                BasicShape box = new BasicShape(designRegion.Width, designRegion.Height, null, x => markupFragment);
+                AddDesign(designRegion.Name, box, palette);
+                fillIndex++;
+            }
+
+            return Render(null, "Preview");
         }
     }
 }

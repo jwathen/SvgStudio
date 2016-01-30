@@ -100,5 +100,10 @@ namespace SvgStudio.Shared.Drawing
 
             return result;
         }
+
+        public override RenderDesignResult RenderPreview()
+        {
+            return Render(null, "Preview");
+        }
     }
 }
